@@ -1,31 +1,95 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-<title>Tebak Angka</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Tebak Angka</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f0f0f0;
+            padding: 50px;
+        }
+        input[type="number"] {
+            padding: 10px;
+            font-size: 18px;
+            width: 100px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .message {
+            margin-top: 20px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .correct {
+            color: green;
+        }
+        .incorrect {
+            color: red;
+        }
+        .reset {
+            margin-top: 30px;
+            font-size: 18px;
+        }
+    </style>
 </head>
 <body>
-  <h1>Tebak Angka</h1>
-  <p>Saya telah memilih angka antara 1 dan 100. Coba tebak!</p>
-  <input type="number" id="tebakan">
-  <button onclick="tebak()">Tebak</button>
-  <p id="hasil"></p>
 
-  <script>
-    let angkaRahasia = Math.floor(Math.random() * 100) + 1;
-    let jumlahTebakan = 0;
+    <h1>Game Tebak Angka</h1>
+    <p>Tebak angka antara 1 sampai 100.</p>
 
-    function tebak() {
-      let tebakan = document.getElementById("tebakan").value;
-      jumlahTebakan++;
+    <input type="number" id="guess" placeholder="Masukkan angka">
+    <button onclick="checkGuess()">Tebak</button>
 
-      if (tebakan == angkaRahasia) {
-        document.getElementById("hasil").innerHTML = "Selamat! Anda benar dalam " + jumlahTebakan + " tebakan.";
-      } else if (tebakan < angkaRahasia) {
-        document.getElementById("hasil").innerHTML = "Terlalu rendah. Coba lagi.";
-      } else {
-        document.getElementById("hasil").innerHTML = "Terlalu tinggi. Coba lagi.";
-      }
-    }
-  </script>
+    <div class="message" id="message"></div>
+    <div class="reset" id="reset" style="display:none;">
+        <button onclick="resetGame()">Main Lagi</button>
+    </div>
+
+    <script>
+        // Mendefinisikan angka acak yang harus ditebak
+        let targetNumber = Math.floor(Math.random() * 100) + 1;
+        let attempts = 0;
+
+        function checkGuess() {
+            const guess = document.getElementById('guess').value;
+            const messageElement = document.getElementById('message');
+            const resetButton = document.getElementById('reset');
+            attempts++;
+
+            if (guess == targetNumber) {
+                messageElement.textContent = `Selamat! Anda menebak dengan benar dalam ${attempts} percobaan!`;
+                messageElement.classList.add('correct');
+                resetButton.style.display = 'block';
+            } else if (guess < targetNumber) {
+                messageElement.textContent = 'Terlalu rendah! Coba lagi.';
+                messageElement.classList.add('incorrect');
+            } else {
+                messageElement.textContent = 'Terlalu tinggi! Coba lagi.';
+                messageElement.classList.add('incorrect');
+            }
+        }
+
+        function resetGame() {
+            targetNumber = Math.floor(Math.random() * 100) + 1;
+            attempts = 0;
+            document.getElementById('guess').value = '';
+            document.getElementById('message').textContent = '';
+            document.getElementById('message').classList.remove('correct', 'incorrect');
+            document.getElementById('reset').style.display = 'none';
+        }
+    </script>
+
 </body>
 </html>
