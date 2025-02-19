@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Klik Target</title>
+    <link rel="stylesheet" href="style.css">
+    
+    
+    <style>
+ body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin-top: 50px;
+}
+
+#game-area {
+    position: relative;
+    width: 400px;
+    height: 300px;
+    margin: 20px auto;
+    border: 2px solid #333;
+    background-color: #f0f0f0;
+    overflow: hidden;
+}
+
+#target {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background-color: red;
+    border-radius: 50%;
+    cursor: pointer;
+    display: none;
+}
+
+#start-button {
+    padding: 10px 20px;
+    font-size: 1em;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+p {
+    font-size: 1.2em;
+}
+    </style>
+</head>
+<body>
+    <h1>Game Klik Target</h1>
+    <p>Klik target secepat mungkin!</p>
+    <div id="game-area">
+        <div id="target"></div>
+    </div>
+    <p>Skor: <span id="score">0</span></p>
+    <p>Waktu tersisa: <span id="timer">10</span> detik</p>
+    <button id="start-button">Mulai Game</button>
+
+    <script>
+ const target = document.getElementById("target");
+const scoreDisplay = document.getElementById("score");
+const timerDisplay = document.getElementById("timer");
+const startButton = document.getElementById("start-button");
+
+let score = 0;
+let timeLeft = 10;
+let timer;
+
+// Fungsi untuk memulai game
+function startGame() {
+    score = 0;
+    timeLeft = 10;
+    scoreDisplay.textContent = score;
+    timerDisplay.textContent = timeLeft;
+    startButton.disabled = true;
+    target.style.display = "block";
+    moveTarget();
+
+    timer = setInterval(() => {
+        timeLeft--;
+        timerDisplay.textContent = timeLeft;
+
+        if (timeLeft === 0) {
+            endGame();
+        }
+    }, 1000);
+}
+
+// Fungsi untuk mengakhiri game
+function endGame() {
+    clearInterval(timer);
+    target.style.display = "none";
+    startButton.disabled = false;
+    alert(`Game over! Skor Anda: ${score}`);
+}
+
+// Fungsi untuk memindahkan target ke posisi acak
+function moveTarget() {
+    const gameArea = document.getElementById("game-area");
+    const maxX = gameArea.offsetWidth - target.offsetWidth;
+    const maxY = gameArea.offsetHeight - target.offsetHeight;
+
+    const randomX = Math.floor(Math.random() * maxX);
+    const randomY = Math.floor(Math.random() * maxY);
+
+    target.style.left = `${randomX}px`;
+    target.style.top = `${randomY}px`;
+}
+
+// Event listener untuk klik target
+target.addEventListener("click", () => {
+    score++;
+    scoreDisplay.textContent = score;
+    moveTarget();
+});
+
+// Event listener untuk tombol mulai
+startButton.addEventListener("click", startGame);
+    </script>
+</body>
+
+
+</html>
