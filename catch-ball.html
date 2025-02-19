@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Tangkap Bola</title>
+    <link rel="stylesheet" href="style.css">
+    
+    <style>
+ body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin-top: 50px;
+}
+
+#game-area {
+    position: relative;
+    width: 400px;
+    height: 400px;
+    margin: 20px auto;
+    border: 2px solid #333;
+    background-color: #f0f0f0;
+    overflow: hidden;
+}
+
+#basket {
+    position: absolute;
+    bottom: 10px;
+    width: 80px;
+    height: 20px;
+    background-color: blue;
+    border-radius: 5px;
+}
+
+#ball {
+    position: absolute;
+    top: 0;
+    width: 20px;
+    height: 20px;
+    background-color: red;
+    border-radius: 50%;
+    display: none;
+}
+
+#start-button {
+    padding: 10px 20px;
+    font-size: 1em;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+p {
+    font-size: 1.2em;
+}
+    </style>
+    
+</head>
+<body>
+    <h1>Game Tangkap Bola</h1>
+    <p>Gerakkan keranjang dengan tombol panah kiri dan kanan!</p>
+    <div id="game-area">
+        <div id="basket"></div>
+        <div id="ball"></div>
+    </div>
+    <p>Skor: <span id="score">0</span></p>
+    <button id="start-button">Mulai Game</button>
+
+    <script>
+const basket = document.getElementById("basket");
+const ball = document.getElementById("ball");
+const scoreDisplay = document.getElementById("score");
+const startButton = document.getElementById("start-button");
+
+let score = 0;
+let basketX = 160; // Posisi awal keranjang
+let ballX, ballY;
+let gameInterval;
+
+// Fungsi untuk memulai game
+function startGame() {
+    score = 0;
+    scoreDisplay.textContent = score;
+    startButton.disabled = true;
+    ball.style.display = "block";
+    resetBall();
+
+    // Gerakkan bola ke bawah
+    gameInterval = setInterval(moveBall, 20);
+
+    // Gerakkan keranjang dengan tombol panah
+    document.addEventListener("keydown", moveBasket);
+}
+
+// Fungsi untuk menggerakkan keranjang
+function moveBasket(event) {
+    const gameAreaWidth = document.getElementById("game-area").offsetWidth;
+    const basketWidth = basket.offsetWidth;
+
+    if (event.key === "ArrowLeft" && basketX > 0) {
+        basketX -= 10;
+    } else if (event.key === "ArrowRight" && basketX < gameAreaWidth - basketWidth) {
+        basketX += 10;
+    }
+
+    basket.style.left = `${basketX}px`;
+}
+
+// Fungsi untuk menggerakkan bola
+function moveBall() {
+    const gameAreaHeight = document.getElementById("game-area").offsetHeight;
+    const ballSize = ball.offsetHeight;
+    const basketHeight = basket.offsetHeight;
+
+    ballY += 2; // Kecepatan bola jatuh
+    ball.style.top = `${ballY}px`;
+
+    // Cek jika bola mencapai bawah
+    if (ballY + ballSize >= gameAreaHeight) {
+        endGame();
+    }
+
+    // Cek jika bola ditangkap oleh keranjang
+    if (
+        ballY + ballSize >= gameAreaHeight - basketHeight &&
+        ballX >= basketX &&
+        ballX <= basketX + basket.offsetWidth
+    ) {
+        score++;
+        scoreDisplay.textContent = score;
+        resetBall();
+    }
+}
+
+// Fungsi untuk mereset posisi bola
+function resetBall() {
+    const gameAreaWidth = document.getElementById("game-area").offsetWidth;
+    ballX = Math.floor(Math.random() * (gameAreaWidth - ball.offsetWidth));
+    ballY = 0;
+    ball.style.left = `${ballX}px`;
+    ball.style.top = `${ballY}px`;
+}
+
+// Fungsi untuk mengakhiri game
+function endGame() {
+    clearInterval(gameInterval);
+    ball.style.display = "none";
+    startButton.disabled = false;
+    alert(`Game over! Skor Anda: ${score}`);
+}
+
+// Event listener untuk tombol mulai
+startButton.addEventListener("click", startGame);
+    </script>
+</body>
+</html>
