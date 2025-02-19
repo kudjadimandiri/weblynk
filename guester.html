@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Tebak Angka</title>
+</head>
+<body>
+  <h1>Tebak Angka</h1>
+  <p>Saya telah memilih angka antara 1 dan 100. Coba tebak!</p>
+  <input type="number" id="tebakan">
+  <button onclick="tebak()">Tebak</button>
+  <p id="hasil"></p>
+
+  <script>
+    let angkaRahasia = Math.floor(Math.random() * 100) + 1;
+    let jumlahTebakan = 0;
+
+    function tebak() {
+      let tebakan = document.getElementById("tebakan").value;
+      jumlahTebakan++;
+
+      if (tebakan == angkaRahasia) {
+        document.getElementById("hasil").innerHTML = "Selamat! Anda benar dalam " + jumlahTebakan + " tebakan.";
+      } else if (tebakan < angkaRahasia) {
+        document.getElementById("hasil").innerHTML = "Terlalu rendah. Coba lagi.";
+      } else {
+        document.getElementById("hasil").innerHTML = "Terlalu tinggi. Coba lagi.";
+      }
+    }
+  </script>
+</body>
+</html>
