@@ -5,44 +5,32 @@
     <meta name="description" content="Mainkan game Tetris klasik dengan tampilan modern menggunakan Tailwind CSS! Game Tetris HTML5 ini gratis, seru, dan responsif. Tanpa download, langsung main!">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-          theme: {
-            extend: {
-              colors: {
-                modernBody: '#f3f4f6', // Gray-100
-                modernContainer: '#ffffff', // White
-                modernInfoPanel: '#e5e7eb', // Gray-200
-                modernCanvas: '#1e293b', // Gray-800
-                modernText: '#374151', // Gray-700
-                modernButton: '#6b7280', // Gray-500
-                modernButtonHover: '#9ca3af', // Gray-400
-                modernButtonActive: '#4b5563', // Gray-600
-                modernCyan: '#22d3ee', // Cyan-400
-                modernBlue: '#3b82f6', // Blue-500
-                modernOrange: '#f97316', // Orange-500
-                modernYellow: '#fde047', // Yellow-300
-                modernGreen: '#84cc16', // Lime-500
-                modernPurple: '#a855f7', // Purple-500
-                modernRed: '#ef4444', // Red-500
-              },
-              fontFamily: {
-                modernFont: ['sans-serif'],
-              },
-            }
-          }
+    <style>
+        /* CSS untuk membuat canvas next-tetromino responsif */
+        #next-tetromino-canvas {
+            width: 10vw; /* Ukuran default untuk desktop */
+            height: 10vw;
+            max-width: 80px; /* Ukuran maksimum untuk desktop */
+            max-height: 80px;
         }
-    </script>
+
+        @media (max-width: 768px) {
+            #next-tetromino-canvas {
+                width: 20vw; /* Ukuran lebih besar untuk mobile */
+                height: 20vw;
+                max-width: 100px; /* Ukuran maksimum untuk mobile */
+                max-height: 100px;
+            }
+        }
+    </style>
 </head>
 <body class="bg-modernBody font-modernFont text-modernText p-5">
 <div id="game-container" class="bg-modernContainer rounded-xl shadow-lg max-w-2xl mx-auto p-4 flex flex-col gap-4">
     <!-- Game Info di atas -->
     <div id="game-info" class="bg-modernInfoPanel rounded-lg shadow-md p-3">
-        <!-- Baris untuk h1 dan next-tetromino-canvas -->
         <div class="flex items-center justify-between">
             <div>
                 <h1 class="text-modernText text-2xl font-bold">Tetris Modern</h1>
-                <!-- Score dan Level ditempatkan di bawah h1 -->
                 <div id="score-level" class="mt-1 text-sm">
                     Score: <span id="score" class="font-semibold">0</span> | 
                     Level: <span id="level" class="font-semibold">1</span>
@@ -51,7 +39,7 @@
             <!-- Next Block -->
             <div class="flex flex-col items-center">
                 <div class="text-sm">Next Block:</div>
-                <canvas id="next-tetromino-canvas" width="80" height="80" class="bg-modernCanvas rounded-lg shadow-inner mt-1 w-[80px] h-[80px]"></canvas>
+                <canvas id="next-tetromino-canvas" class="bg-modernCanvas rounded-lg shadow-inner mt-1"></canvas>
             </div>
         </div>
     </div>
@@ -84,11 +72,6 @@
   const canvasHeight = 400;
   const gridCols = canvasWidth / grid;
   const gridRows = canvasHeight / grid;
-
-  const nextCanvasWidth = 80;
-  const nextCanvasHeight = 80;
-  const nextGridCols = nextCanvasWidth / grid;
-  const nextGridRows = nextCanvasHeight / grid;
 
   let score = 0;
   let level = 1;
@@ -126,6 +109,18 @@
   let tetrominoPosition = {x: 0, y: 0};
   let isGameOver = false;
   let gameInterval;
+
+  // Fungsi untuk menyesuaikan ukuran canvas next-tetromino
+  function resizeNextTetrominoCanvas() {
+    const canvasWidth = nextTetrominoCanvas.clientWidth;
+    const canvasHeight = nextTetrominoCanvas.clientHeight;
+    nextTetrominoCanvas.width = canvasWidth;
+    nextTetrominoCanvas.height = canvasHeight;
+  }
+
+  // Panggil fungsi resize saat halaman dimuat dan saat ukuran layar berubah
+  window.addEventListener('resize', resizeNextTetrominoCanvas);
+  document.addEventListener('DOMContentLoaded', resizeNextTetrominoCanvas);
 
   function createPlayfield() {
     const playfield = [];
