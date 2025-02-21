@@ -39,27 +39,42 @@
     </script>
 </head>
 <body class="bg-modernBody font-modernFont text-modernText p-5">
-<div id="game-container" class="bg-modernContainer rounded-xl shadow-lg max-w-2xl mx-auto p-6 flex flex-col sm:flex-row gap-6">
+<div id="game-container" class="bg-modernContainer rounded-xl shadow-lg max-w-2xl mx-auto p-4 flex flex-col gap-4">
+    <!-- Game Info di atas -->
+    <div id="game-info" class="bg-modernInfoPanel rounded-lg shadow-md p-3">
+        <!-- Baris untuk h1 dan next-tetromino-canvas -->
+        <div class="flex items-center justify-between">
+            <div>
+                <h1 class="text-modernText text-2xl font-bold">Tetris Modern</h1>
+                <!-- Score dan Level ditempatkan di bawah h1 -->
+                <div id="score-level" class="mt-1 text-sm">
+                    Score: <span id="score" class="font-semibold">0</span> | 
+                    Level: <span id="level" class="font-semibold">1</span>
+                </div>
+            </div>
+            <!-- Next Block -->
+            <div class="flex flex-col items-center">
+                <div class="text-sm">Next Block:</div>
+                <canvas id="next-tetromino-canvas" width="80" height="80" class="bg-modernCanvas rounded-lg shadow-inner mt-1 w-[80px] h-[80px]"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Canvas Permainan -->
     <div class="flex-1">
         <canvas id="tetris-canvas" width="240" height="400" class="bg-modernCanvas rounded-lg shadow-inner w-full max-h-[400px] border border-gray-300"></canvas>
-        <div id="controls" class="mt-5 flex flex-wrap justify-center gap-2">
-            <button onclick="moveLeft()" class="px-4 py-2 bg-modernButton text-white rounded-md shadow-sm hover:bg-modernButtonHover active:bg-modernButtonActive transition-colors duration-200">Left</button>
-            <button onclick="rotate()" class="px-4 py-2 bg-modernButton text-white rounded-md shadow-sm hover:bg-modernButtonHover active:bg-modernButtonActive transition-colors duration-200">Rotate</button>
-            <button onclick="moveRight()" class="px-4 py-2 bg-modernButton text-white rounded-md shadow-sm hover:bg-modernButtonHover active:bg-modernButtonActive transition-colors duration-200">Right</button>
-            <button onclick="moveDown()" class="px-4 py-2 bg-modernButton text-white rounded-md shadow-sm hover:bg-modernButtonHover active:bg-modernButtonActive transition-colors duration-200">Down</button>
-            <button onclick="quickDrop()" class="px-4 py-2 bg-modernButton text-white rounded-md shadow-sm hover:bg-modernButtonHover active:bg-modernButtonActive transition-colors duration-200">Quick Drop</button>
-        </div>
     </div>
-    <div id="game-info" class="bg-modernInfoPanel rounded-lg shadow-md p-4 sm:p-5 w-full sm:w-auto sm:min-w-[150px] flex flex-col items-center">
-        <h1 class="text-center text-modernText mb-4 text-3xl sm:text-4xl font-bold">Tetris Modern</h1>
-        <div id="score-level" class="mb-3 text-lg sm:text-xl font-semibold text-center">
-            Score: <span id="score">0</span><br>
-            Level: <span id="level">1</span>
-        </div>
-        <div class="text-center">Next Block:</div>
-        <canvas id="next-tetromino-canvas" width="120" height="120" class="bg-modernCanvas rounded-lg shadow-inner mt-3 w-[100px] h-[100px]"></canvas>
+
+    <!-- Controls yang lebih kecil -->
+    <div id="controls" class="flex flex-wrap justify-center gap-2">
+        <button onclick="moveLeft()" class="px-3 py-1.5 bg-modernButton text-white rounded-md shadow-sm hover:bg-modernButtonHover active:bg-modernButtonActive transition-colors duration-200 text-sm">Left</button>
+        <button onclick="rotate()" class="px-3 py-1.5 bg-modernButton text-white rounded-md shadow-sm hover:bg-modernButtonHover active:bg-modernButtonActive transition-colors duration-200 text-sm">Rotate</button>
+        <button onclick="moveRight()" class="px-3 py-1.5 bg-modernButton text-white rounded-md shadow-sm hover:bg-modernButtonHover active:bg-modernButtonActive transition-colors duration-200 text-sm">Right</button>
+        <button onclick="moveDown()" class="px-3 py-1.5 bg-modernButton text-white rounded-md shadow-sm hover:bg-modernButtonHover active:bg-modernButtonActive transition-colors duration-200 text-sm">Down</button>
+        <button onclick="quickDrop()" class="px-3 py-1.5 bg-modernButton text-white rounded-md shadow-sm hover:bg-modernButtonHover active:bg-modernButtonActive transition-colors duration-200 text-sm">Quick Drop</button>
     </div>
 </div>
+
 <script>
   // ... (Kode JavaScript Anda tetap sama) ...
   const canvas = document.getElementById('tetris-canvas');
