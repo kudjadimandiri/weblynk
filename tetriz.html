@@ -76,7 +76,6 @@
 </div>
 
 <script>
-  // ... (Kode JavaScript Anda tetap sama) ...
   const canvas = document.getElementById('tetris-canvas');
   const context = canvas.getContext('2d');
   const nextTetrominoCanvas = document.getElementById('next-tetromino-canvas');
@@ -90,8 +89,8 @@
   const gridCols = canvasWidth / grid;
   const gridRows = canvasHeight / grid;
 
-  const nextCanvasWidth = 120;
-  const nextCanvasHeight = 120;
+  const nextCanvasWidth = 80;
+  const nextCanvasHeight = 80;
   const nextGridCols = nextCanvasWidth / grid;
   const nextGridRows = nextCanvasHeight / grid;
 
@@ -101,16 +100,17 @@
   let gameSpeed = 700; // milliseconds per frame
   let animationSpeed = 100; // milliseconds for animation frame
 
+  // Warna yang lebih menarik untuk blok
   const colors = [
     null,
-    '#gbTetrominoCyan', /* cyan - Game Boy green */
-    '#gbTetrominoBlue', /* blue - Dark Game Boy green */
-    '#gbTetrominoOrange', /* orange - Game Boy green */
-    '#gbTetrominoYellow', /* yellow - Game Boy green */
-    '#gbTetrominoGreen', /* green - Dark Game Boy green */
-    '#gbTetrominoPurple', /* purple - Light Game Boy green */
-    '#gbTetrominoRed',  /* red - Dark Game Boy green */
-    '#fff'      /* index 9 for animation white */
+    '#22d3ee', // Cyan
+    '#3b82f6', // Blue
+    '#f97316', // Orange
+    '#fde047', // Yellow
+    '#84cc16', // Green
+    '#a855f7', // Purple
+    '#ef4444', // Red
+    '#fff'      // index 9 untuk animasi putih
   ];
 
   const shapes = [
@@ -232,7 +232,6 @@
     }
   }
 
-
   async function animateClearRow(rowToClear) {
     return new Promise(resolve => {
       let animationFrames = 5; // Number of animation frames
@@ -254,7 +253,6 @@
       }, animationSpeed); // Animation speed
     });
   }
-
 
   async function clearFullRows() {
     let rowsClearedThisTurn = 0;
@@ -283,11 +281,10 @@
     }
   }
 
-
   function gameOver() {
     isGameOver = true;
     clearInterval(gameInterval);
-    alert(`Game Over! Skor: ${score}`);
+    alert(`Game Over! Score: ${score}`);
     resetGame();
   }
 
@@ -312,7 +309,7 @@
         if (cellValue === 9) { // Animation color
           context.fillStyle = '#fff'; // White color for flashing animation
         } else {
-          context.fillStyle = colors[cellValue] || '#gbScreenGreen'; // Default Game Boy screen color
+          context.fillStyle = colors[cellValue] || '#1e293b'; // Default modern canvas color
         }
         context.fillRect(col * grid, row * grid, grid-1, grid-1);
       }
@@ -339,8 +336,10 @@
     nextTetrominoContext.clearRect(0, 0, nextCanvasWidth, nextCanvasHeight);
     const shape = nextTetromino.shape;
     const color = nextTetromino.color;
-    const startX = (nextGridCols - shape[0].length) / 2; // Center the shape in preview canvas
-    const startY = (nextGridRows - shape.length) / 2;
+
+    // Menghitung posisi tengah yang lebih presisi
+    const startX = Math.floor((nextGridCols - shape[0].length) / 2);
+    const startY = Math.floor((nextGridRows - shape.length) / 2);
 
     for (let row = 0; row < shape.length; row++) {
       for (let col = 0; col < shape[0].length; col++) {
@@ -390,7 +389,6 @@
     draw();
   }
 
-
   // Control functions for buttons
   function moveLeft() {
     moveTetrominoHorizontally(-1);
@@ -412,7 +410,6 @@
     draw();
   }
 
-
   // Keyboard controls
   document.addEventListener('keydown', function(e) {
     if (!isGameOver) {
@@ -424,15 +421,16 @@
         moveDown();
       } else if (e.key === 'ArrowUp') {
         rotate();
-      } else if (e.key === ' ') {
+      } else if (e.key === ' ') { // Tombol spasi untuk Quick Drop
         quickDrop();
       }
     }
   });
 
-  resetGame();
-
+  // Mulai permainan setelah halaman dimuat
+  document.addEventListener('DOMContentLoaded', () => {
+    startGame();
+  });
 </script>
-
 </body>
 </html>
