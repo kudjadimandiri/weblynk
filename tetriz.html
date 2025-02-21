@@ -1,123 +1,65 @@
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7116287441723529"
+     crossorigin="anonymous"></script>
+<meta name="google-adsense-account" content="ca-pub-7116287441723529">
+<meta name="google-site-verification" content="PpanBF5GPJQoPP-xX1s6wZvmIbym_qSxfoUbtX5EZVQ" />
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <title>Main Tetris Online Gratis | Game Tetris HTML5 Seru</title>
-    <meta name="description" content="Mainkan game Tetris klasik dengan gaya Game Boy langsung di browser Anda! Game Tetris HTML5 ini gratis, seru, dan bernuansa retro. Tanpa download, langsung main!">
+    <meta name="description" content="Mainkan game Tetris klasik dengan tampilan modern menggunakan Tailwind CSS! Game Tetris HTML5 ini gratis, seru, dan responsif. Tanpa download, langsung main!">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7116287441723529"
-     crossorigin="anonymous"></script>
-<meta name="google-adsense-account" content="ca-pub-7116287441723529">
-<meta name="google-site-verification" content="PpanBF5GPJQoPP-xX1s6wZvmIbym_qSxfoUbtX5EZVQ" />
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
           theme: {
             extend: {
               colors: {
-                gbBody: '#c0c0c0',
-                gbLightGray: '#e0e0e0',
-                gbMediumGray: '#bababa',
-                gbScreenGreen: '#77b300',
-                gbDarkGreen: '#0f380f',
-                gbBtnGray: '#a0a0a0',
-                gbBtnHoverGray: '#c0c0c0',
-                gbBtnActiveGray: '#909090',
-                gbTetrominoCyan: '#8abe4a',
-                gbTetrominoBlue: '#306850',
-                gbTetrominoOrange: '#8abe4a',
-                gbTetrominoYellow: '#8abe4a',
-                gbTetrominoGreen: '#306850',
-                gbTetrominoPurple: '#a2cfa5',
-                gbTetrominoRed: '#306850',
+                modernBody: '#f3f4f6', // Gray-100
+                modernContainer: '#ffffff', // White
+                modernInfoPanel: '#e5e7eb', // Gray-200
+                modernCanvas: '#1e293b', // Gray-800
+                modernText: '#374151', // Gray-700
+                modernButton: '#6b7280', // Gray-500
+                modernButtonHover: '#9ca3af', // Gray-400
+                modernButtonActive: '#4b5563', // Gray-600
+                modernCyan: '#22d3ee', // Cyan-400
+                modernBlue: '#3b82f6', // Blue-500
+                modernOrange: '#f97316', // Orange-500
+                modernYellow: '#fde047', // Yellow-300
+                modernGreen: '#84cc16', // Lime-500
+                modernPurple: '#a855f7', // Purple-500
+                modernRed: '#ef4444', // Red-500
               },
               fontFamily: {
-                gbFont: ['monospace'],
+                modernFont: ['sans-serif'],
               },
             }
           }
         }
     </script>
-    <style type="text/tailwindcss">
-        body {
-            @apply bg-gbBody font-gbFont text-gbDarkGreen;
-        }
-        #game-container {
-            @apply bg-gbLightGray rounded-none border-4 border-black shadow-inner max-w-90 box-border flex flex-row flex-wrap justify-center p-5 sm:p-5;
-        }
-        #game-info {
-            @apply bg-gbMediumGray rounded-none border-2 border-black shadow-inner ml-5 sm:ml-5 p-3 sm:p-3 w-auto min-w-[120px] flex flex-col;
-        }
-        #score-level {
-            @apply mb-2 sm:mb-2 text-sm sm:text-sm font-bold text-left text-shadow-none;
-        }
-        #next-tetromino-canvas {
-            @apply bg-gbScreenGreen rounded-none border-2 border-black shadow-inner mt-2 sm:mt-2 w-[80px] h-[80px];
-        }
-        #tetris-canvas {
-            @apply bg-gbScreenGreen rounded-none border-4 border-black shadow-inner max-w-full max-h-[360px] w-full h-auto;
-        }
-        #controls {
-            @apply mt-4 sm:mt-4 text-center flex flex-wrap justify-center;
-        }
-        #controls button {
-            @apply px-3 py-2 sm:px-3 sm:py-2 mx-1 sm:mx-1 text-xs sm:text-xs cursor-pointer bg-gbBtnGray text-black border-2 border-black rounded-none shadow-[2px_2px_3px_rgba(0,0,0,.5)] transition-colors duration-200 min-w-[70px];
-        }
-        #controls button:hover {
-            @apply bg-gbBtnHoverGray;
-        }
-        #controls button:active {
-            @apply bg-gbBtnActiveGray shadow-[1px_1px_2px_rgba(0,0,0,.5)] transform-translate-y-px;
-        }
-        h1 {
-            @apply text-center text-gbDarkGreen mb-3 sm:mb-3 text-2xl sm:text-2xl text-shadow-none;
-        }
-        /* Mobile Styles */
-        @media (max-width: 600px) {
-            #game-container {
-                @apply flex-col p-4 sm:p-4;
-            }
-            #game-info {
-                @apply ml-0 mt-4 sm:mt-4 items-center min-w-auto w-full border-l-0 border-r-0 p-2 sm:p-2;
-            }
-            #score-level {
-                @apply text-center;
-            }
-            #next-tetromino-canvas {
-                @apply mt-2 sm:mt-2 w-[90px] h-[90px];
-            }
-            #tetris-canvas {
-                @apply max-w-full max-h-[80vw];
-            }
-            #controls button {
-                @apply px-4 py-2 sm:px-4 sm:py-2 text-sm sm:text-sm min-w-[70px];
-            }
-        }
-    </style>
 </head>
-<body class="bg-gbBody font-gbFont text-gbDarkGreen p-5">
-<div id="game-container" class="bg-gbLightGray rounded-none border-4 border-black shadow-inner max-w-90 box-border flex flex-row flex-wrap justify-center p-5">
-    <div>
-        <canvas id="tetris-canvas" width="240" height="400" class="bg-gbScreenGreen rounded-none border-4 border-black shadow-inner max-w-full max-h-[360px] w-full h-auto"></canvas>
-        <div id="controls" class="mt-4 sm:mt-4 text-center flex flex-wrap justify-center">
-            <button onclick="moveLeft()" class="px-3 py-2 sm:px-3 sm:py-2 mx-1 sm:mx-1 text-xs sm:text-xs cursor-pointer bg-gbBtnGray text-black border-2 border-black rounded-none shadow-[2px_2px_3px_rgba(0,0,0,.5)] transition-colors duration-200 min-w-[70px]">LEFT</button>
-            <button onclick="rotate()" class="px-3 py-2 sm:px-3 sm:py-2 mx-1 sm:mx-1 text-xs sm:text-xs cursor-pointer bg-gbBtnGray text-black border-2 border-black rounded-none shadow-[2px_2px_3px_rgba(0,0,0,.5)] transition-colors duration-200 min-w-[70px]">ROTATE</button>
-            <button onclick="moveRight()" class="px-3 py-2 sm:px-3 sm:py-2 mx-1 sm:mx-1 text-xs sm:text-xs cursor-pointer bg-gbBtnGray text-black border-2 border-black rounded-none shadow-[2px_2px_3px_rgba(0,0,0,.5)] transition-colors duration-200 min-w-[70px]">RIGHT</button>
-            <button onclick="moveDown()" class="px-3 py-2 sm:px-3 sm:py-2 mx-1 sm:mx-1 text-xs sm:text-xs cursor-pointer bg-gbBtnGray text-black border-2 border-black rounded-none shadow-[2px_2px_3px_rgba(0,0,0,.5)] transition-colors duration-200 min-w-[70px]">DOWN</button>
-            <button onclick="quickDrop()" class="px-3 py-2 sm:px-3 sm:py-2 mx-1 sm:mx-1 text-xs sm:text-xs cursor-pointer bg-gbBtnGray text-black border-2 border-black rounded-none shadow-[2px_2px_3px_rgba(0,0,0,.5)] transition-colors duration-200 min-w-[70px]">QUICK DROP</button>
+<body class="bg-modernBody font-modernFont text-modernText p-5">
+<div id="game-container" class="bg-modernContainer rounded-xl shadow-lg max-w-2xl mx-auto p-6 flex flex-col sm:flex-row gap-6">
+    <div class="flex-1">
+        <canvas id="tetris-canvas" width="240" height="400" class="bg-modernCanvas rounded-lg shadow-inner w-full max-h-[400px] border border-gray-300"></canvas>
+        <div id="controls" class="mt-5 flex flex-wrap justify-center gap-2">
+            <button onclick="moveLeft()" class="px-4 py-2 bg-modernButton text-white rounded-md shadow-sm hover:bg-modernButtonHover active:bg-modernButtonActive transition-colors duration-200">Left</button>
+            <button onclick="rotate()" class="px-4 py-2 bg-modernButton text-white rounded-md shadow-sm hover:bg-modernButtonHover active:bg-modernButtonActive transition-colors duration-200">Rotate</button>
+            <button onclick="moveRight()" class="px-4 py-2 bg-modernButton text-white rounded-md shadow-sm hover:bg-modernButtonHover active:bg-modernButtonActive transition-colors duration-200">Right</button>
+            <button onclick="moveDown()" class="px-4 py-2 bg-modernButton text-white rounded-md shadow-sm hover:bg-modernButtonHover active:bg-modernButtonActive transition-colors duration-200">Down</button>
+            <button onclick="quickDrop()" class="px-4 py-2 bg-modernButton text-white rounded-md shadow-sm hover:bg-modernButtonHover active:bg-modernButtonActive transition-colors duration-200">Quick Drop</button>
         </div>
     </div>
-    <div id="game-info" class="bg-gbMediumGray rounded-none border-2 border-black shadow-inner ml-5 sm:ml-5 p-3 sm:p-3 w-auto min-w-[120px] flex flex-col">
-        <h1 class="text-center text-gbDarkGreen mb-3 sm:mb-3 text-2xl sm:text-2xl text-shadow-none">TETRIS</h1>
-        <div id="score-level" class="mb-2 sm:mb-2 text-sm sm:text-sm font-bold text-left text-shadow-none">
-            SCORE<br><span id="score">0</span><br><br>
-            LEVEL<br><span id="level">1</span>
+    <div id="game-info" class="bg-modernInfoPanel rounded-lg shadow-md p-4 sm:p-5 w-full sm:w-auto sm:min-w-[150px] flex flex-col items-center">
+        <h1 class="text-center text-modernText mb-4 text-3xl sm:text-4xl font-bold">Tetris Modern</h1>
+        <div id="score-level" class="mb-3 text-lg sm:text-xl font-semibold text-center">
+            Score: <span id="score">0</span><br>
+            Level: <span id="level">1</span>
         </div>
-        <div>NEXT</div>
-        <canvas id="next-tetromino-canvas" width="120" height="120" class="bg-gbScreenGreen rounded-none border-2 border-black shadow-inner mt-2 sm:mt-2 w-[80px] h-[80px]"></canvas>
+        <div class="text-center">Next Block:</div>
+        <canvas id="next-tetromino-canvas" width="120" height="120" class="bg-modernCanvas rounded-lg shadow-inner mt-3 w-[100px] h-[100px]"></canvas>
     </div>
 </div>
-
 <script>
   // ... (Kode JavaScript Anda tetap sama) ...
   const canvas = document.getElementById('tetris-canvas');
