@@ -2,18 +2,18 @@ export const data = {
     bride: {
         L: {
             id: 1,
-            name: 'Lutfi',
+            name: 'Lutfi Abdilah',
             child: 'Putra ke Kedua',
-            father: 'Bapak Lanang',
-            mother: 'Ibu Wedok',
+            father: 'Bapak H. Ma.ani (Alm.)',
+            mother: 'Ibu Hj. Nur Hidayati',
             image: './src/assets/images/cowo.jpg'
         },
         P: {
             id: 2,
             name: 'Ainul Istiqomah',
             child: 'Putri ke Kedua',
-            father: 'Sugimin',
-            mother: 'Sadiyem',
+            father: 'H. Sugimin',
+            mother: 'Hj. Sadiyem',
             image: './src/assets/images/cewe.jpg'
         },
 
