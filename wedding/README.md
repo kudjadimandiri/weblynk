@@ -17,7 +17,7 @@
 
 1. **Unduh proyek atau kloning repositori**:
     ```bash
-    git clone https://github.com/sandiperdiansah/wedding-invitation.git
+    git clone https://github.com/xxxxx/wedding-invitation.git
     ```
 
 2. **Catatan**: Anda memiliki dua pilihan untuk menggunakan kode sumber ini:
