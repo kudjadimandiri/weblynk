@@ -74,12 +74,6 @@ export const data = {
 
     bank: [
         {
-            id: 1,
-            name: 'Ainul Istiqomah',
-            icon: './src/assets/images/bca.png',
-            rekening: '12345678'
-        },
-        {
             id: 2,
             name: 'Ainul Istiqomah',
             icon: './src/assets/images/bri.png',
