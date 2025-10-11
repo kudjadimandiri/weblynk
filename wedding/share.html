@@ -31,7 +31,13 @@
         <div>
           <label for="names" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Daftar Nama</label>
           <p class="text-xs text-gray-500 dark:text-gray-400">Satu nama per baris atau dipisah koma. Untuk nomor+nama gunakan <code>081234567890|Nama</code></p>
-          <textarea id="names" class="mt-2 w-full min-h-[80px] p-3 border rounded-lg resize-vertical text-sm dark:bg-gray-900 dark:border-gray-700 dark:text-gray-100" placeholder="Contoh:\nBudi\nSiti\nAndi\natau: Budi, Siti, Andi"></textarea>
+          <textarea id="names" class="mt-2 w-full min-h-[120px] p-3 border rounded-lg resize-vertical text-sm dark:bg-gray-900 dark:border-gray-700 dark:text-gray-100" placeholder="Contoh:\nBudi\nSiti\nAndi\natau: Budi, Siti, Andi"></textarea>
+        </div>
+
+        <div>
+          <label for="link" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Link Undangan</label>
+          <p class="text-xs text-gray-500 dark:text-gray-400">Masukkan link undangan utama, nama akan otomatis ditambahkan di belakang URL.</p>
+          <input id="link" type="url" class="mt-2 w-full p-3 border rounded-lg text-sm dark:bg-gray-900 dark:border-gray-700 dark:text-gray-100" placeholder="https://weblynk.pages.dev/wedding/?to=">
         </div>
 
         <div>
@@ -49,7 +55,7 @@ Lokasi : Blok C Embacang Permai Mesuji Raya Kab OKI Sumatera Selatan
 
 Berikut link undangan kami, untuk info lengkap dari acara bisa kunjungi :
 
-*https://weblynk.pages.dev/wedding/?to={name}*
+*{{link}}{nameUrl}*
 
 Merupakan suatu kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan untuk hadir dan memberikan doa restu.
 
@@ -76,6 +82,7 @@ Terima kasih banyak atas perhatiannya.</textarea>
   <script>
     const namesEl = document.getElementById('names')
     const tplEl = document.getElementById('template')
+    const linkEl = document.getElementById('link')
     const genBtn = document.getElementById('genBtn')
     const listEl = document.getElementById('list')
     const copyAllBtn = document.getElementById('copyAllBtn')
@@ -92,8 +99,10 @@ Terima kasih banyak atas perhatiannya.</textarea>
       })
     }
 
-    function makeMessage(template, name){
-      return template.replace(/\{name\}/gi, name)
+    function makeMessage(template, name, linkBase){
+      const nameUrl = encodeURIComponent(name.trim().replace(/ /g, '%20'))
+      const link = linkBase ? linkBase + nameUrl : ''
+      return template.replace(/\{name\}/gi, name).replace(/\{\{link\}\}\{nameUrl\}/gi, link)
     }
 
     function createItem(msg, p){
@@ -137,11 +146,12 @@ Terima kasih banyak atas perhatiannya.</textarea>
     genBtn.addEventListener('click', ()=>{
       const people = parseNames(namesEl.value)
       const tpl = tplEl.value || ''
+      const linkBase = linkEl.value || ''
       listEl.innerHTML = ''
       if(people.length===0){listEl.innerHTML = '<div class="text-sm text-yellow-600 dark:text-yellow-400">⚠️ Tidak ada nama. Masukkan minimal satu nama.</div>';return}
 
       people.forEach(p=>{
-        const msg = makeMessage(tpl, p.name)
+        const msg = makeMessage(tpl, p.name, linkBase)
         const item = createItem(msg, p)
         listEl.appendChild(item)
       })
@@ -150,19 +160,21 @@ Terima kasih banyak atas perhatiannya.</textarea>
     copyAllBtn.addEventListener('click', async ()=>{
       const people = parseNames(namesEl.value)
       const tpl = tplEl.value || ''
+      const linkBase = linkEl.value || ''
       if(people.length===0){alert('Tidak ada nama.');return}
-      const all = people.map(p=>makeMessage(tpl,p.name)).join('\n\n')
+      const all = people.map(p=>makeMessage(tpl,p.name,linkBase)).join('\n\n')
       try{await navigator.clipboard.writeText(all); alert('Semua pesan disalin ke clipboard.')}catch(e){prompt('Salin manual:', all)}
     })
 
     openAllBtn.addEventListener('click', ()=>{
       const people = parseNames(namesEl.value)
       const tpl = tplEl.value || ''
+      const linkBase = linkEl.value || ''
       if(people.length===0){alert('Tidak ada nama.');return}
       const confirmOpen = confirm('Akan membuka ' + people.length + ' tab WhatsApp. Lanjutkan?')
       if(!confirmOpen) return
       people.forEach(p=>{
-        const msg = makeMessage(tpl,p.name)
+        const msg = makeMessage(tpl,p.name,linkBase)
         const encoded = encodeURIComponent(msg)
         let url = 'https://wa.me/?text=' + encoded
         if(p.phone){
@@ -181,7 +193,6 @@ Terima kasih banyak atas perhatiannya.</textarea>
       localStorage.setItem('theme', isDark ? 'dark' : 'light')
     })
 
-    // Simpan preferensi mode gelap
     if(localStorage.getItem('theme') === 'light'){
       document.documentElement.classList.remove('dark')
       toggleDark.textContent = '🌙 Mode Gelap'
