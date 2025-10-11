@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Share ke WhatsApp - Banyak Nama</title>
+  <style>
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;margin:18px;background:#f7f7f8;color:#111}
+    .wrap{max-width:900px;margin:0 auto;background:#fff;padding:18px;border-radius:12px;box-shadow:0 6px 24px rgba(10,10,10,0.06)}
+    h1{font-size:18px;margin:0 0 8px}
+    label{font-size:13px;color:#555}
+    textarea{width:100%;min-height:120px;padding:10px;border-radius:8px;border:1px solid #ddd;margin-top:6px;font-size:14px}
+    input[type=text]{width:100%;padding:10px;border-radius:8px;border:1px solid #ddd}
+    .row{display:flex;gap:8px;margin-top:10px}
+    .col{flex:1}
+    button{padding:10px 12px;border-radius:8px;border:0;background:#0b6e4f;color:#fff;font-weight:600;cursor:pointer}
+    .btn-ghost{background:transparent;border:1px solid #ddd;color:#333}
+    .list{margin-top:12px}
+    .item{display:flex;align-items:center;gap:8px;padding:8px;border-radius:8px;border:1px solid #f0f0f0;margin-bottom:8px}
+    .msg{flex:1;white-space:pre-wrap;font-size:14px}
+    .small{font-size:13px;color:#666}
+    .controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Share Kata-kata ke WhatsApp (Banyak Nama)</h1>
+    <p class="small">Masukkan daftar nama (satu nama per baris atau dipisah koma). Gunakan <code>{name}</code> dalam template pesan untuk tempat nama.
+    </p>
+
+    <label>Daftar Nama</label>
+    <textarea id="names" placeholder="Contoh:\nBudi\nSiti\nAndi\natau: Budi, Siti, Andi"></textarea>
+
+    <label style="margin-top:8px">Template Pesan</label>
+    <input id="template" type="text" value="Halo {name}, kami mengundang Anda hadir di RAT Koperasi pada Sabtu, 25 Oktober 2025 pukul 09:00 WIB." />
+
+    <div class="controls">
+      <button id="genBtn">Buat Pesan</button>
+      <button class="btn-ghost" id="copyAllBtn">Salin Semua Pesan</button>
+      <button class="btn-ghost" id="openAllBtn">Buka Semua di WhatsApp (Tab Baru)</button>
+    </div>
+
+    <div class="list" id="list"></div>
+
+    <p class="small">Catatan: Tombol WhatsApp membuka <code>https://wa.me/?text=...</code> — pada WhatsApp Web/HP pengguna bisa memilih penerima. Jika ingin mengirim langsung ke nomor tertentu, masukkan nomor dengan format internasional (tanpa +) di samping nama, misal: <em>081234567890|Budi</em>.</p>
+  </div>
+
+  <script>
+    const namesEl = document.getElementById('names')
+    const tplEl = document.getElementById('template')
+    const genBtn = document.getElementById('genBtn')
+    const listEl = document.getElementById('list')
+    const copyAllBtn = document.getElementById('copyAllBtn')
+    const openAllBtn = document.getElementById('openAllBtn')
+
+    function parseNames(raw){
+      if(!raw) return []
+      // Split by new lines or commas
+      const parts = raw.split(/[\n,]+/).map(s=>s.trim()).filter(Boolean)
+      // Support optional phone|name format
+      return parts.map(p=>{
+        const parts2 = p.split('|').map(x=>x.trim())
+        if(parts2.length===2){return {phone:parts2[0], name:parts2[1]}}
+        return {phone:null, name:parts2[0]}
+      })
+    }
+
+    function makeMessage(template, name){
+      return template.replace(/\{name\}/gi, name)
+    }
+
+    genBtn.addEventListener('click', ()=>{
+      const people = parseNames(namesEl.value)
+      const tpl = tplEl.value || ''
+      listEl.innerHTML = ''
+      if(people.length===0){listEl.innerHTML = '<div class="small">Tidak ada nama. Masukkan minimal 1 nama.</div>' ; return}
+
+      people.forEach((p, idx)=>{
+        const msg = makeMessage(tpl, p.name)
+        const item = document.createElement('div')
+        item.className = 'item'
+        const msgDiv = document.createElement('div')
+        msgDiv.className = 'msg'
+        msgDiv.textContent = msg
+
+        const btns = document.createElement('div')
+        btns.style.display='flex'
+        btns.style.gap='8px'
+
+        const openBtn = document.createElement('button')
+        openBtn.className='btn-ghost'
+        openBtn.textContent = p.phone ? 'Kirim ke '+p.phone : 'Buka WhatsApp'
+        openBtn.addEventListener('click', ()=>{
+          const encoded = encodeURIComponent(msg)
+          let url = 'https://wa.me/?text=' + encoded
+          if(p.phone){
+            // remove non-digit
+            const num = p.phone.replace(/[^0-9]/g,'')
+            url = 'https://wa.me/' + num + '?text=' + encoded
+          }
+          window.open(url, '_blank')
+        })
+
+        const copyBtn = document.createElement('button')
+        copyBtn.className='btn-ghost'
+        copyBtn.textContent = 'Salin'
+        copyBtn.addEventListener('click', async ()=>{
+          try{await navigator.clipboard.writeText(msg); alert('Teks disalin.') }catch(e){prompt('Salin manual:', msg)}
+        })
+
+        btns.appendChild(openBtn)
+        btns.appendChild(copyBtn)
+
+        item.appendChild(msgDiv)
+        item.appendChild(btns)
+        listEl.appendChild(item)
+      })
+    })
+
+    copyAllBtn.addEventListener('click', async ()=>{
+      const people = parseNames(namesEl.value)
+      const tpl = tplEl.value || ''
+      if(people.length===0){alert('Tidak ada nama.');return}
+      const all = people.map(p=>makeMessage(tpl,p.name)).join('\n\n')
+      try{await navigator.clipboard.writeText(all); alert('Semua pesan disalin ke clipboard.')}catch(e){prompt('Salin semua pesan manual:', all)}
+    })
+
+    openAllBtn.addEventListener('click', ()=>{
+      const people = parseNames(namesEl.value)
+      const tpl = tplEl.value || ''
+      if(people.length===0){alert('Tidak ada nama.');return}
+      // Buka setiap pesan di tab baru (hati-hati, bisa banyak tab)
+      const confirmOpen = confirm('Akan membuka ' + people.length + ' tab/ jendela WhatsApp. Lanjutkan?')
+      if(!confirmOpen) return
+      people.forEach(p=>{
+        const msg = makeMessage(tpl,p.name)
+        const encoded = encodeURIComponent(msg)
+        let url = 'https://wa.me/?text=' + encoded
+        if(p.phone){
+          const num = p.phone.replace(/[^0-9]/g,'')
+          url = 'https://wa.me/' + num + '?text=' + encoded
+        }
+        window.open(url,'_blank')
+      })
+    })
+
+  </script>
+</body>
+</html>
