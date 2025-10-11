@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Page Sharing Undangan Digital - Kirim Pesan WhatsApp Otomatis</title>
+  <title>Undangan Pernikahan Digital - Kirim Pesan WhatsApp Otomatis</title>
   <meta name="description" content="Kirim undangan pernikahan digital ke banyak nama secara otomatis lewat WhatsApp. Mudah, cepat, dan personal.">
   <meta name="keywords" content="undangan pernikahan, share WhatsApp, undangan digital, kirim pesan otomatis, undangan pernikahan online">
-  <meta property="og:title" content="Halaman Sharing Undangan Digital Kirim ke WhatsApp FREE">
+  <meta property="og:title" content="Undangan Pernikahan Digital - Kirim ke WhatsApp">
   <meta property="og:description" content="Kirim undangan pernikahan digital secara otomatis ke banyak nama lewat WhatsApp.">
   <meta property="og:type" content="website">
   <meta property="og:image" content="https://weblynk.pages.dev/wedding/thumbnail.jpg">
@@ -22,7 +22,7 @@
   <main class="max-w-3xl mx-auto p-6">
     <section class="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6 transition-colors duration-300">
       <header class="text-center mb-4">
-        <h1 class="text-2xl font-semibold text-green-700 dark:text-green-400">Page Sharing Undangan Digital via WhatsApp</h1>
+        <h1 class="text-2xl font-semibold text-green-700 dark:text-green-400">Undangan Pernikahan Digital via WhatsApp</h1>
         <p class="text-sm text-gray-600 dark:text-gray-300 mt-2">Kirim pesan undangan pernikahan ke banyak nama secara personal dan cepat.</p>
         <button id="toggleDark" class="mt-4 px-3 py-1 rounded-lg border text-sm dark:border-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition">🌙 Mode Gelap</button>
       </header>
@@ -31,12 +31,12 @@
         <div>
           <label for="names" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Daftar Nama</label>
           <p class="text-xs text-gray-500 dark:text-gray-400">Satu nama per baris atau dipisah koma. Untuk nomor+nama gunakan <code>081234567890|Nama</code></p>
-          <textarea id="names" class="mt-2 w-full min-h-[120px] p-3 border rounded-lg resize-vertical text-sm dark:bg-gray-900 dark:border-gray-700 dark:text-gray-100" placeholder="Contoh:Budi, Siti, Andi atau 081234567890|Eko"></textarea>
+          <textarea id="names" class="mt-2 w-full min-h-[120px] p-3 border rounded-lg resize-vertical text-sm dark:bg-gray-900 dark:border-gray-700 dark:text-gray-100" placeholder="Contoh:\nBudi\nSiti\nAndi\natau: Budi, Siti, Andi"></textarea>
         </div>
 
         <div>
           <label for="link" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Link Undangan</label>
-          <p class="text-xs text-gray-500 dark:text-gray-400">Masukkan link undangan utama, nama akan otomatis ditambahkan di belakang URL.</p>
+          <p class="text-xs text-gray-500 dark:text-gray-400">Masukkan link undangan utama. Jika kosong, akan otomatis menggunakan contoh default.</p>
           <input id="link" type="url" class="mt-2 w-full p-3 border rounded-lg text-sm dark:bg-gray-900 dark:border-gray-700 dark:text-gray-100" placeholder="https://weblynk.pages.dev/wedding/?to=">
         </div>
 
@@ -66,6 +66,8 @@ Terima kasih banyak atas perhatiannya.</textarea>
 
         <div class="flex flex-wrap gap-2 justify-center">
           <button id="genBtn" class="px-4 py-2 rounded-lg bg-green-600 text-white text-sm font-semibold hover:bg-green-700">Buat Pesan</button>
+          <button id="copyAllBtn" class="px-4 py-2 rounded-lg border text-sm text-gray-700 dark:text-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700">Salin Semua Pesan</button>
+          <button id="openAllBtn" class="px-4 py-2 rounded-lg border text-sm text-gray-700 dark:text-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700">Buka Semua di WhatsApp</button>
         </div>
       </form>
 
@@ -74,9 +76,7 @@ Terima kasih banyak atas perhatiannya.</textarea>
       <p class="text-xs text-gray-500 dark:text-gray-400 mt-6">Catatan: Tombol WhatsApp membuka <code>https://wa.me/?text=...</code> — pada WhatsApp Web/HP pengguna bisa memilih penerima. Jika ingin mengirim langsung ke nomor tertentu, masukkan nomor dengan format internasional (tanpa +) di samping nama, misal: <em>081234567890|Budi</em>.</p>
     </section>
 
-    <footer class="text-center text-sm text-gray-500 dark:text-gray-400 mt-6">© <script type="text/javascript">
-  document.write(new Date().getFullYear());
-</script> Bagikan Undangan Digital - Dibuat oleh Eko Sodikul dengan ❤️ untuk kemudahan berbagi momen bahagia.</footer>
+    <footer class="text-center text-sm text-gray-500 dark:text-gray-400 mt-6">© 2025 Undangan Digital - Dibuat dengan ❤️ untuk kemudahan berbagi momen bahagia.</footer>
   </main>
 
   <script>
@@ -100,8 +100,9 @@ Terima kasih banyak atas perhatiannya.</textarea>
     }
 
     function makeMessage(template, name, linkBase){
-      const nameUrl = name.trim().replace(/ /g, '%20') // ubah manual tanpa encodeURIComponent untuk hindari %2520
-      const link = linkBase ? linkBase + nameUrl : ''
+      const nameUrl = name.trim().replace(/ /g, '%20')
+      const base = linkBase && linkBase.trim() !== '' ? linkBase : 'https://weblynk.pages.dev/wedding/?to='
+      const link = base + nameUrl
       return template.replace(/\{name\}/gi, name).replace(/\{\{link\}\}\{nameUrl\}/gi, link)
     }
 
