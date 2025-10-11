@@ -66,8 +66,6 @@ Terima kasih banyak atas perhatiannya.</textarea>
 
         <div class="flex flex-wrap gap-2 justify-center">
           <button id="genBtn" class="px-4 py-2 rounded-lg bg-green-600 text-white text-sm font-semibold hover:bg-green-700">Buat Pesan</button>
-          <button id="copyAllBtn" class="px-4 py-2 rounded-lg border text-sm text-gray-700 dark:text-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700">Salin Semua Pesan</button>
-          <button id="openAllBtn" class="px-4 py-2 rounded-lg border text-sm text-gray-700 dark:text-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700">Buka Semua di WhatsApp</button>
         </div>
       </form>
 
@@ -76,7 +74,9 @@ Terima kasih banyak atas perhatiannya.</textarea>
       <p class="text-xs text-gray-500 dark:text-gray-400 mt-6">Catatan: Tombol WhatsApp membuka <code>https://wa.me/?text=...</code> — pada WhatsApp Web/HP pengguna bisa memilih penerima. Jika ingin mengirim langsung ke nomor tertentu, masukkan nomor dengan format internasional (tanpa +) di samping nama, misal: <em>081234567890|Budi</em>.</p>
     </section>
 
-    <footer class="text-center text-sm text-gray-500 dark:text-gray-400 mt-6">© 2025 Undangan Digital - Dibuat dengan ❤️ untuk kemudahan berbagi momen bahagia.</footer>
+    <footer class="text-center text-sm text-gray-500 dark:text-gray-400 mt-6">© <script type="text/javascript">
+  document.write(new Date().getFullYear());
+</script> Bagikan Undangan Digital - Dibuat oleh Eko Sodikul dengan ❤️ untuk kemudahan berbagi momen bahagia.</footer>
   </main>
 
   <script>
@@ -100,7 +100,7 @@ Terima kasih banyak atas perhatiannya.</textarea>
     }
 
     function makeMessage(template, name, linkBase){
-      const nameUrl = encodeURIComponent(name.trim().replace(/ /g, '%20'))
+      const nameUrl = name.trim().replace(/ /g, '%20') // ubah manual tanpa encodeURIComponent untuk hindari %2520
       const link = linkBase ? linkBase + nameUrl : ''
       return template.replace(/\{name\}/gi, name).replace(/\{\{link\}\}\{nameUrl\}/gi, link)
     }
