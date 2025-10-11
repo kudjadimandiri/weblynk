@@ -1,49 +1,77 @@
 <!doctype html>
-<html lang="id">
+<html lang="id" class="dark">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Share ke WhatsApp - Banyak Nama</title>
-  <style>
-    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;margin:18px;background:#f7f7f8;color:#111}
-    .wrap{max-width:900px;margin:0 auto;background:#fff;padding:18px;border-radius:12px;box-shadow:0 6px 24px rgba(10,10,10,0.06)}
-    h1{font-size:18px;margin:0 0 8px}
-    label{font-size:13px;color:#555}
-    textarea{width:100%;min-height:120px;padding:10px;border-radius:8px;border:1px solid #ddd;margin-top:6px;font-size:14px}
-    input[type=text]{width:100%;padding:10px;border-radius:8px;border:1px solid #ddd}
-    .row{display:flex;gap:8px;margin-top:10px}
-    .col{flex:1}
-    button{padding:10px 12px;border-radius:8px;border:0;background:#0b6e4f;color:#fff;font-weight:600;cursor:pointer}
-    .btn-ghost{background:transparent;border:1px solid #ddd;color:#333}
-    .list{margin-top:12px}
-    .item{display:flex;align-items:center;gap:8px;padding:8px;border-radius:8px;border:1px solid #f0f0f0;margin-bottom:8px}
-    .msg{flex:1;white-space:pre-wrap;font-size:14px}
-    .small{font-size:13px;color:#666}
-    .controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
-  </style>
+  <title>Undangan Pernikahan Digital - Kirim Pesan WhatsApp Otomatis</title>
+  <meta name="description" content="Kirim undangan pernikahan digital ke banyak nama secara otomatis lewat WhatsApp. Mudah, cepat, dan personal.">
+  <meta name="keywords" content="undangan pernikahan, share WhatsApp, undangan digital, kirim pesan otomatis, undangan pernikahan online">
+  <meta property="og:title" content="Undangan Pernikahan Digital - Kirim ke WhatsApp">
+  <meta property="og:description" content="Kirim undangan pernikahan digital secara otomatis ke banyak nama lewat WhatsApp.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://weblynk.pages.dev/wedding/thumbnail.jpg">
+  <meta property="og:url" content="https://weblynk.pages.dev/wedding/">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class'
+    }
+  </script>
 </head>
-<body>
-  <div class="wrap">
-    <h1>Share Kata-kata ke WhatsApp (Banyak Nama)</h1>
-    <p class="small">Masukkan daftar nama (satu nama per baris atau dipisah koma). Gunakan <code>{name}</code> dalam template pesan untuk tempat nama.
-    </p>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 antialiased transition-colors duration-300">
+  <main class="max-w-3xl mx-auto p-6">
+    <section class="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6 transition-colors duration-300">
+      <header class="text-center mb-4">
+        <h1 class="text-2xl font-semibold text-green-700 dark:text-green-400">Undangan Pernikahan Digital via WhatsApp</h1>
+        <p class="text-sm text-gray-600 dark:text-gray-300 mt-2">Kirim pesan undangan pernikahan ke banyak nama secara personal dan cepat.</p>
+        <button id="toggleDark" class="mt-4 px-3 py-1 rounded-lg border text-sm dark:border-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition">🌙 Mode Gelap</button>
+      </header>
 
-    <label>Daftar Nama</label>
-    <textarea id="names" placeholder="Contoh:\nBudi\nSiti\nAndi\natau: Budi, Siti, Andi"></textarea>
+      <form class="space-y-4" onsubmit="return false;">
+        <div>
+          <label for="names" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Daftar Nama</label>
+          <p class="text-xs text-gray-500 dark:text-gray-400">Satu nama per baris atau dipisah koma. Untuk nomor+nama gunakan <code>081234567890|Nama</code></p>
+          <textarea id="names" class="mt-2 w-full min-h-[80px] p-3 border rounded-lg resize-vertical text-sm dark:bg-gray-900 dark:border-gray-700 dark:text-gray-100" placeholder="Contoh:\nBudi\nSiti\nAndi\natau: Budi, Siti, Andi"></textarea>
+        </div>
 
-    <label style="margin-top:8px">Template Pesan</label>
-    <input id="template" type="text" value="Halo {name}, kami mengundang Anda hadir di RAT Koperasi pada Sabtu, 25 Oktober 2025 pukul 09:00 WIB." />
+        <div>
+          <label for="template" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Template Pesan Undangan</label>
+          <p class="text-xs text-gray-500 dark:text-gray-400">Gunakan <code>{name}</code> untuk menyisipkan nama penerima. Tekan Enter untuk baris baru.</p>
+          <textarea id="template" class="mt-2 w-full min-h-[200px] p-3 border rounded-lg resize-vertical text-sm dark:bg-gray-900 dark:border-gray-700 dark:text-gray-100" rows="12">Tanpa mengurangi rasa hormat, perkenankan kami mengundang Bapak/Ibu/Saudara/i {name} untuk menghadiri acara pernikahan kami.
 
-    <div class="controls">
-      <button id="genBtn">Buat Pesan</button>
-      <button class="btn-ghost" id="copyAllBtn">Salin Semua Pesan</button>
-      <button class="btn-ghost" id="openAllBtn">Buka Semua di WhatsApp (Tab Baru)</button>
-    </div>
+*Ainul Istiqomah & Luthfi Abdilah*
 
-    <div class="list" id="list"></div>
+*Acara Pernikahan*
+Akan dilaksanakan pada :
+Hari, tanggal : Sabtu, 25 Oktober 2025
+Jam : 08.00 WIB s/d Selesai
+Lokasi : Blok C Embacang Permai Mesuji Raya Kab OKI Sumatera Selatan
 
-    <p class="small">Catatan: Tombol WhatsApp membuka <code>https://wa.me/?text=...</code> — pada WhatsApp Web/HP pengguna bisa memilih penerima. Jika ingin mengirim langsung ke nomor tertentu, masukkan nomor dengan format internasional (tanpa +) di samping nama, misal: <em>081234567890|Budi</em>.</p>
-  </div>
+Berikut link undangan kami, untuk info lengkap dari acara bisa kunjungi :
+
+*https://weblynk.pages.dev/wedding/?to={name}*
+
+Merupakan suatu kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan untuk hadir dan memberikan doa restu.
+
+Mohon maaf perihal undangan hanya dibagikan melalui pesan ini.
+
+Terima kasih banyak atas perhatiannya.</textarea>
+        </div>
+
+        <div class="flex flex-wrap gap-2 justify-center">
+          <button id="genBtn" class="px-4 py-2 rounded-lg bg-green-600 text-white text-sm font-semibold hover:bg-green-700">Buat Pesan</button>
+          <button id="copyAllBtn" class="px-4 py-2 rounded-lg border text-sm text-gray-700 dark:text-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700">Salin Semua Pesan</button>
+          <button id="openAllBtn" class="px-4 py-2 rounded-lg border text-sm text-gray-700 dark:text-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700">Buka Semua di WhatsApp</button>
+        </div>
+      </form>
+
+      <div id="list" class="mt-6 space-y-3"></div>
+
+      <p class="text-xs text-gray-500 dark:text-gray-400 mt-6">Catatan: Tombol WhatsApp membuka <code>https://wa.me/?text=...</code> — pada WhatsApp Web/HP pengguna bisa memilih penerima. Jika ingin mengirim langsung ke nomor tertentu, masukkan nomor dengan format internasional (tanpa +) di samping nama, misal: <em>081234567890|Budi</em>.</p>
+    </section>
+
+    <footer class="text-center text-sm text-gray-500 dark:text-gray-400 mt-6">© 2025 Undangan Digital - Dibuat dengan ❤️ untuk kemudahan berbagi momen bahagia.</footer>
+  </main>
 
   <script>
     const namesEl = document.getElementById('names')
@@ -52,12 +80,11 @@
     const listEl = document.getElementById('list')
     const copyAllBtn = document.getElementById('copyAllBtn')
     const openAllBtn = document.getElementById('openAllBtn')
+    const toggleDark = document.getElementById('toggleDark')
 
     function parseNames(raw){
       if(!raw) return []
-      // Split by new lines or commas
       const parts = raw.split(/[\n,]+/).map(s=>s.trim()).filter(Boolean)
-      // Support optional phone|name format
       return parts.map(p=>{
         const parts2 = p.split('|').map(x=>x.trim())
         if(parts2.length===2){return {phone:parts2[0], name:parts2[1]}}
@@ -69,50 +96,53 @@
       return template.replace(/\{name\}/gi, name)
     }
 
+    function createItem(msg, p){
+      const item = document.createElement('div')
+      item.className = 'bg-gray-50 dark:bg-gray-700 border dark:border-gray-600 rounded-lg p-3 shadow-sm transition-colors duration-300'
+
+      const msgDiv = document.createElement('div')
+      msgDiv.className = 'text-sm text-gray-800 dark:text-gray-100 whitespace-pre-wrap'
+      msgDiv.textContent = msg
+
+      const btnWrap = document.createElement('div')
+      btnWrap.className = 'mt-3 flex flex-wrap gap-2'
+
+      const openBtn = document.createElement('button')
+      openBtn.className = 'px-3 py-1 rounded-md border text-sm text-gray-700 dark:text-gray-200 dark:border-gray-500 hover:bg-gray-100 dark:hover:bg-gray-600'
+      openBtn.textContent = p.phone ? 'Kirim ke ' + p.phone : 'Buka di WhatsApp'
+      openBtn.addEventListener('click', ()=>{
+        const encoded = encodeURIComponent(msg)
+        let url = 'https://wa.me/?text=' + encoded
+        if(p.phone){
+          const num = p.phone.replace(/[^0-9]/g,'')
+          url = 'https://wa.me/' + num + '?text=' + encoded
+        }
+        window.open(url, '_blank')
+      })
+
+      const copyBtn = document.createElement('button')
+      copyBtn.className = 'px-3 py-1 rounded-md border text-sm text-gray-700 dark:text-gray-200 dark:border-gray-500 hover:bg-gray-100 dark:hover:bg-gray-600'
+      copyBtn.textContent = 'Salin Pesan'
+      copyBtn.addEventListener('click', async ()=>{
+        try{await navigator.clipboard.writeText(msg); alert('Pesan disalin ke clipboard.')}catch(e){prompt('Salin manual:', msg)}
+      })
+
+      btnWrap.appendChild(openBtn)
+      btnWrap.appendChild(copyBtn)
+      item.appendChild(msgDiv)
+      item.appendChild(btnWrap)
+      return item
+    }
+
     genBtn.addEventListener('click', ()=>{
       const people = parseNames(namesEl.value)
       const tpl = tplEl.value || ''
       listEl.innerHTML = ''
-      if(people.length===0){listEl.innerHTML = '<div class="small">Tidak ada nama. Masukkan minimal 1 nama.</div>' ; return}
+      if(people.length===0){listEl.innerHTML = '<div class="text-sm text-yellow-600 dark:text-yellow-400">⚠️ Tidak ada nama. Masukkan minimal satu nama.</div>';return}
 
-      people.forEach((p, idx)=>{
+      people.forEach(p=>{
         const msg = makeMessage(tpl, p.name)
-        const item = document.createElement('div')
-        item.className = 'item'
-        const msgDiv = document.createElement('div')
-        msgDiv.className = 'msg'
-        msgDiv.textContent = msg
-
-        const btns = document.createElement('div')
-        btns.style.display='flex'
-        btns.style.gap='8px'
-
-        const openBtn = document.createElement('button')
-        openBtn.className='btn-ghost'
-        openBtn.textContent = p.phone ? 'Kirim ke '+p.phone : 'Buka WhatsApp'
-        openBtn.addEventListener('click', ()=>{
-          const encoded = encodeURIComponent(msg)
-          let url = 'https://wa.me/?text=' + encoded
-          if(p.phone){
-            // remove non-digit
-            const num = p.phone.replace(/[^0-9]/g,'')
-            url = 'https://wa.me/' + num + '?text=' + encoded
-          }
-          window.open(url, '_blank')
-        })
-
-        const copyBtn = document.createElement('button')
-        copyBtn.className='btn-ghost'
-        copyBtn.textContent = 'Salin'
-        copyBtn.addEventListener('click', async ()=>{
-          try{await navigator.clipboard.writeText(msg); alert('Teks disalin.') }catch(e){prompt('Salin manual:', msg)}
-        })
-
-        btns.appendChild(openBtn)
-        btns.appendChild(copyBtn)
-
-        item.appendChild(msgDiv)
-        item.appendChild(btns)
+        const item = createItem(msg, p)
         listEl.appendChild(item)
       })
     })
@@ -122,15 +152,14 @@
       const tpl = tplEl.value || ''
       if(people.length===0){alert('Tidak ada nama.');return}
       const all = people.map(p=>makeMessage(tpl,p.name)).join('\n\n')
-      try{await navigator.clipboard.writeText(all); alert('Semua pesan disalin ke clipboard.')}catch(e){prompt('Salin semua pesan manual:', all)}
+      try{await navigator.clipboard.writeText(all); alert('Semua pesan disalin ke clipboard.')}catch(e){prompt('Salin manual:', all)}
     })
 
     openAllBtn.addEventListener('click', ()=>{
       const people = parseNames(namesEl.value)
       const tpl = tplEl.value || ''
       if(people.length===0){alert('Tidak ada nama.');return}
-      // Buka setiap pesan di tab baru (hati-hati, bisa banyak tab)
-      const confirmOpen = confirm('Akan membuka ' + people.length + ' tab/ jendela WhatsApp. Lanjutkan?')
+      const confirmOpen = confirm('Akan membuka ' + people.length + ' tab WhatsApp. Lanjutkan?')
       if(!confirmOpen) return
       people.forEach(p=>{
         const msg = makeMessage(tpl,p.name)
@@ -144,6 +173,22 @@
       })
     })
 
+    // Mode Gelap Toggle
+    toggleDark.addEventListener('click', ()=>{
+      document.documentElement.classList.toggle('dark')
+      const isDark = document.documentElement.classList.contains('dark')
+      toggleDark.textContent = isDark ? '☀️ Mode Terang' : '🌙 Mode Gelap'
+      localStorage.setItem('theme', isDark ? 'dark' : 'light')
+    })
+
+    // Simpan preferensi mode gelap
+    if(localStorage.getItem('theme') === 'light'){
+      document.documentElement.classList.remove('dark')
+      toggleDark.textContent = '🌙 Mode Gelap'
+    } else {
+      document.documentElement.classList.add('dark')
+      toggleDark.textContent = '☀️ Mode Terang'
+    }
   </script>
 </body>
 </html>
