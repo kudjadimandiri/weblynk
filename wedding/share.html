@@ -3,19 +3,17 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Share Undangan Digital - Kirim Undangan via WhatsApp</title>
-  <meta name="description" content="Jasa Share Undangan Digital terpercaya untuk kirim undangan pernikahan, acara, dan event ke banyak nama lewat WhatsApp secara otomatis, cepat, dan personal.">
-  <meta name="keywords" content="Jasa Share Undangan Digital, undangan pernikahan digital, kirim WhatsApp otomatis, undangan online, share undangan">
+  <title>Jasa Share Undangan Digital - Kirim Undangan via WhatsApp</title>
+  <meta name="description" content="Jasa Share Undangan Digital terpercaya untuk mengirim undangan pernikahan, acara, dan event ke banyak nama lewat WhatsApp dengan cepat, personal, dan mudah.">
+  <meta name="keywords" content="Jasa Share Undangan Digital, undangan digital, kirim undangan WhatsApp, undangan pernikahan online, share undangan otomatis">
   <meta property="og:title" content="Jasa Share Undangan Digital - Kirim Undangan via WhatsApp">
-  <meta property="og:description" content="Layanan Jasa Share Undangan Digital untuk mengirim undangan dengan cepat dan mudah.">
+  <meta property="og:description" content="Layanan profesional untuk mengirim undangan digital ke banyak penerima dengan cepat dan mudah.">
   <meta property="og:type" content="website">
   <meta property="og:image" content="https://weblynk.pages.dev/wedding/thumbnail.jpg">
   <meta property="og:url" content="https://weblynk.pages.dev/wedding/">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
-    tailwind.config = {
-      darkMode: 'class'
-    }
+    tailwind.config = { darkMode: 'class' };
   </script>
 </head>
 <body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 antialiased transition-colors duration-300">
@@ -37,14 +35,14 @@
 
         <div>
           <label for="link" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Link Undangan</label>
-          <p class="text-xs text-gray-500 dark:text-gray-400">Jika kosong, akan otomatis menggunakan link default.</p>
+          <p class="text-xs text-gray-500 dark:text-gray-400">Jika kosong, otomatis menggunakan link default.</p>
           <input id="link" type="url" class="mt-2 w-full p-2 border text-sm dark:bg-gray-900 dark:border-gray-700 dark:text-gray-100" placeholder="https://weblynk.pages.dev/wedding/?to=">
         </div>
 
         <div>
           <label for="template" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Template Pesan Undangan</label>
           <p class="text-xs text-gray-500 dark:text-gray-400">Gunakan {name} untuk nama penerima, tekan Enter untuk baris baru.</p>
-          <textarea id="template" class="mt-2 w-full min-h-[200px] p-2 border text-sm dark:bg-gray-900 dark:border-gray-700 dark:text-gray-100" rows="12">Tanpa mengurangi rasa hormat, perkenankan kami mengundang Bapak/Ibu/Saudara/i {name} untuk menghadiri acara pernikahan kami.
+          <textarea id="template" class="mt-2 w-full min-h-[200px] p-2 border text-sm dark:bg-gray-900 dark:border-gray-700 dark:text-gray-100">Tanpa mengurangi rasa hormat, perkenankan kami mengundang Bapak/Ibu/Saudara/i {name} untuk menghadiri acara pernikahan kami.
 
 *Ainul Istiqomah & Luthfi Abdilah*
 
@@ -63,13 +61,11 @@ Terima kasih atas perhatiannya.</textarea>
         </div>
 
         <div class="flex flex-wrap gap-2 justify-center">
-          <button id="genBtn" class="px-4 py-2 bg-green-600 text-white text-sm font-semibold hover:bg-green-700">Buat Pesan</button>
+          <button id="genBtn" class="px-4 py-2 bg-green-600 text-white text-sm font-semibold hover:bg-green-700">Buat Undangan</button>
         </div>
       </form>
 
       <div id="list" class="mt-6 space-y-3"></div>
-
-      <p class="text-xs text-gray-500 dark:text-gray-400 mt-6">Gunakan format nomor internasional (tanpa +) jika ingin kirim langsung, contoh: 6281234567890|Budi.</p>
     </section>
 
     <section class="mt-8 bg-white dark:bg-gray-800 border dark:border-gray-700 p-4">
@@ -95,7 +91,7 @@ Terima kasih atas perhatiannya.</textarea>
   </main>
 
   <script>
-    // Dark Mode Toggle
+    // Mode Gelap
     const toggleDark = document.getElementById('toggleDark');
     toggleDark.addEventListener('click', () => {
       document.documentElement.classList.toggle('dark');
@@ -105,8 +101,6 @@ Terima kasih atas perhatiannya.</textarea>
 
     const genBtn = document.getElementById('genBtn');
     const list = document.getElementById('list');
-    const copyAllBtn = document.getElementById('copyAllBtn');
-    const openAllBtn = document.getElementById('openAllBtn');
 
     genBtn.addEventListener('click', () => {
       const namesInput = document.getElementById('names');
@@ -114,7 +108,7 @@ Terima kasih atas perhatiannya.</textarea>
       const templateInput = document.getElementById('template');
       const warning = document.getElementById('nameWarning');
 
-      let names = namesInput.value.trim();
+      const names = namesInput.value.trim();
       if (!names) {
         warning.classList.remove('hidden');
         namesInput.classList.add('border-red-500');
@@ -160,17 +154,6 @@ Terima kasih atas perhatiannya.</textarea>
           setTimeout(() => e.target.textContent = 'Salin', 1500);
         });
       });
-    });
-
-    copyAllBtn.addEventListener('click', () => {
-      const allText = Array.from(document.querySelectorAll('#list textarea')).map(t => t.value).join('\n\n');
-      navigator.clipboard.writeText(allText);
-      copyAllBtn.textContent = 'Semua Disalin!';
-      setTimeout(() => copyAllBtn.textContent = 'Salin Semua', 2000);
-    });
-
-    openAllBtn.addEventListener('click', () => {
-      document.querySelectorAll('#list a').forEach((a, i) => setTimeout(() => window.open(a.href, '_blank'), i * 800));
     });
   </script>
 </body>
