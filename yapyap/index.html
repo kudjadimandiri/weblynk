@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="id" prefix="og: http://ogp.me/ns#">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- ===== TITLE & DESCRIPTION ===== -->
+    <title>YapYap - Platform Status Anonim 24 Jam | Ungkapkan Perasaanmu</title>
+    <meta name="description" content="Bagikan status anonim yang bertahan 24 jam. Ungkapkan perasaan, pikiran, dan ceritamu tanpa takut dihakimi. Bergabung dengan komunitas YapYap sekarang!">
+    
+    <!-- ===== KEYWORDS ===== -->
+    <meta name="keywords" content="status anonim, curhat online, forum anonim, cerita tanpa nama, platform anonim, 24 jam, komunitas online, sharing tanpa identitas, yapyap">
+    
+    <!-- ===== OPEN GRAPH (Facebook, WhatsApp, dll) ===== -->
+    <meta property="og:title" content="YapYap - Status Anonim 24 Jam">
+    <meta property="og:description" content="Bagikan status anonim yang hanya bertahan 24 jam. Ungkapkan apa yang kamu rasakan tanpa takut dikenal.">
+    <meta property="og:image" content="https://yapyap.app/images/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="YapYap - Platform Status Anonim">
+    <meta property="og:url" content="https://yapyap.app">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="YapYap">
+    <meta property="og:locale" content="id_ID">
+    
+    <!-- ===== TWITTER CARDS ===== -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="YapYap - Status Anonim 24 Jam">
+    <meta name="twitter:description" content="Bagikan status anonim yang hanya bertahan 24 jam. Aman dan tanpa identitas.">
+    <meta name="twitter:image" content="https://yapyap.app/images/twitter-card.jpg">
+    <meta name="twitter:site" content="@yapyap_app">
+    <meta name="twitter:creator" content="@yapyap_app">
+    
+    <!-- ===== CANONICAL & ALTERNATE ===== -->
+    <link rel="canonical" href="https://yapyap.app">
+    <link rel="alternate" hreflang="id" href="https://yapyap.app/id">
+    <link rel="alternate" hreflang="en" href="https://yapyap.app/en">
+    <link rel="alternate" hreflang="x-default" href="https://yapyap.app">
+    
+    <!-- ===== STRUCTURED DATA (Schema.org) ===== -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "YapYap",
+        "description": "Platform untuk berbagi status anonim yang bertahan 24 jam",
+        "url": "https://yapyap.app",
+        "applicationCategory": "SocialNetworkingApplication",
+        "operatingSystem": "Any",
+        "author": {
+            "@type": "Organization",
+            "name": "YapYap Team",
+            "url": "https://yapyap.app/about"
+        },
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "IDR"
+        },
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.8",
+            "ratingCount": "1250",
+            "bestRating": "5",
+            "worstRating": "1"
+        },
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://yapyap.app/search?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+        }
+    }
+    </script>
+    
+    <!-- ===== FAVICONS & APP ICONS ===== -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#f59e0b">
+    <meta name="msapplication-TileColor" content="#f59e0b">
+    <meta name="theme-color" content="#f59e0b">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    <!-- ===== ROBOTS & CRAWLERS ===== -->
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    
+    <!-- ===== SECURITY & VERIFICATION ===== -->
+    <meta name="google-site-verification" content="YOUR_GOOGLE_VERIFICATION_CODE">
+    <meta name="msvalidate.01" content="YOUR_BING_VERIFICATION_CODE">
+    <meta name="yandex-verification" content="YOUR_YANDEX_VERIFICATION_CODE">
+    <meta name="facebook-domain-verification" content="YOUR_FB_VERIFICATION_CODE">
+    
+    <!-- ===== Tailwind CSS ===== -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            500: '#f59e0b',
+                            600: '#d97706',
+                        }
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.3s ease-out',
+                        'slide-up': 'slideUp 0.3s ease-out',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- ===== Font Awesome ===== -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- ===== Supabase Client ===== -->
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    
+    <!-- ===== Supabase Config ===== -->
+    <script src="supabase-config.js" defer></script>
+    
+    <!-- ===== Style ===== -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 min-h-screen">
+    
+    <!-- Header dengan semantic HTML -->
+    <header class="sticky top-0 z-30 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm border-b border-gray-200 dark:border-gray-800 shadow-sm">
+        <div class="max-w-4xl mx-auto px-4 py-3">
+            <div class="flex items-center justify-between">
+                <!-- Logo -->
+                <div class="flex items-center space-x-2">
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-r from-primary-500 to-orange-500 flex items-center justify-center">
+                        <i class="fas fa-comment text-white text-sm"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold">YapYap</h1>
+                        <p class="text-xs text-gray-500 dark:text-gray-400">Status Anonim 24 Jam</p>
+                    </div>
+                </div>
+                
+                <!-- Live Indicator -->
+                <div class="flex items-center space-x-4">
+                    <div class="flex items-center text-sm text-green-600 dark:text-green-400">
+                        <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse mr-2"></div>
+                        <span id="onlineIndicator">Online</span>
+                    </div>
+                    
+                    <button id="darkModeToggle" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800" aria-label="Toggle dark mode">
+                        <i id="darkModeIcon" class="fas fa-moon text-gray-600 dark:text-gray-400"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content dengan semantic sections -->
+    <main class="max-w-4xl mx-auto px-4 py-6">
+        
+        <!-- Hero Section -->
+        <section class="mb-8 text-center" aria-labelledby="main-heading">
+            <h1 id="main-heading" class="text-2xl md:text-3xl font-bold mb-3">Bagikan Status <span class="text-primary-500">Anonim</span> 24 Jam</h1>
+            <p class="text-gray-600 dark:text-gray-400 mb-6 max-w-2xl mx-auto">
+                Ungkapkan perasaanmu tanpa takut dihakimi. Setiap status hanya bertahan 24 jam. Tulis, bagikan, dan berinteraksi dengan status orang lain secara anonim!
+            </p>
+            
+            <!-- SEO-rich content for crawlers (hidden visually) -->
+            <div class="hidden" aria-hidden="true">
+                <h2>Fitur YapYap</h2>
+                <ul>
+                    <li>Status anonim 100% tanpa identitas</li>
+                    <li>Auto-delete setelah 24 jam</li>
+                    <li>Sistem komentar anonim</li>
+                    <li>Dark mode untuk kenyamanan mata</li>
+                    <li>Real-time updates</li>
+                </ul>
+                <h2>Keuntungan Bergabung</h2>
+                <p>YapYap adalah platform curhat online terbaik untuk berbagi cerita tanpa takut dikenali. Cocok untuk cerita harian, masalah pribadi, atau sekedar berbagi pemikiran.</p>
+            </div>
+        </section>
+        
+        <!-- Create Status Section -->
+        <section class="mb-8 bg-white dark:bg-gray-800 rounded-xl p-4 shadow border border-gray-100 dark:border-gray-700" aria-labelledby="create-status-heading">
+            <div class="flex items-start mb-3">
+                <div class="w-8 h-8 rounded-full bg-gradient-to-r from-primary-500 to-orange-500 flex items-center justify-center mr-3 flex-shrink-0">
+                    <i class="fas fa-feather-alt text-white text-sm"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <h2 id="create-status-heading" class="font-semibold text-gray-800 dark:text-gray-200 mb-2">Buat Status Baru</h2>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-3">Status akan otomatis terhapus setelah 24 jam. Ungkapkan apa yang kamu rasakan sekarang!</p>
+                    
+                    <form id="statusForm" onsubmit="return false;" aria-label="Form untuk membuat status anonim">
+                        <textarea 
+                            id="statusInput"
+                            name="status"
+                            placeholder="Apa yang ingin kamu bagikan hari ini? (Maksimal 500 karakter)"
+                            maxlength="500"
+                            rows="3"
+                            class="w-full p-3 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg resize-none focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-transparent text-sm"
+                            aria-label="Teks status"
+                            required
+                        ></textarea>
+                        
+                        <div class="flex items-center justify-between mt-3">
+                            <div class="flex items-center space-x-3">
+                                <span id="charCount" class="text-xs text-gray-500 dark:text-gray-400">0/500</span>
+                                <div class="flex items-center text-xs text-amber-600 dark:text-amber-400" aria-label="Durasi status: 24 jam">
+                                    <i class="fas fa-clock mr-1"></i>
+                                    <span>24 Jam</span>
+                                </div>
+                            </div>
+                            
+                            <button 
+                                id="postButton"
+                                type="submit"
+                                class="bg-primary-500 hover:bg-primary-600 text-white text-sm font-medium px-4 py-2 rounded-lg flex items-center transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                aria-label="Posting status anonim"
+                            >
+                                <i class="fas fa-paper-plane mr-2"></i>
+                                Post Status
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Status Feed Section -->
+        <section aria-labelledby="status-feed-heading">
+            <div class="flex items-center justify-between mb-4">
+                <h2 id="status-feed-heading" class="text-xl font-bold">Status Aktif</h2>
+                <div class="flex items-center space-x-2">
+                    <button id="refreshBtn" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" aria-label="Refresh status">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                    <div class="flex items-center text-sm text-gray-500">
+                        <span><span id="statusCount">0</span> status tersedia</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Status Feed Container -->
+            <div id="statusFeed" role="feed" aria-label="Daftar status anonim">
+                <!-- Loading -->
+                <div id="loading" class="text-center py-12">
+                    <div class="loading-spinner"></div>
+                    <p class="mt-4 text-gray-500 dark:text-gray-400">Memuat status...</p>
+                </div>
+            </div>
+            
+            <!-- Empty State -->
+            <div id="emptyState" class="hidden text-center py-16">
+                <div class="w-16 h-16 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-comment-dots text-gray-400 text-2xl"></i>
+                </div>
+                <h3 class="text-lg font-medium mb-2">Belum ada status</h3>
+                <p class="text-gray-500 dark:text-gray-400">Jadilah yang pertama berbagi cerita!</p>
+            </div>
+            
+            <!-- Load More -->
+            <div id="loadMoreContainer" class="hidden text-center mt-8">
+                <button id="loadMoreBtn" class="bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 px-6 py-3 rounded-lg font-medium transition-colors" aria-label="Muat lebih banyak status">
+                    <i class="fas fa-chevron-down mr-2"></i>
+                    Muat Lebih Banyak
+                </button>
+            </div>
+        </section>
+        
+        <!-- FAQ Section (Hidden but for SEO) -->
+        <section class="hidden" aria-hidden="true">
+            <h2>FAQ YapYap</h2>
+            <div itemscope itemtype="https://schema.org/FAQPage">
+                <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+                    <h3 itemprop="name">Apa itu YapYap?</h3>
+                    <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+                        <p itemprop="text">YapYap adalah platform untuk berbagi status anonim yang bertahan 24 jam. Aman, privasi terjaga, dan bebas berekspresi.</p>
+                    </div>
+                </div>
+                <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+                    <h3 itemprop="name">Apakah benar-benar anonim?</h3>
+                    <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+                        <p itemprop="text">Ya, 100% anonim. Tidak ada data pribadi yang disimpan atau ditampilkan.</p>
+                    </div>
+                </div>
+                <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+                    <h3 itemprop="name">Berapa lama status bertahan?</h3>
+                    <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+                        <p itemprop="text">Status akan otomatis terhapus setelah 24 jam dari waktu posting.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+    </main>
+    
+    <!-- Footer dengan semantic HTML -->
+    <footer class="mt-12 py-6 border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900">
+        <div class="max-w-4xl mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-6 h-6 rounded-full bg-gradient-to-r from-primary-500 to-orange-500 flex items-center justify-center">
+                            <i class="fas fa-comment text-white text-xs"></i>
+                        </div>
+                        <span class="font-bold">YapYap</span>
+                    </div>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">© 2026 Platform Status Anonim</p>
+                </div>
+                
+                <nav class="flex space-x-6" aria-label="Footer Navigation">
+                    <a href="/about" class="text-sm text-gray-600 dark:text-gray-400 hover:text-primary-500 dark:hover:text-primary-400">Tentang</a>
+                    <a href="/privacy" class="text-sm text-gray-600 dark:text-gray-400 hover:text-primary-500 dark:hover:text-primary-400">Privasi</a>
+                    <a href="/terms" class="text-sm text-gray-600 dark:text-gray-400 hover:text-primary-500 dark:hover:text-primary-400">Syarat</a>
+                    <a href="/contact" class="text-sm text-gray-600 dark:text-gray-400 hover:text-primary-500 dark:hover:text-primary-400">Kontak</a>
+                </nav>
+            </div>
+            
+            <!-- SEO Links (hidden) -->
+            <div class="hidden" aria-hidden="true">
+                <a href="/status-anonim">Status Anonim</a>
+                <a href="/curhat-online">Curhat Online</a>
+                <a href="/forum-anonim">Forum Anonim</a>
+                <a href="/sharing-tanpa-identitas">Sharing Tanpa Identitas</a>
+                <a href="/komunitas-online">Komunitas Online</a>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Toast -->
+    <div id="toastContainer" class="fixed bottom-20 left-1/2 transform -translate-x-1/2 z-40 space-y-2" role="alert" aria-live="polite"></div>
+
+    <!-- Script -->
+    <script src="script.js" defer></script>
+
+</body>
+</html>
