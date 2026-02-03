@@ -1,0 +1,22 @@
+# robots.txt untuk YapYap
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /private/
+
+Sitemap: /sitemap.xml
+Sitemap: /sitemap-status.xml
+
+# Crawl delay untuk mencegah overload
+Crawl-delay: 2
+
+# Bing specific
+User-agent: bingbot
+Allow: /
+Crawl-delay: 1
+
+# Google specific
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 1
