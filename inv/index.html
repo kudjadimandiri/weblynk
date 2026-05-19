@@ -27,7 +27,7 @@
             input, select { border: none !important; padding: 0 !important; width: auto !important; background: transparent !important; }
             .dashed-line { border-top: 1px dashed #000 !important; margin: 8px 0 !important; }
             .invoice-title { font-size: 18px !important; color: #000 !important; }
-            .text-blue-600 { color: #000 !important; }
+            .text-emerald-600 { color: #000 !important; }
             .status-stamp { border-color: #000 !important; color: #000 !important; }
         }
 
@@ -36,7 +36,15 @@
 </head>
 <body class="bg-slate-50 min-h-screen pb-12">
 
-    <header class="bg-white border-b sticky top-0 z-50 no-print shadow-xs">
+    <!-- Custom Notification Toast (Pengganti alert) -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 max-w-sm bg-slate-900 text-white px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3 border border-slate-700">
+        <span id="toast-icon" class="text-emerald-500">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        </span>
+        <p id="toast-message" class="text-xs font-medium"></p>
+    </div>
+
+    <header class="bg-white border-b sticky top-0 z-40 no-print shadow-xs">
         <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
             <div class="flex items-center gap-2">
                 <div class="bg-emerald-600 p-2 rounded-lg">
@@ -44,9 +52,9 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                     </svg>
                 </div>
-                <h1 class="text-lg font-bold text-slate-800">Mini <span class="text-emerald-600">Invoice</span> AI</h1>
+                <h1 class="text-lg font-bold text-slate-800">Struk<span class="text-emerald-600">AI</span> Vision</h1>
             </div>
-            <div id="status-badge" class="hidden text-[10px] font-bold px-2.5 py-1 rounded bg-emerald-100 text-emerald-800 animate-pulse uppercase tracking-wider">AI Mengekstrak...</div>
+            <div id="status-badge" class="hidden text-[10px] font-bold px-2.5 py-1 rounded bg-emerald-100 text-emerald-800 animate-pulse uppercase tracking-wider">Membaca Struk...</div>
         </div>
     </header>
 
@@ -64,7 +72,7 @@
                         <div id="upload-placeholder" class="space-y-2">
                             <svg class="w-8 h-8 text-slate-400 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                             <p class="text-xs font-semibold text-slate-600">Klik / Seret Bukti M-Banking</p>
-                            <p class="text-[10px] text-slate-400">Mendukung BCA, Mandiri, BNI, BRI, QRIS, Gopay, dll.</p>
+                            <p class="text-[10px] text-slate-400">Semua bank & e-wallet otomatis didukung oleh AI</p>
                         </div>
                         <img id="image-preview" class="hidden w-full h-auto rounded shadow-sm max-h-56 object-contain" alt="Preview">
                     </div>
@@ -82,7 +90,7 @@
                     <h2 class="text-xs font-bold mb-4 uppercase tracking-wider text-slate-400">2. Panel Editor & Admin</h2>
                     <div class="grid grid-cols-2 gap-3">
                         <div class="col-span-2">
-                            <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Nama Bank</label>
+                            <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Nama Bank / Metode</label>
                             <input type="text" id="admin-bank" class="w-full mt-1 bg-slate-50 border border-slate-200 rounded px-3 py-2 text-sm font-bold focus:ring-2 focus:ring-emerald-500 outline-none">
                         </div>
                         <div>
@@ -134,12 +142,12 @@
                         
                         <div class="dashed-line"></div>
                         
-                        <p id="bank-name-display" class="font-extrabold text-sm uppercase tracking-wide text-slate-900">- BANK -</p>
+                        <p id="bank-name-display" class="font-extrabold text-sm uppercase tracking-wide text-slate-900">- TRANSFER -</p>
                         <p id="date-display" class="text-[10px] text-slate-500 mt-0.5">Tgl: -</p>
                     </div>
 
                     <!-- Stamp Status Transaksi -->
-                    <div class="flex justify-center my-3 no-print-force">
+                    <div class="flex justify-center my-3">
                         <div id="status-stamp" class="border-2 border-emerald-600 text-emerald-600 font-extrabold px-4 py-1.5 rounded uppercase tracking-wider text-sm transform -rotate-3 scale-95 inline-block">
                             SUKSES
                         </div>
@@ -203,6 +211,7 @@
         // State management
         let state = {
             base64Image: null,
+            mimeType: 'image/png',
             nominal: 0,
             admin: 0,
             bank: 'TRANSFER',
@@ -211,7 +220,30 @@
             status: 'SUKSES'
         };
 
-        const apiKey = ""; // Diset otomatis oleh environment runtime
+        // Kunci API dikosongkan agar platform otomatis menyuntikkan API Key yang valid pada saat runtime
+        const apiKey = "AIzaSyBLnKzXIjMU-l3YbONzctE5tx483lB8hyw";
+
+        // --- Toast System (Pengganti window.alert) ---
+        function showToast(message, isError = false) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-message');
+            const toastIcon = document.getElementById('toast-icon');
+
+            toastMsg.innerText = message;
+            if (isError) {
+                toastIcon.innerHTML = `<svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`;
+            } else {
+                toastIcon.innerHTML = `<svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`;
+            }
+
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 5000);
+        }
 
         // --- Event Listeners ---
         dropZone.onclick = () => fileInput.click();
@@ -250,6 +282,7 @@
 
         function handleFile(file) {
             if (!file || !file.type.startsWith('image/')) return;
+            state.mimeType = file.type;
             const reader = new FileReader();
             reader.onload = (e) => {
                 state.base64Image = e.target.result;
@@ -257,6 +290,7 @@
                 document.getElementById('image-preview').classList.remove('hidden');
                 document.getElementById('upload-placeholder').classList.add('hidden');
                 extractBtn.disabled = false;
+                showToast("Gambar berhasil dimuat. Siap diekstrak!");
             };
             reader.readAsDataURL(file);
         }
@@ -265,7 +299,10 @@
         async function fetchWithRetry(url, options, retries = 5, delay = 1000) {
             try {
                 const response = await fetch(url, options);
-                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`Status ${response.status}: ${errorText}`);
+                }
                 return await response.json();
             } catch (error) {
                 if (retries > 0) {
@@ -283,9 +320,10 @@
             try {
                 const data = await callGeminiAI(state.base64Image);
                 populateUI(data);
+                showToast("Ekstraksi AI berhasil diselesaikan!");
             } catch (err) {
                 console.error(err);
-                alert("Gagal memproses gambar. Silakan coba kembali atau isi data manual di panel editor.");
+                showToast(`Gagal memproses AI. Silakan isi form manual di sebelah kiri jika diperlukan.`, true);
             } finally {
                 setLoading(false);
             }
@@ -293,21 +331,20 @@
 
         async function callGeminiAI(base64) {
             const pureBase64 = base64.split(',')[1];
-            const prompt = `Ekstrak data bukti transfer m-banking ini menjadi JSON murni tanpa markdown. 
-            Format JSON harus mengikuti struktur ini:
+            const prompt = `Ekstrak data bukti transfer m-banking ini menjadi struktur JSON berikut. Jawab HANYA berupa JSON murni tanpa menyertakan blok kode markdown atau penjelasan apapun:
             {
-                "bank": "Singkatan nama bank (contoh: BCA, MANDIRI, BRI, BNI)",
-                "tanggal": "Tgl/Bulan/Thn Jam",
-                "pengirim": "Nama Pengirim",
-                "penerima": "Nama Penerima",
-                "nominal": angka_tanpa_titik_koma,
-                "admin": angka_tanpa_titik_koma,
-                "ref": "ID Transaksi / Referensi",
+                "bank": "Nama bank (Contoh: BCA, MANDIRI, BRI, BNI, OVO, GOPAY)",
+                "tanggal": "Tanggal dan waktu transaksi jika ada",
+                "pengirim": "Nama pemilik rekening asal atau pengirim",
+                "penerima": "Nama penerima dana",
+                "nominal": angka_tanpa_simbol_atau_titik,
+                "admin": angka_tanpa_simbol_atau_titik (isikan 0 jika tidak tertera biaya admin),
+                "ref": "Nomor referensi atau ID transaksi",
                 "status": "SUKSES"
             }`;
 
-            // Menggunakan model gemini-3-flash-preview yang lebih stabil untuk pemrosesan gambar
-            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+            // Menggunakan endpoint v1beta dan model wajib "gemini-2.5-flash-preview-09-2025"
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
             const options = {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -315,27 +352,20 @@
                     contents: [{ 
                         parts: [
                             { text: prompt }, 
-                            { inlineData: { mimeType: "image/jpeg", data: pureBase64 } }
+                            { inlineData: { mimeType: state.mimeType, data: pureBase64 } }
                         ] 
-                    }],
-                    generationConfig: { 
-                        responseMimeType: "application/json"
-                    }
+                    }]
                 })
             };
 
             const result = await fetchWithRetry(url, options);
+            const textResponse = result.candidates?.[0]?.content?.parts?.[0]?.text;
             
-            if (!result.candidates || result.candidates.length === 0) {
-                throw new Error("AI tidak memberikan respon.");
-            }
+            if (!textResponse) throw new Error("Respons dari AI kosong.");
 
-            let textResponse = result.candidates[0].content.parts[0].text;
-            
-            // Pembersihan jika AI mengembalikan markdown ```json ... ```
-            textResponse = textResponse.replace(/```json|```/g, '').trim();
-            
-            return JSON.parse(textResponse);
+            // Bersihkan format markdown jika AI membandel mengirimkannya
+            const cleanJsonText = textResponse.replace(/```json|```/g, '').trim();
+            return JSON.parse(cleanJsonText);
         }
 
         function populateUI(data) {
@@ -418,7 +448,6 @@
                 jsPDF: { unit: 'mm', format: [80, 140], orientation: 'portrait' }
             };
 
-            // Jalankan unduhan PDF otomatis
             html2pdf().set(opt).from(element).save();
         }
     </script>
