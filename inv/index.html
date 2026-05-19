@@ -293,20 +293,21 @@
 
         async function callGeminiAI(base64) {
             const pureBase64 = base64.split(',')[1];
-            const prompt = `Ekstrak data bukti transfer m-banking ini menjadi JSON:
+            const prompt = `Ekstrak data bukti transfer m-banking ini menjadi JSON murni tanpa markdown. 
+            Format JSON harus mengikuti struktur ini:
             {
-                "bank": "Singkatan nama bank penerbit/transfer (contoh: BCA, MANDIRI, BRI, BNI)",
+                "bank": "Singkatan nama bank (contoh: BCA, MANDIRI, BRI, BNI)",
                 "tanggal": "Tgl/Bulan/Thn Jam",
                 "pengirim": "Nama Pengirim",
                 "penerima": "Nama Penerima",
-                "nominal": angka_saja (nominal transfer pokok tanpa titik/koma),
-                "admin": angka_saja_jika_ada_jika_tidak_0,
-                "ref": "No Referensi / ID Transaksi / ID Referensi",
-                "status": "SUKSES atau LUNAS (default SUKSES jika berhasil)"
+                "nominal": angka_tanpa_titik_koma,
+                "admin": angka_tanpa_titik_koma,
+                "ref": "ID Transaksi / Referensi",
+                "status": "SUKSES"
             }`;
 
-            // Menggunakan endpoint gemini-2.5-flash-preview-09-2025 dengan format non-streaming sesuai instruksi
-            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+            // Menggunakan model gemini-3-flash-preview yang lebih stabil untuk pemrosesan gambar
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
             const options = {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -324,7 +325,16 @@
             };
 
             const result = await fetchWithRetry(url, options);
-            const textResponse = result.candidates?.[0]?.content?.parts?.[0]?.text;
+            
+            if (!result.candidates || result.candidates.length === 0) {
+                throw new Error("AI tidak memberikan respon.");
+            }
+
+            let textResponse = result.candidates[0].content.parts[0].text;
+            
+            // Pembersihan jika AI mengembalikan markdown ```json ... ```
+            textResponse = textResponse.replace(/```json|```/g, '').trim();
+            
             return JSON.parse(textResponse);
         }
 
