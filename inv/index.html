@@ -243,10 +243,10 @@
             status: 'SUKSES'
         };
 
-        // Kunci API bawaan Canvas (opsional, jika kosong, sistem akan memeriksa localStorage)
+        // Kunci API bawaan Canvas
         let apiKey = ""; 
 
-        // --- API Key Management (GitHub Pages Friendly) ---
+        // --- API Key Management ---
         const userApiKeyInput = document.getElementById('user-api-key');
         const saveApiKeyBtn = document.getElementById('save-api-key');
         const toggleKeyVisibilityBtn = document.getElementById('toggle-key-visibility');
@@ -305,7 +305,7 @@
             }
         }
 
-        // --- Toast System (Pengganti window.alert) ---
+        // --- Toast System ---
         function showToast(message, isError = false) {
             const toast = document.getElementById('toast');
             const toastMsg = document.getElementById('toast-message');
@@ -331,7 +331,6 @@
         dropZone.onclick = () => fileInput.click();
         fileInput.onchange = (e) => handleFile(e.target.files[0]);
         
-        // Integrasi form editor dua arah
         adminInput.oninput = (e) => {
             state.admin = parseInt(e.target.value) || 0;
             updateTotals();
@@ -378,7 +377,7 @@
         }
 
         // --- Exponential Backoff Fetch Helper ---
-        async function fetchWithRetry(url, options, retries = 5, delay = 1000) {
+        async function fetchWithRetry(url, options, retries = 3, delay = 1000) {
             try {
                 const response = await fetch(url, options);
                 if (!response.ok) {
@@ -395,11 +394,10 @@
             }
         }
 
-        // --- AI Extraction ---
+        // --- AI Extraction with Auto-Fallback ---
         extractBtn.onclick = async () => {
             if (!state.base64Image) return;
             
-            // Cek ketersediaan API Key sebelum melakukan pengiriman
             if (!apiKey) {
                 showToast("Harap masukkan dan simpan API Key Anda di bagian '0. Konfigurasi API' terlebih dahulu!", true);
                 return;
@@ -412,7 +410,7 @@
                 showToast("Ekstraksi AI berhasil diselesaikan!");
             } catch (err) {
                 console.error(err);
-                showToast(`Gagal memproses AI. Pastikan API Key valid atau isi form manual di sebelah kiri.`, true);
+                showToast(`Gagal memproses AI. Error: ${err.message}`, true);
             } finally {
                 setLoading(false);
             }
@@ -432,35 +430,58 @@
                 "status": "SUKSES"
             }`;
 
-            // Menggunakan endpoint v1beta dan model wajib "gemini-2.5-flash-preview-09-2025"
-            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
-            const options = {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    contents: [{ 
-                        parts: [
-                            { text: prompt }, 
-                            { inlineData: { mimeType: state.mimeType, data: pureBase64 } }
-                        ] 
-                    }]
-                })
-            };
+            // Daftar model yang akan dicoba berurutan:
+            // 1. Model sandbox khusus (untuk pratinjau Canvas)
+            // 2. Model publik 1.5-flash (paling stabil untuk kunci API publik standar)
+            // 3. Model publik 2.5-flash (alternatif)
+            const modelsToTry = [
+                "gemini-2.5-flash-preview-09-2025",
+                "gemini-1.5-flash",
+                "gemini-2.5-flash"
+            ];
 
-            const result = await fetchWithRetry(url, options);
-            const textResponse = result.candidates?.[0]?.content?.parts?.[0]?.text;
+            let lastError = null;
             
-            if (!textResponse) throw new Error("Respons dari AI kosong.");
+            for (const model of modelsToTry) {
+                try {
+                    console.log(`Mencoba memproses menggunakan model: ${model}`);
+                    const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+                    const options = {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            contents: [{ 
+                                parts: [
+                                    { text: prompt }, 
+                                    { inlineData: { mimeType: state.mimeType, data: pureBase64 } }
+                                ] 
+                            }]
+                        })
+                    };
 
-            // Bersihkan format markdown jika AI membandel mengirimkannya
-            const cleanJsonText = textResponse.replace(/```json|```/g, '').trim();
-            return JSON.parse(cleanJsonText);
+                    const result = await fetchWithRetry(url, options, 2, 500);
+                    const textResponse = result.candidates?.[0]?.content?.parts?.[0]?.text;
+                    
+                    if (!textResponse) throw new Error("Respons teks kosong.");
+
+                    const cleanJsonText = textResponse.replace(/```json|```/g, '').trim();
+                    const parsedData = JSON.parse(cleanJsonText);
+                    console.log(`Berhasil mengekstrak data menggunakan model: ${model}`);
+                    return parsedData;
+                } catch (err) {
+                    console.warn(`Gagal memanggil model ${model}:`, err.message);
+                    lastError = err;
+                    // Lanjut mencoba model berikutnya di iterasi loop
+                }
+            }
+
+            // Jika semua model gagal
+            throw new Error(`Semua model AI gagal dicoba. Error terakhir: ${lastError ? lastError.message : 'Unknown'}`);
         }
 
         function populateUI(data) {
             document.getElementById('inv-id').innerText = `#INV-${Date.now().toString().slice(-6)}`;
             
-            // Isi state & field display
             state.bank = data.bank || "TRANSFER";
             state.tanggal = data.tanggal || "-";
             state.ref = data.ref || "-";
@@ -468,7 +489,6 @@
             state.nominal = parseInt(data.nominal) || 0;
             state.admin = parseInt(data.admin) || 0;
 
-            // Samakan isi input Form Admin
             adminBank.value = state.bank;
             adminDate.value = state.tanggal;
             adminRef.value = state.ref;
@@ -476,7 +496,6 @@
             adminNominal.value = state.nominal;
             adminInput.value = state.admin;
 
-            // Render langsung ke invoice preview
             document.getElementById('bank-name-display').innerText = state.bank;
             document.getElementById('date-display').innerText = `Tgl: ${state.tanggal}`;
             document.getElementById('sender-input').value = data.pengirim || "";
@@ -491,7 +510,6 @@
             const stamp = document.getElementById('status-stamp');
             stamp.innerText = state.status;
             
-            // Ubah skema warna stempel status
             stamp.className = "border-2 font-extrabold px-4 py-1.5 rounded uppercase tracking-wider text-sm transform -rotate-3 scale-95 inline-block";
             if (state.status === "GAGAL") {
                 stamp.classList.add("border-red-600", "text-red-600");
@@ -523,12 +541,10 @@
             statusBadge.classList.toggle('hidden', !isLoading);
         }
 
-        // --- Custom PDF Generation ---
         function downloadPDF() {
             const element = document.getElementById('invoice-card');
             const invoiceNumber = document.getElementById('inv-id').innerText.replace('#', '');
             
-            // Konfigurasi khusus untuk layout struk printer thermal (80mm)
             const opt = {
                 margin: 0,
                 filename: `Invoice-${invoiceNumber}.pdf`,
