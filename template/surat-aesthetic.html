@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Digital Stationery Suite: Buat surat aesthetic, jurnal, dan catatan elegan secara online. Pilih berbagai template surat klasik hingga modern dengan kemudahan cetak ke PDF.">
+    <meta name="keywords" content="surat aesthetic, stationery template, digital letter, jurnal online, template surat, menulis kreatif, stationery digital, aesthetic writing">
+    <meta property="og:title" content="Digital Stationery Suite | Surat Aesthetic & Jurnal Online">
+    <meta property="og:description" content="Ekspresikan dirimu dengan template surat aesthetic. Mudah digunakan, siap cetak, dan penuh gaya.">
+    <title>Template Surat Aesthetic | Digital Stationery Suite</title>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7116287441723529" crossorigin="anonymous"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500&family=Dancing+Script:wght@500&display=swap');
+        
+        .font-serif { font-family: 'Playfair Display', serif; }
+        .font-handwriting { font-family: 'Dancing Script', cursive; }
+        
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .journal-lines {
+            background-image: linear-gradient(#d1d5db 1px, transparent 1px);
+            background-size: 100% 2.5rem;
+            background-attachment: local;
+        }
+
+        .margin-line { border-left: 2px solid #fca5a5; padding-left: 1rem; }
+        .ornament { position: absolute; font-size: 1.5rem; opacity: 0.6; pointer-events: none; user-select: none; }
+
+        /* Print Optimization */
+        @media print {
+            body * { visibility: hidden; }
+            #view-editor, #view-editor * { visibility: visible; }
+            #view-editor { 
+                position: absolute; 
+                left: 0; 
+                top: 0; 
+                width: 100%; 
+                padding: 0;
+            }
+            #view-editor button { display: none; }
+        }
+    </style>
+</head>
+<body class="bg-stone-50 min-h-screen text-stone-800">
+
+    <main id="app" class="max-w-4xl mx-auto p-4 md:p-10">
+        
+        <!-- Gallery Section -->
+        <section id="view-gallery" class="space-y-12">
+            <header class="text-center">
+                <h1 class="text-4xl font-serif text-stone-900">Template Surat Aesthetic Online Terbaru</h1>
+                <p class="text-stone-500 mt-3 font-sans">Koleksi template surat estetik untuk setiap momen spesialmu.</p>
+            </header>
+
+            <div id="template-grid" class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Templates rendered via JS -->
+            </div>
+        </section>
+
+        <!-- Editor Section -->
+        <section id="view-editor" class="hidden fade-in">
+            <button onclick="goBack()" class="mb-8 text-stone-500 hover:text-stone-800 flex items-center gap-2 print:hidden">
+                ← Kembali ke Galeri
+            </button>
+            
+            <article id="editor-container" class="min-h-[600px] p-12 md:p-20 shadow-2xl transition-colors duration-500 relative overflow-hidden">
+                <div id="ornaments-layer"></div>
+                <div id="letter-content" contenteditable="true" class="outline-none focus:ring-2 focus:ring-stone-200 rounded p-2 relative z-10">
+                </div>
+            </article>
+
+            <div class="mt-8 flex justify-center gap-4 print:hidden">
+                <button onclick="window.print()" class="bg-stone-800 text-white px-8 py-3 rounded-full shadow-lg hover:bg-stone-700 transition">
+                    Cetak / Simpan PDF
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Detailed SEO Article Section -->
+    <footer class="max-w-4xl mx-auto p-10 mt-12 border-t border-stone-200">
+        <article class="prose prose-stone mx-auto">
+            <h2 class="text-3xl font-serif mb-6 text-stone-900">Seni Menulis di Era Digital: Mengapa Template Surat Aesthetic Itu Penting</h2>
+            <p class="mb-4">Di tengah gempuran pesan instan yang serba cepat, dingin, dan efisien, muncul kerinduan untuk kembali pada cara komunikasi yang lebih hangat dan personal. Mengirim pesan singkat melalui aplikasi chat sering kali terasa fungsional, namun kurang memiliki "jiwa". Di sinilah peran <strong>template surat aesthetic</strong> menjadi sangat relevan.</p>
+
+            <h3 class="text-xl font-serif mt-6 mb-2">Apa Itu Template Surat Aesthetic?</h3>
+            <p class="mb-4">Template surat aesthetic adalah kerangka digital yang dirancang dengan perhatian mendalam pada elemen visual—mulai dari tipografi, pemilihan palet warna, hingga penggunaan ornamen yang halus. Bukan sekadar alat untuk menulis, template ini adalah "wadah" yang membungkus kata-kata Anda dengan nuansa emosional tertentu, memberikan pengalaman visual yang menyenangkan bagi pembaca bahkan sebelum mereka menyelesaikan kalimat pertama.</p>
+
+            <h3 class="text-xl font-serif mt-6 mb-2">Mengapa Kita Perlu Kembali ke Tradisi Melalui Digital?</h3>
+            <ul class="list-disc pl-5 mb-4 space-y-2">
+                <li><strong>Membangun Koneksi Emosional:</strong> Tulisan yang diketik di atas latar belakang bergaya kertas antik atau jurnal minimalis memiliki kekuatan untuk mengubah suasana hati. Saat Anda mengirimkan surat dengan desain yang dipilih dengan cermat, penerima merasakan usaha dan perhatian yang Anda curahkan.</li>
+                <li><strong>Ekspresi Diri Tanpa Batas:</strong> Setiap orang memiliki <em>vibe</em> yang berbeda. Template surat memungkinkan Anda untuk mengekspresikan kepribadian Anda—entah itu minimalis yang tenang, atau botani yang manis—tanpa harus mahir desain grafis.</li>
+                <li><strong>Efisiensi Tanpa Mengorbankan Kualitas:</strong> Anda mendapatkan kemudahan digital (siap cetak, mudah diedit) namun tetap mempertahankan elegansi surat fisik yang klasik.</li>
+            </ul>
+
+            <h3 class="text-xl font-serif mt-6 mb-2">Kapan Saat Terbaik Menggunakan Surat Digital?</h3>
+            <p class="mb-4">Template ini sangat fleksibel untuk berbagai kebutuhan:</p>
+            <ul class="list-disc pl-5 mb-4 space-y-2">
+                <li><strong>Jurnal Harian (Journaling):</strong> Membuat refleksi diri terasa lebih tenang dan terstruktur di atas template bergaris.</li>
+                <li><strong>Kartu Ucapan Digital:</strong> Ulang tahun atau kelulusan menjadi lebih berkesan dengan desain yang unik.</li>
+                <li><strong>Surat Formal yang Personal:</strong> Mengirimkan apresiasi kepada rekan kerja atau klien akan terasa lebih tulus jika dibalut dengan desain yang hangat.</li>
+            </ul>
+
+            <h3 class="text-xl font-serif mt-6 mb-2">Tips Menulis di Digital Stationery</h3>
+            <p class="mb-4 italic">"Keindahan visual hanyalah pembungkus. Pastikan isi surat tetap jujur dan personal. Itulah yang benar-benar akan diingat oleh penerima."</p>
+            <p>Cobalah koleksi template kami, mulai dari <em>Antique Ledger</em> yang klasik hingga <em>Cute Doodle</em> yang ceria. Mari mulai menulis cerita Anda hari ini dengan Digital Stationery Suite—karena setiap kata yang ditulis dengan indah, layak untuk disajikan dengan indah pula.</p>
+        </article>
+        <p class="text-center text-stone-400 mt-8 text-sm">© 2026 Digital Stationery Suite. Semua hak cipta dilindungi.</p>
+    </footer>
+
+    <script>
+        const templates = {
+            vintage: { bg: 'bg-amber-50', text: 'text-amber-900', title: 'Vintage', ornaments: ['<div class="ornament top-5 left-5">🖋️</div>', '<div class="ornament bottom-5 right-5">📜</div>'], content: '<h2 class="font-serif text-3xl mb-6">Dearest,</h2><p class="font-serif leading-loose">Tuliskan kenangan indahmu di sini...</p>' },
+            minimal: { bg: 'bg-white', text: 'text-stone-900', title: 'Minimalist', ornaments: ['<div class="ornament top-5 right-5 text-xl">✨</div>'], content: '<h2 class="font-sans font-bold text-2xl mb-6">Halo,</h2><p class="font-sans text-stone-600 leading-relaxed">Sederhana itu bermakna.</p>' },
+            journal_classic: { bg: 'bg-white journal-lines margin-line', text: 'text-stone-800', title: 'Classic Journal', ornaments: ['<div class="ornament top-5 right-5">📅</div>'], content: '<h2 class="font-sans font-bold text-xl mb-6 opacity-50">Date: ........................</h2><p class="font-sans text-lg">Catatan hari ini...</p>' },
+            journal_cute: { bg: 'bg-rose-50 journal-lines', text: 'text-rose-900', title: 'Cute Doodle', ornaments: ['<div class="ornament top-5 left-5 text-2xl">🌸</div>', '<div class="ornament bottom-5 right-5 text-2xl">🍡</div>'], content: '<h2 class="font-handwriting text-3xl mb-6">My Day</h2><p class="font-handwriting text-xl">Hari yang manis...</p>' },
+            journal_modern: { bg: 'bg-slate-50 journal-lines', text: 'text-slate-700', title: 'Modern Lined', ornaments: ['<div class="ornament top-5 right-5">✒️</div>'], content: '<h2 class="font-sans font-medium text-lg mb-6">Log:</h2><p class="font-sans">Rapi dan terstruktur...</p>' },
+            journal_antique: { bg: 'bg-yellow-50 journal-lines', text: 'text-yellow-900', title: 'Antique Ledger', ornaments: ['<div class="ornament top-5 left-5">🗝️</div>', '<div class="ornament bottom-5 right-5">✉️</div>'], content: '<h2 class="font-serif text-2xl mb-6 italic">Record</h2><p class="font-serif italic leading-loose">Seperti buku tua yang menyimpan rahasia...</p>' }
+        };
+
+        function renderGallery() {
+            const container = document.getElementById('template-grid');
+            container.innerHTML = Object.keys(templates).map(id => `
+                <div onclick="selectTemplate('${id}')" class="group cursor-pointer p-8 bg-white border border-stone-200 shadow-sm hover:shadow-xl transition-all hover:-translate-y-1">
+                    <h2 class="text-xs uppercase tracking-widest text-stone-400 mb-2 font-bold">${templates[id].title}</h2>
+                    <div class="h-16 w-full ${templates[id].bg} border border-stone-100 flex items-center justify-center text-xl overflow-hidden relative">
+                        ${templates[id].ornaments[0] ? templates[id].ornaments[0].replace('absolute', 'relative') : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function selectTemplate(id) {
+            const temp = templates[id];
+            const container = document.getElementById('editor-container');
+            const content = document.getElementById('letter-content');
+            const ornamentsLayer = document.getElementById('ornaments-layer');
+            
+            container.className = `min-h-[600px] p-12 md:p-20 shadow-2xl transition-colors duration-500 relative overflow-hidden ${temp.bg} ${temp.text}`;
+            content.innerHTML = temp.content;
+            ornamentsLayer.innerHTML = temp.ornaments.join('');
+            
+            document.getElementById('view-gallery').classList.add('hidden');
+            document.getElementById('view-editor').classList.remove('hidden');
+        }
+
+        function goBack() {
+            document.getElementById('view-gallery').classList.remove('hidden');
+            document.getElementById('view-editor').classList.add('hidden');
+        }
+
+        renderGallery();
+    </script>
+</body>
+</html>
