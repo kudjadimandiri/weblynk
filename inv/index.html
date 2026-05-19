@@ -64,6 +64,29 @@
             <!-- Left Panel: Controls & Inputs -->
             <div class="lg:col-span-5 space-y-4 no-print">
                 
+                <!-- Step 0: API Key Configuration -->
+                <section class="bg-white p-5 rounded-xl shadow-xs border border-slate-200">
+                    <div class="flex items-center justify-between mb-3">
+                        <h2 class="text-xs font-bold uppercase tracking-wider text-slate-400">0. Konfigurasi API Gemini</h2>
+                        <span id="api-status-indicator" class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-800">Belum Diset</span>
+                    </div>
+                    <div class="space-y-2">
+                        <p class="text-[11px] text-slate-500 leading-relaxed">
+                            Dapatkan kunci API gratis di <a href="https://aistudio.google.com/" target="_blank" class="text-emerald-600 hover:underline font-semibold">Google AI Studio</a>. Kunci Anda akan disimpan aman secara lokal di browser Anda.
+                        </p>
+                        <div class="relative">
+                            <input type="password" id="user-api-key" placeholder="Masukkan Gemini API Key (AIzaSy...)" class="w-full bg-slate-50 border border-slate-200 rounded px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500 outline-none pr-10">
+                            <button id="toggle-key-visibility" class="absolute right-2 top-2.5 text-slate-400 hover:text-slate-600">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" id="eye-icon">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <button id="save-api-key" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-bold py-2 rounded text-xs uppercase tracking-wider transition-all">Simpan Kunci API</button>
+                    </div>
+                </section>
+                
                 <!-- Step 1: Upload -->
                 <section class="bg-white p-5 rounded-xl shadow-xs border border-slate-200">
                     <h2 class="text-xs font-bold mb-3 uppercase tracking-wider text-slate-400">1. Unggah Bukti Transfer</h2>
@@ -220,8 +243,67 @@
             status: 'SUKSES'
         };
 
-        // Kunci API dikosongkan agar platform otomatis menyuntikkan API Key yang valid pada saat runtime
-        const apiKey = "AIzaSyBLnKzXIjMU-l3YbONzctE5tx483lB8hyw";
+        // Kunci API bawaan Canvas (opsional, jika kosong, sistem akan memeriksa localStorage)
+        let apiKey = ""; 
+
+        // --- API Key Management (GitHub Pages Friendly) ---
+        const userApiKeyInput = document.getElementById('user-api-key');
+        const saveApiKeyBtn = document.getElementById('save-api-key');
+        const toggleKeyVisibilityBtn = document.getElementById('toggle-key-visibility');
+        const apiStatusIndicator = document.getElementById('api-status-indicator');
+        const eyeIcon = document.getElementById('eye-icon');
+
+        // Load saved key on startup
+        window.addEventListener('load', () => {
+            const savedKey = localStorage.getItem('gemini_api_key');
+            if (savedKey) {
+                userApiKeyInput.value = savedKey;
+                apiKey = savedKey;
+                updateApiStatus(true);
+            } else {
+                updateApiStatus(false);
+            }
+        });
+
+        saveApiKeyBtn.addEventListener('click', () => {
+            const enteredKey = userApiKeyInput.value.trim();
+            if (enteredKey) {
+                localStorage.setItem('gemini_api_key', enteredKey);
+                apiKey = enteredKey;
+                updateApiStatus(true);
+                showToast("API Key berhasil disimpan di browser Anda!");
+            } else {
+                localStorage.removeItem('gemini_api_key');
+                apiKey = "";
+                updateApiStatus(false);
+                showToast("API Key dihapus.", true);
+            }
+        });
+
+        toggleKeyVisibilityBtn.addEventListener('click', () => {
+            if (userApiKeyInput.type === 'password') {
+                userApiKeyInput.type = 'text';
+                eyeIcon.innerHTML = `
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18"></path>
+                `;
+            } else {
+                userApiKeyInput.type = 'password';
+                eyeIcon.innerHTML = `
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                `;
+            }
+        });
+
+        function updateApiStatus(isConfigured) {
+            if (isConfigured) {
+                apiStatusIndicator.innerText = "Aktif (Lokal)";
+                apiStatusIndicator.className = "inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-emerald-100 text-emerald-800";
+            } else {
+                apiStatusIndicator.innerText = "Belum Diset";
+                apiStatusIndicator.className = "inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-800";
+            }
+        }
 
         // --- Toast System (Pengganti window.alert) ---
         function showToast(message, isError = false) {
@@ -316,6 +398,13 @@
         // --- AI Extraction ---
         extractBtn.onclick = async () => {
             if (!state.base64Image) return;
+            
+            // Cek ketersediaan API Key sebelum melakukan pengiriman
+            if (!apiKey) {
+                showToast("Harap masukkan dan simpan API Key Anda di bagian '0. Konfigurasi API' terlebih dahulu!", true);
+                return;
+            }
+
             setLoading(true);
             try {
                 const data = await callGeminiAI(state.base64Image);
@@ -323,7 +412,7 @@
                 showToast("Ekstraksi AI berhasil diselesaikan!");
             } catch (err) {
                 console.error(err);
-                showToast(`Gagal memproses AI. Silakan isi form manual di sebelah kiri jika diperlukan.`, true);
+                showToast(`Gagal memproses AI. Pastikan API Key valid atau isi form manual di sebelah kiri.`, true);
             } finally {
                 setLoading(false);
             }
