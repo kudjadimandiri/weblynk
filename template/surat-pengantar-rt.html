@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Surat RT Generator Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        .paper { font-family: 'Times New Roman', Times, serif; }
+        @media print { .no-print { display: none; } }
+    </style>
+</head>
+<body class="bg-slate-100 min-h-screen">
+
+    <div class="max-w-[1200px] mx-auto p-4 md:p-8">
+        <header class="mb-8 flex justify-between items-center no-print">
+            <h1 class="text-2xl font-bold">Surat RT Generator</h1>
+            <button onclick="downloadPDF()" class="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold shadow-lg hover:bg-blue-700">Unduh PDF</button>
+        </header>
+
+        <main class="grid lg:grid-cols-2 gap-8">
+            <section class="space-y-4 no-print">
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                    <h2 class="font-bold mb-4">Informasi Wilayah</h2>
+                    <div class="grid grid-cols-2 gap-4">
+                        <input type="text" id="inKel" oninput="updatePreview()" placeholder="Kelurahan" class="p-2 border rounded">
+                        <input type="text" id="inKec" oninput="updatePreview()" placeholder="Kecamatan" class="p-2 border rounded">
+                        <input type="text" id="inRT" oninput="updatePreview()" placeholder="RT (001)" class="p-2 border rounded">
+                        <input type="text" id="inRW" oninput="updatePreview()" placeholder="RW (015)" class="p-2 border rounded">
+                        <input type="text" id="inNamaRT" oninput="updatePreview()" placeholder="Nama Ketua RT" class="col-span-2 p-2 border rounded">
+                        <input type="text" id="inAlamatKantor" oninput="updatePreview()" placeholder="Alamat Sekretariat/Kantor" class="col-span-2 p-2 border rounded">
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                    <h2 class="font-bold mb-4">Data Warga</h2>
+                    <div class="grid grid-cols-2 gap-4">
+                        <input type="text" id="inNama" oninput="updatePreview()" placeholder="Nama Lengkap" class="col-span-2 p-2 border rounded uppercase">
+                        <input type="text" id="inTempat" oninput="updatePreview()" placeholder="Tempat Lahir" class="p-2 border rounded">
+                        <input type="date" id="inTglLahir" oninput="updatePreview()" class="p-2 border rounded">
+                        <select id="inGender" onchange="updatePreview()" class="p-2 border rounded">
+                            <option value="Laki-laki">Laki-laki</option>
+                            <option value="Perempuan">Perempuan</option>
+                        </select>
+                        <input type="text" id="inAgama" oninput="updatePreview()" placeholder="Agama" class="p-2 border rounded">
+                        <input type="text" id="inKerja" oninput="updatePreview()" placeholder="Pekerjaan" class="p-2 border rounded">
+                        <input type="text" id="inStatus" oninput="updatePreview()" placeholder="Status Perkawinan" class="p-2 border rounded">
+                        <input type="text" id="inNIK" oninput="updatePreview()" placeholder="Nomor KTP/NIK" class="col-span-2 p-2 border rounded">
+                        <textarea id="inAlamat" oninput="updatePreview()" placeholder="Alamat" class="col-span-2 p-2 border rounded"></textarea>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                    <h2 class="font-bold mb-4">Keperluan & Surat</h2>
+                    <input type="text" id="inNoSurat" oninput="updatePreview()" placeholder="Nomor Surat (..../SP/1.15/..../20....)" class="w-full p-2 border rounded mb-2">
+                    <textarea id="inTujuan" oninput="updatePreview()" placeholder="Keperluan" class="w-full p-2 border rounded"></textarea>
+                </div>
+            </section>
+
+            <section class="sticky top-8">
+                <div id="printArea" class="paper bg-white w-full max-w-[21cm] h-[29.7cm] p-[2cm] shadow-xl text-black text-base">
+                    <div class="text-center border-b-4 border-black pb-4 mb-6">
+                        <h2 class="text-xl font-bold">RUKUN TETANGGA <span id="vRT">...</span>/<span id="vRW">...</span></h2>
+                        <h3 class="text-lg font-bold">KELURAHAN <span id="vKel" class="uppercase">...</span> KECAMATAN <span id="vKec" class="uppercase">...</span></h3>
+                        <p class="text-sm"><span id="vAlamatKantor">...</span></p>
+                    </div>
+
+                    <div class="text-center mb-6">
+                        <h4 class="font-bold underline text-lg">SURAT PENGANTAR</h4>
+                        <p>Nomor : <span id="vNoSurat">...</span></p>
+                    </div>
+
+                    <p class="mb-4 text-justify">Yang bertanda tangan dibawah ini Pengurus RT <span id="vRT2">...</span>/<span id="vRW2">...</span> Kelurahan <span id="vKel2">...</span>, Kecamatan <span id="vKec2">...</span> dengan ini menerangkan bahwa :</p>
+
+                    <table class="w-full mb-6 text-left">
+                        <tr><td class="w-1/3 py-1">Nama Lengkap</td><td class="w-5">:</td><td class="py-1 font-bold" id="vNama">....................</td></tr>
+                        <tr><td class="py-1">Tempat, Tanggal Lahir</td><td>:</td><td class="py-1" id="vTTL">....................</td></tr>
+                        <tr><td class="py-1">Jenis Kelamin</td><td>:</td><td class="py-1" id="vGender">....................</td></tr>
+                        <tr><td class="py-1">Agama</td><td>:</td><td class="py-1" id="vAgama">....................</td></tr>
+                        <tr><td class="py-1">Pekerjaan</td><td>:</td><td class="py-1" id="vKerja">....................</td></tr>
+                        <tr><td class="py-1">Status Perkawinan</td><td>:</td><td class="py-1" id="vStatus">....................</td></tr>
+                        <tr><td class="py-1">Nomor KTP</td><td>:</td><td class="py-1" id="vNIK">....................</td></tr>
+                        <tr><td class="py-1 align-top">Alamat</td><td class="align-top">:</td><td class="py-1" id="vAlamat">....................</td></tr>
+                        <tr><td class="py-1 align-top">Keperluan</td><td class="align-top">:</td><td class="py-1 font-semibold" id="vTujuan">....................</td></tr>
+                    </table>
+
+                    <p class="mb-12 text-justify">Demikian surat pengantar ini dibuat untuk dapat dipergunakan sebagaimana mestinya dan yang berkepentingan untuk menjadi maklum.</p>
+
+                    <div class="text-right">
+                        <p class="mb-1">Jakarta, <span id="vTglSkarang"></span></p>
+                        <p class="mb-24">Pengurus RT <span id="vRT3">...</span>/<span id="vRW3">...</span>,</p>
+                        <p class="font-bold underline" id="vNamaRT">..................................</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        function updatePreview() {
+            try {
+                const val = (id) => document.getElementById(id).value;
+                const set = (id, text) => { 
+                    const el = document.getElementById(id);
+                    if(el) el.innerText = text; 
+                };
+
+                set('vRT', val('inRT')); set('vRT2', val('inRT')); set('vRT3', val('inRT'));
+                set('vRW', val('inRW')); set('vRW2', val('inRW')); set('vRW3', val('inRW'));
+                set('vKel', val('inKel')); set('vKel2', val('inKel'));
+                set('vKec', val('inKec')); set('vKec2', val('inKec'));
+                set('vAlamatKantor', val('inAlamatKantor'));
+                set('vNoSurat', val('inNoSurat'));
+                set('vNama', val('inNama').toUpperCase());
+                set('vNamaRT', val('inNamaRT'));
+                set('vGender', val('inGender'));
+                set('vAgama', val('inAgama'));
+                set('vKerja', val('inKerja'));
+                set('vStatus', val('inStatus'));
+                set('vNIK', val('inNIK'));
+                set('vAlamat', val('inAlamat'));
+                set('vTujuan', val('inTujuan'));
+
+                const tglVal = val('inTglLahir');
+                if(tglVal) {
+                    const tgl = new Date(tglVal).toLocaleDateString('id-ID', {day:'numeric', month:'long', year:'numeric'});
+                    set('vTTL', `${val('inTempat')}, ${tgl}`);
+                }
+                set('vTglSkarang', new Date().toLocaleDateString('id-ID', {day:'numeric', month:'long', year:'numeric'}));
+            } catch (err) {
+                console.error("Preview update error:", err);
+            }
+        }
+
+        function downloadPDF() {
+            if (typeof html2pdf === 'undefined') {
+                alert("Library PDF belum dimuat, silakan tunggu sejenak atau refresh halaman.");
+                return;
+            }
+            const element = document.getElementById('printArea');
+            const opt = { 
+                margin: 0.5, 
+                filename: 'Surat_Pengantar.pdf', 
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 }, 
+                jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' } 
+            };
+            html2pdf().set(opt).from(element).save();
+        }
+        
+        window.onload = updatePreview;
+    </script>
+</body>
+</html>
