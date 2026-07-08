@@ -334,69 +334,66 @@
 
           <div class="formbg-outer">
             <div class="formbg">
-              <form id="stripe-login">
+              <form id="wishForm">
                 <div class="field padding-bottom--24">
                   <input
                     id="inputName"
-                    type="name"
+                    type="text"
                     name="name"
                     placeholder="Nama"
+                    required
                   />
                 </div>
                 <div class="field padding-bottom--24">
                   <textarea
-                    id=""
+                    id="inputMessage"
                     cols="77"
                     rows="5"
                     placeholder="Berikan Ucapan Dan Doa restu"
+                    required
                   ></textarea>
                 </div>
 
                 <div class="field padding-bottom--24">
-                  <select name="" id="">
+                  <select id="inputAttendance" name="attendance">
                     <option value="">Konfirmasi Kehadiran</option>
-                    <option value="">Hadir</option>
-                    <option value="">Akan Hadir</option>
-                    <option value="">Tidak Hadir</option>
+                    <option value="Hadir">Hadir</option>
+                    <option value="Akan Hadir">Akan Hadir</option>
+                    <option value="Tidak Hadir">Tidak Hadir</option>
                   </select>
                 </div>
 
-                <div
-                  class="field field-checkbox padding-bottom--24 flex-flex align-center"
-                ></div>
                 <div class="field padding-bottom--24">
                   <input type="submit" name="submit" value="Kirimkan Ucapan" />
                 </div>
-
-                <div class="field padding-bottom--24">
-                  <div class="bubble">
-                    <div class="txt">
-                      <p class="name">Rio Oktarian</p>
-                      <p class="message">
-                        Maafkan aku bang belum bisa menghadiri, masih dalam
-                        rangka dinas. Semoga samawa sampai kakek nenek
-                      </p>
-                      <span class="timestamp">15:20 wib</span>
-                    </div>
-                    <div class="bubble-arrow"></div>
-                  </div>
-
-                  <div class="bubble">
-                    <div class="txt">
-                      <p class="name">Febri Ayu Wulandari</p>
-                      <p class="message">Bahagia selalu amin</p>
-                      <span class="timestamp">20:20 wib</span>
-                    </div>
-                    <div class="bubble-arrow"></div>
-                  </div>
-                </div>
               </form>
+
+              <div class="field padding-bottom--24" id="wishList">
+                <div class="bubble">
+                  <div class="txt">
+                    <p class="name">Rio Oktarian</p>
+                    <p class="message">
+                      Maafkan aku bang belum bisa menghadiri, masih dalam
+                      rangka dinas. Semoga samawa sampai kakek nenek
+                    </p>
+                    <span class="timestamp">15:20 wib</span>
+                  </div>
+                  <div class="bubble-arrow"></div>
+                </div>
+
+                <div class="bubble">
+                  <div class="txt">
+                    <p class="name">Febri Ayu Wulandari</p>
+                    <p class="message">Bahagia selalu amin</p>
+                    <span class="timestamp">20:20 wib</span>
+                  </div>
+                  <div class="bubble-arrow"></div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </section>
-
-      <footer></footer>
     </div>
 
     <audio id="mySong">
@@ -420,6 +417,7 @@
 
     <script src="script.js"></script>
     <script src="clipboard.js"></script>
+    <script src="pesan.js"></script>
 
     <script
       type="module"
