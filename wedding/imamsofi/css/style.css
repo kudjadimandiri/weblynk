@@ -108,7 +108,7 @@
 /* OPENING */
 /***********/
 .section-opening {
-  background-image: linear-gradient(to right bottom,rgba(64, 15, 32, 0.9), rgba(86, 20, 43, 0.7)), url("../img/hero-img.jpg");
+  background-image: linear-gradient(to right bottom,rgba(64, 15, 32, 0.9), rgba(86, 20, 43, 0.7)), url("../img/hero-image.png");
   padding: 4.8rem 0 9.6rem 0;
   background-size: cover;
   width: 100%;
