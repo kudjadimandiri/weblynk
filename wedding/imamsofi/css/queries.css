@@ -6,7 +6,7 @@
 
 /* @media (max-width: 84em) {
   .section-hero {
-    background-image: linear-gradient(to right bottom,rgba(64, 15, 32, 0.9), rgba(86, 20, 43, 0.7)), url("../img/hero-img.jpg");
+    background-image: linear-gradient(to right bottom,rgba(64, 15, 32, 0.9), rgba(86, 20, 43, 0.7)), url("../img/hero-image.png");
     max-width: 120rem;
     width: 100%;
     height: 100vh;
