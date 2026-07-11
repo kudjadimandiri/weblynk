@@ -17,7 +17,7 @@ function getValueDate(value) {
     mm = String(today.getMonth() + 1).padStart(2, '0'),
     yyyy = today.getFullYear(),
     nextYear = 2026 + 1,
-    dayMonth = '12/20/',
+    dayMonth = '08/20/',
     birthday = dayMonth + yyyy;
 
   today = mm + '/' + dd + '/' + yyyy;
