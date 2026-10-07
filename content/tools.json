@@ -1,0 +1,30 @@
+{
+  "tools": [
+    {
+      "id": "tool-001",
+      "name": "Backlink Checker",
+      "slug": "backlink-checker",
+      "type": "tool",
+      "category": "SEO",
+      "description": "Cek backlink website Anda secara instan.",
+      "icon": "🔗",
+      "url": "/tools/backlink-checker.html",
+      "featured": true,
+      "metaTitle": "Backlink Checker Gratis 2026 | WebLynk",
+      "metaDescription": "Tool cek backlink gratis untuk analisis SEO."
+    },
+    {
+      "id": "tool-002",
+      "name": "SEO Quiz Game",
+      "slug": "seo-quiz",
+      "type": "game",
+      "category": "Game",
+      "description": "Uji pengetahuan SEO Anda dengan quiz interaktif.",
+      "icon": "🎮",
+      "url": "/games/seo-quiz.html",
+      "featured": false,
+      "metaTitle": "SEO Quiz Game | WebLynk",
+      "metaDescription": "Game quiz SEO interaktif gratis."
+    }
+  ]
+}
