@@ -5,15 +5,193 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>WebLynk CMS — Admin Panel</title>
   <meta name="robots" content="noindex, nofollow" />
-  <link rel="stylesheet" href="/assets/css/custom.css" />
+
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
-    tailwind.config = { theme: { extend: { colors: { brand: {
-      50:'#f0f9ff',100:'#e0f2fe',200:'#bae6fd',300:'#7dd3fc',400:'#38bdf8',
-      500:'#0ea5e9',600:'#0284c7',700:'#0369a1',800:'#075985',900:'#0c4a6e'
-    } } } } };
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50:'#f0f9ff',100:'#e0f2fe',200:'#bae6fd',300:'#7dd3fc',400:'#38bdf8',
+              500:'#0ea5e9',600:'#0284c7',700:'#0369a1',800:'#075985',900:'#0c4a6e'
+            }
+          }
+        }
+      }
+    };
   </script>
+
+  <!-- Markdown Editor Dependencies -->
+  <script src="https://cdn.jsdelivr.net/npm/marked@12.0.0/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.8/dist/purify.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/atom-one-dark.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/common.min.js"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/assets/css/custom.css" />
+
+  <style>
+    /* ============ EDITOR STYLES ============ */
+    .md-btn {
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      color: #475569;
+      transition: all 0.15s;
+      background: white;
+      border: 1px solid transparent;
+    }
+    .md-btn:hover {
+      background: #e0f2fe;
+      color: #0284c7;
+      border-color: #bae6fd;
+    }
+    .md-btn.active {
+      background: #0284c7;
+      color: white;
+    }
+    .preview-mobile {
+      max-width: 375px !important;
+      margin: 0 auto;
+      border: 2px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 1rem;
+    }
+    .prose-weblynk {
+      color: #334155;
+      font-size: 0.95rem;
+      line-height: 1.7;
+    }
+    .prose-weblynk h1 {
+      font-size: 1.875rem;
+      font-weight: 800;
+      margin: 1rem 0 0.75rem;
+      color: #0f172a;
+      line-height: 1.2;
+    }
+    .prose-weblynk h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin: 1.5rem 0 0.75rem;
+      color: #0f172a;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .prose-weblynk h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin: 1.25rem 0 0.5rem;
+      color: #0f172a;
+    }
+    .prose-weblynk p {
+      margin: 0.75rem 0;
+    }
+    .prose-weblynk a {
+      color: #0284c7;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+    .prose-weblynk a:hover {
+      color: #0369a1;
+    }
+    .prose-weblynk ul {
+      list-style: disc;
+      padding-left: 1.5rem;
+      margin: 1rem 0;
+    }
+    .prose-weblynk ol {
+      list-style: decimal;
+      padding-left: 1.5rem;
+      margin: 1rem 0;
+    }
+    .prose-weblynk li {
+      margin: 0.35rem 0;
+    }
+    .prose-weblynk blockquote {
+      border-left: 4px solid #0ea5e9;
+      background: #f0f9ff;
+      padding: 0.75rem 1rem;
+      margin: 1rem 0;
+      border-radius: 0.5rem;
+      color: #075985;
+    }
+    .prose-weblynk code {
+      background: #f1f5f9;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.875em;
+      color: #0369a1;
+      font-family: ui-monospace, monospace;
+    }
+    .prose-weblynk pre {
+      background: #0f172a;
+      color: #e2e8f0;
+      padding: 1rem;
+      border-radius: 8px;
+      overflow-x: auto;
+      margin: 1rem 0;
+      font-size: 0.875rem;
+    }
+    .prose-weblynk pre code {
+      background: transparent;
+      color: inherit;
+      padding: 0;
+    }
+    .prose-weblynk hr {
+      border: 0;
+      border-top: 1px dashed #cbd5e1;
+      margin: 1.5rem 0;
+    }
+    .prose-weblynk table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+      font-size: 0.875rem;
+    }
+    .prose-weblynk th,
+    .prose-weblynk td {
+      border: 1px solid #e2e8f0;
+      padding: 8px 12px;
+      text-align: left;
+    }
+    .prose-weblynk th {
+      background: #f8fafc;
+      font-weight: 600;
+    }
+    .prose-weblynk img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      margin: 1rem 0;
+    }
+
+    /* Editor textarea */
+    #mdEditor {
+      min-height: 400px;
+      font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', monospace;
+      font-size: 13px;
+      line-height: 1.7;
+      tab-size: 2;
+    }
+    #mdEditor::placeholder {
+      color: #94a3b8;
+    }
+    #mdEditor:focus {
+      outline: none;
+    }
+
+    /* Scrollbar in preview */
+    #previewScroll::-webkit-scrollbar {
+      width: 8px;
+    }
+    #previewScroll::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
+    }
+  </style>
 </head>
 <body class="bg-slate-100 font-sans text-slate-800 antialiased">
 
@@ -26,6 +204,7 @@
       </a>
       <div class="flex items-center gap-3">
         <span id="authStatus" class="hidden rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700">● Terhubung GitHub</span>
+        <a href="/" class="hidden rounded-lg border border-slate-200 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 sm:inline-block">← Lihat Web</a>
         <button id="settingsBtn" class="rounded-lg border border-slate-200 px-4 py-2 text-sm font-medium hover:bg-slate-50">⚙️ Pengaturan</button>
       </div>
     </div>
@@ -43,9 +222,12 @@
 
     <!-- TAB: POSTS -->
     <section data-panel="posts">
-      <div class="mb-4 flex items-center justify-between">
-        <h2 class="text-xl font-bold text-slate-900">Kelola Artikel</h2>
-        <button onclick="openEditor('post')" class="rounded-xl bg-brand-600 px-4 py-2 text-sm font-bold text-white hover:bg-brand-700">+ Artikel Baru</button>
+      <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <h2 class="text-xl font-bold text-slate-900">Kelola Artikel</h2>
+          <p class="text-sm text-slate-500">Tulis dengan Markdown editor modern</p>
+        </div>
+        <button onclick="openEditor('post')" class="rounded-xl bg-brand-600 px-4 py-2 text-sm font-bold text-white hover:bg-brand-700">✍️ Tulis Artikel Baru</button>
       </div>
       <div id="postsList" class="space-y-3"></div>
     </section>
@@ -73,329 +255,244 @@
       <h2 class="mb-4 text-xl font-bold text-slate-900">Pengaturan SEO Global</h2>
       <div class="rounded-2xl border border-slate-200 bg-white p-6">
         <div class="grid gap-4 sm:grid-cols-2">
-          <div><label class="mb-1 block text-sm font-medium">Site Name</label><input id="cfgSiteName" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm" /></div>
-          <div><label class="mb-1 block text-sm font-medium">Site URL</label><input id="cfgSiteUrl" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm" /></div>
-          <div class="sm:col-span-2"><label class="mb-1 block text-sm font-medium">Description</label><textarea id="cfgDesc" rows="2" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm"></textarea></div>
-          <div class="sm:col-span-2"><label class="mb-1 block text-sm font-medium">Keywords</label><input id="cfgKeywords" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm" /></div>
-          <div><label class="mb-1 block text-sm font-medium">OG Image URL</label><input id="cfgOgImage" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm" /></div>
-          <div><label class="mb-1 block text-sm font-medium">Twitter Handle</label><input id="cfgTwitter" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm" /></div>
+          <div>
+            <label class="mb-1 block text-sm font-medium">Site Name</label>
+            <input id="cfgSiteName" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+          </div>
+          <div>
+            <label class="mb-1 block text-sm font-medium">Site URL</label>
+            <input id="cfgSiteUrl" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+          </div>
+          <div class="sm:col-span-2">
+            <label class="mb-1 block text-sm font-medium">Description</label>
+            <textarea id="cfgDesc" rows="2" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm"></textarea>
+          </div>
+          <div class="sm:col-span-2">
+            <label class="mb-1 block text-sm font-medium">Keywords</label>
+            <input id="cfgKeywords" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+          </div>
+          <div>
+            <label class="mb-1 block text-sm font-medium">OG Image URL</label>
+            <input id="cfgOgImage" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+          </div>
+          <div>
+            <label class="mb-1 block text-sm font-medium">Twitter Handle</label>
+            <input id="cfgTwitter" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+          </div>
         </div>
         <button onclick="saveSEOConfig()" class="mt-6 rounded-xl bg-brand-600 px-6 py-2 text-sm font-bold text-white hover:bg-brand-700">💾 Simpan & Push ke GitHub</button>
       </div>
     </section>
   </div>
 
-  <!-- MODAL EDITOR -->
-  <div id="editorModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/60 p-4 backdrop-blur-sm">
-    <div class="max-h-[90vh] w-full max-w-3xl overflow-y-auto rounded-2xl bg-white p-6 shadow-2xl">
-      <div class="mb-4 flex items-center justify-between">
-        <h3 id="editorTitle" class="text-lg font-bold">Edit</h3>
-        <button onclick="closeEditor()" class="rounded-lg p-2 text-slate-500 hover:bg-slate-100">✕</button>
+  <!-- ============================== -->
+  <!-- MODAL EDITOR MARKDOWN -->
+  <!-- ============================== -->
+  <div id="editorModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/70 p-2 backdrop-blur-sm sm:p-4">
+    <div class="flex max-h-[95vh] w-full max-w-7xl flex-col overflow-hidden rounded-2xl bg-white shadow-2xl">
+
+      <!-- HEADER -->
+      <div class="flex flex-shrink-0 items-center justify-between border-b border-slate-200 px-6 py-3">
+        <div class="flex items-center gap-3">
+          <h3 id="editorTitle" class="text-lg font-bold text-slate-900">Tulis Artikel</h3>
+          <span id="saveStatus" class="hidden text-xs font-medium text-slate-500"></span>
+        </div>
+        <div class="flex items-center gap-2">
+          <button id="previewToggle" class="hidden rounded-lg border border-slate-200 px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-50 lg:hidden">
+            👁️ Preview
+          </button>
+          <button type="button" onclick="closeEditor()" class="rounded-lg p-2 text-slate-500 hover:bg-slate-100">✕</button>
+        </div>
       </div>
-      <div id="editorFields" class="space-y-4"></div>
-      <div class="mt-6 flex justify-end gap-3">
-        <button onclick="closeEditor()" class="rounded-xl border border-slate-200 px-5 py-2 text-sm font-medium hover:bg-slate-50">Batal</button>
-        <button onclick="saveItem()" class="rounded-xl bg-brand-600 px-5 py-2 text-sm font-bold text-white hover:bg-brand-700">💾 Simpan & Push</button>
+
+      <!-- METADATA BAR -->
+      <div class="flex-shrink-0 border-b border-slate-200 bg-slate-50 px-6 py-4">
+        <button id="metaToggle" type="button" class="mb-3 flex w-full items-center justify-between text-sm font-semibold text-slate-700">
+          <span>⚙️ Metadata & SEO</span>
+          <svg id="metaChevron" class="h-4 w-4 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+          </svg>
+        </button>
+        <div id="metaFields" class="grid gap-3 sm:grid-cols-2">
+          <div class="sm:col-span-2">
+            <label class="mb-1 block text-xs font-medium text-slate-600">Judul *</label>
+            <input id="f_title" placeholder="Panduan Backlink High DA/DR 2026"
+              class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/30" />
+          </div>
+          <div>
+            <label class="mb-1 block text-xs font-medium text-slate-600">Slug</label>
+            <input id="f_slug" placeholder="otomatis-dari-judul"
+              class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none" />
+          </div>
+          <div>
+            <label class="mb-1 block text-xs font-medium text-slate-600">Kategori</label>
+            <input id="f_category" value="SEO"
+              class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none" />
+          </div>
+          <div>
+            <label class="mb-1 block text-xs font-medium text-slate-600">Tanggal</label>
+            <input id="f_date" type="date"
+              class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none" />
+          </div>
+          <div>
+            <label class="mb-1 block text-xs font-medium text-slate-600">Cover Image URL</label>
+            <input id="f_image" placeholder="https://..."
+              class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none" />
+          </div>
+          <div class="sm:col-span-2">
+            <label class="mb-1 block text-xs font-medium text-slate-600">Tags (pisahkan dengan koma)</label>
+            <input id="f_tags" placeholder="backlink, high DA, SEO 2026"
+              class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none" />
+          </div>
+          <div class="sm:col-span-2">
+            <label class="mb-1 block text-xs font-medium text-slate-600">Excerpt (ringkasan)</label>
+            <textarea id="f_excerpt" rows="2" placeholder="Ringkasan singkat artikel... (kosongkan untuk auto dari konten)"
+              class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none"></textarea>
+          </div>
+          <div class="sm:col-span-2 border-t border-slate-200 pt-3">
+            <p class="mb-2 text-xs font-bold uppercase tracking-wider text-slate-500">🔍 SEO Override (opsional)</p>
+          </div>
+          <div>
+            <label class="mb-1 block text-xs font-medium text-slate-600">Meta Title (max 60)</label>
+            <input id="f_metaTitle" maxlength="60" placeholder="Judul untuk Google"
+              class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none" />
+          </div>
+          <div>
+            <label class="mb-1 block text-xs font-medium text-slate-600">Meta Description (max 160)</label>
+            <textarea id="f_metaDescription" rows="2" maxlength="160" placeholder="Deskripsi untuk Google"
+              class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- PANEL TOOL/GAME -->
+      <div id="toolGamePanel" class="hidden flex-shrink-0 overflow-y-auto border-b border-slate-200 bg-slate-50 px-6 py-4" style="max-height: 300px;">
+        <div id="editorFields" class="grid gap-3 sm:grid-cols-2"></div>
+      </div>
+
+      <!-- EDITOR + PREVIEW -->
+      <div class="flex min-h-0 flex-1 flex-col lg:flex-row">
+
+        <!-- EDITOR PANEL -->
+        <div id="editorPanel" class="flex min-h-0 flex-1 flex-col border-b border-slate-200 lg:border-b-0 lg:border-r">
+          <!-- Toolbar -->
+          <div id="mdToolbar" class="flex flex-shrink-0 flex-wrap items-center gap-1 border-b border-slate-200 bg-slate-50 px-3 py-2">
+            <button type="button" data-md="bold" class="md-btn" title="Bold (Ctrl+B)"><b>B</b></button>
+            <button type="button" data-md="italic" class="md-btn" title="Italic (Ctrl+I)"><i>I</i></button>
+            <button type="button" data-md="strike" class="md-btn" title="Strikethrough"><s>S</s></button>
+            <div class="mx-1 h-5 w-px bg-slate-300"></div>
+            <button type="button" data-md="h2" class="md-btn" title="Heading 2">H2</button>
+            <button type="button" data-md="h3" class="md-btn" title="Heading 3">H3</button>
+            <div class="mx-1 h-5 w-px bg-slate-300"></div>
+            <button type="button" data-md="ul" class="md-btn" title="Bullet List">• List</button>
+            <button type="button" data-md="ol" class="md-btn" title="Numbered List">1. List</button>
+            <button type="button" data-md="quote" class="md-btn" title="Quote">❝ Quote</button>
+            <div class="mx-1 h-5 w-px bg-slate-300"></div>
+            <button type="button" data-md="link" class="md-btn" title="Link (Ctrl+K)">🔗</button>
+            <button type="button" data-md="image" class="md-btn" title="Image">🖼️</button>
+            <button type="button" data-md="code" class="md-btn" title="Inline code">&lt;/&gt;</button>
+            <button type="button" data-md="codeblock" class="md-btn" title="Code block">{ }</button>
+            <button type="button" data-md="hr" class="md-btn" title="Horizontal rule">—</button>
+            <div class="ml-auto flex items-center gap-1">
+              <button type="button" id="insertSnippet" class="md-btn text-xs" title="Insert snippet">⚡ Snippet</button>
+              <span id="wordCount" class="ml-2 hidden text-xs text-slate-500 sm:inline">0 kata</span>
+            </div>
+          </div>
+
+          <!-- Textarea -->
+          <textarea id="mdEditor" spellcheck="true"
+            class="flex-1 resize-none border-0 bg-white p-4 focus:outline-none"
+            placeholder="# Judul Artikel
+
+Tulis konten Anda di sini dengan **Markdown**...
+
+## Sub Judul
+
+- Poin pertama
+- Poin kedua
+
+> Blockquote untuk highlight
+
+[Link](https://example.com) dan `inline code`.
+
+```js
+console.log('Hello WebLynk');
+```"></textarea>
+
+          <!-- Footer Info -->
+          <div class="flex flex-shrink-0 items-center justify-between border-t border-slate-200 bg-slate-50 px-4 py-2 text-xs text-slate-500">
+            <span id="mdStats">0 karakter · 0 baris</span>
+            <span class="hidden sm:inline">💡 Ctrl+S simpan · Ctrl+B bold · Ctrl+K link</span>
+          </div>
+        </div>
+
+        <!-- PREVIEW PANEL -->
+        <div id="previewPanel" class="flex min-h-0 flex-1 flex-col bg-slate-50">
+          <div class="flex flex-shrink-0 items-center justify-between border-b border-slate-200 bg-white px-4 py-2">
+            <span class="text-xs font-bold uppercase tracking-wider text-slate-500">👁️ Live Preview</span>
+            <div class="flex items-center gap-1 text-xs">
+              <button id="previewDesktop" class="rounded px-2 py-1 font-medium text-brand-600 bg-brand-50">💻 Desktop</button>
+              <button id="previewMobile" class="rounded px-2 py-1 font-medium text-slate-500 hover:bg-slate-100">📱 Mobile</button>
+            </div>
+          </div>
+          <div id="previewScroll" class="min-h-0 flex-1 overflow-y-auto bg-white p-4">
+            <div id="previewContent" class="prose-weblynk mx-auto max-w-none">
+              <p class="italic text-slate-400">Preview akan muncul di sini saat Anda mengetik...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FOOTER ACTIONS -->
+      <div class="flex flex-shrink-0 flex-wrap items-center justify-between gap-3 border-t border-slate-200 bg-white px-6 py-3">
+        <div class="flex items-center gap-2 text-xs text-slate-500">
+          <span id="lastSaved" class="hidden">💾 Tersimpan <span id="lastSavedTime"></span></span>
+          <button type="button" id="loadSampleBtn" class="rounded-lg border border-slate-200 px-3 py-1.5 font-medium text-slate-600 hover:bg-slate-50">📄 Contoh</button>
+          <button type="button" id="clearBtn" class="rounded-lg border border-slate-200 px-3 py-1.5 font-medium text-red-600 hover:bg-red-50">🗑️ Kosongkan</button>
+        </div>
+        <div class="flex gap-2">
+          <button onclick="closeEditor()" class="rounded-xl border border-slate-200 px-5 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">Batal</button>
+          <button onclick="saveItem()" class="rounded-xl bg-brand-600 px-5 py-2 text-sm font-bold text-white hover:bg-brand-700">💾 Simpan & Push</button>
+        </div>
       </div>
     </div>
   </div>
 
   <!-- MODAL SETTINGS GITHUB -->
-  <div id="settingsModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/60 p-4 backdrop-blur-sm">
+  <div id="settingsModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/70 p-4 backdrop-blur-sm">
     <div class="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl">
-      <h3 class="mb-4 text-lg font-bold">🔑 GitHub Connection</h3>
-      <p class="mb-4 text-sm text-slate-600">Masukkan Personal Access Token (scope: <code class="rounded bg-slate-100 px-1">repo</code>) untuk push ke repository.</p>
+      <h3 class="mb-2 text-lg font-bold">🔑 Koneksi GitHub</h3>
+      <p class="mb-4 text-sm text-slate-600">
+        Masukkan Personal Access Token dengan scope <code class="rounded bg-slate-100 px-1">repo</code> untuk push ke repository.
+      </p>
       <div class="space-y-3">
-        <div><label class="mb-1 block text-sm font-medium">GitHub Owner</label><input id="ghOwner" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm" placeholder="username" /></div>
-        <div><label class="mb-1 block text-sm font-medium">Repository</label><input id="ghRepo" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm" placeholder="weblynk" /></div>
-        <div><label class="mb-1 block text-sm font-medium">Branch</label><input id="ghBranch" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm" value="main" /></div>
-        <div><label class="mb-1 block text-sm font-medium">Personal Access Token</label><input id="ghToken" type="password" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm" placeholder="ghp_..." /></div>
+        <div>
+          <label class="mb-1 block text-sm font-medium">GitHub Owner</label>
+          <input id="ghOwner" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm" placeholder="username" />
+        </div>
+        <div>
+          <label class="mb-1 block text-sm font-medium">Repository</label>
+          <input id="ghRepo" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm" placeholder="weblynk" />
+        </div>
+        <div>
+          <label class="mb-1 block text-sm font-medium">Branch</label>
+          <input id="ghBranch" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm" value="main" />
+        </div>
+        <div>
+          <label class="mb-1 block text-sm font-medium">Personal Access Token</label>
+          <input id="ghToken" type="password" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm" placeholder="ghp_..." />
+        </div>
+        <p class="rounded-lg bg-amber-50 p-2 text-xs text-amber-800">
+          ⚠️ Token disimpan di <code>localStorage</code> browser Anda. Jangan gunakan di komputer publik.
+        </p>
       </div>
       <div class="mt-6 flex justify-end gap-3">
-        <button onclick="document.getElementById('settingsModal').classList.add('hidden')" class="rounded-xl border border-slate-200 px-5 py-2 text-sm font-medium hover:bg-slate-50">Tutup</button>
-        <button onclick="saveGitHubSettings()" class="rounded-xl bg-brand-600 px-5 py-2 text-sm font-bold text-white hover:bg-brand-700">Simpan</button>
+        <button type="button" onclick="closeSettings()" class="rounded-xl border border-slate-200 px-5 py-2 text-sm font-medium hover:bg-slate-50">Batal</button>
+        <button type="button" onclick="saveGitHubSettings()" class="rounded-xl bg-brand-600 px-5 py-2 text-sm font-bold text-white hover:bg-brand-700">Simpan</button>
       </div>
     </div>
   </div>
 
-  <script>
-  // ===== STATE =====
-  let state = { posts: [], tools: [], config: {}, editing: null, type: 'post' };
-
-  // ===== GITHUB API =====
-  const GH_KEY = 'weblynk_github';
-  function getGH() {
-    try { return JSON.parse(localStorage.getItem(GH_KEY) || '{}'); } catch { return {}; }
-  }
-  function setGH(cfg) { localStorage.setItem(GH_KEY, JSON.stringify(cfg)); }
-
-  async function ghGet(path) {
-    const { owner, repo, branch = 'main' } = getGH();
-    if (!owner || !repo) throw new Error('GitHub belum dikonfigurasi');
-    const r = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}?ref=${branch}`);
-    if (!r.ok) throw new Error('Gagal ambil file: ' + path);
-    return await r.json();
-  }
-
-  async function ghPut(path, content, message) {
-    const { owner, repo, branch = 'main', token } = getGH();
-    if (!owner || !repo || !token) throw new Error('GitHub token belum diisi');
-
-    // Get current SHA if exists
-    let sha;
-    try {
-      const existing = await ghGet(path);
-      sha = existing.sha;
-    } catch {}
-
-    const body = {
-      message: message || `Update ${path}`,
-      content: btoa(unescape(encodeURIComponent(content))),
-      branch,
-      ...(sha ? { sha } : {})
-    };
-
-    const r = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`, {
-      method: 'PUT',
-      headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify(body)
-    });
-    if (!r.ok) throw new Error('Gagal push: ' + (await r.text()));
-    return await r.json();
-  }
-
-  // ===== LOAD DATA =====
-  async function loadData() {
-    try {
-      const postsR = await fetch('/content/posts.json?t=' + Date.now());
-      const toolsR = await fetch('/content/tools.json?t=' + Date.now());
-      const cfgR = await fetch('/content/config.json?t=' + Date.now());
-
-      if (postsR.ok) state.posts = (await postsR.json()).posts || [];
-      if (toolsR.ok) {
-        const all = (await toolsR.json()).tools || [];
-        state.tools = all;
-      }
-      if (cfgR.ok) state.config = await cfgR.json();
-
-      renderLists();
-      fillSEOForm();
-      checkAuth();
-    } catch (e) {
-      console.error(e);
-      alert('Gagal memuat data: ' + e.message);
-    }
-  }
-
-  function checkAuth() {
-    const { token } = getGH();
-    const el = document.getElementById('authStatus');
-    if (token) el.classList.remove('hidden');
-    else el.classList.add('hidden');
-  }
-
-  // ===== RENDER =====
-  function renderLists() {
-    const posts = state.posts;
-    const tools = state.tools.filter(t => t.type === 'tool');
-    const games = state.tools.filter(t => t.type === 'game');
-
-    const row = (item, type) => `
-      <div class="flex items-center justify-between rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
-        <div class="flex items-center gap-3">
-          <span class="text-2xl">${item.icon || (type === 'post' ? '📝' : type === 'tool' ? '🛠️' : '🎮')}</span>
-          <div>
-            <p class="font-semibold text-slate-900">${item.title || item.name}</p>
-            <p class="text-xs text-slate-500">${item.category || ''} · ${item.date || ''}</p>
-          </div>
-        </div>
-        <div class="flex gap-2">
-          <button onclick="editItem('${type}', '${item.id}')" class="rounded-lg border border-slate-200 px-3 py-1.5 text-xs font-medium hover:bg-slate-50">✏️ Edit</button>
-          <button onclick="deleteItem('${type}', '${item.id}')" class="rounded-lg border border-red-200 px-3 py-1.5 text-xs font-medium text-red-600 hover:bg-red-50">🗑️</button>
-        </div>
-      </div>`;
-
-    document.getElementById('postsList').innerHTML = posts.length ? posts.map(p => row(p, 'post')).join('') : '<p class="text-slate-500">Belum ada artikel.</p>';
-    document.getElementById('toolsList').innerHTML = tools.length ? tools.map(t => row(t, 'tool')).join('') : '<p class="text-slate-500">Belum ada tools.</p>';
-    document.getElementById('gamesList').innerHTML = games.length ? games.map(g => row(g, 'game')).join('') : '<p class="text-slate-500">Belum ada games.</p>';
-  }
-
-  // ===== EDITOR =====
-  function openEditor(type, id) {
-    state.type = type;
-    state.editing = id ? (type === 'post' ? state.posts : state.tools).find(i => i.id === id) : null;
-
-    document.getElementById('editorTitle').textContent = (state.editing ? 'Edit ' : 'Baru ') + type;
-    document.getElementById('editorFields').innerHTML = buildFields(type, state.editing || {});
-    document.getElementById('editorModal').classList.remove('hidden');
-    document.getElementById('editorModal').classList.add('flex');
-  }
-
-  function closeEditor() {
-    document.getElementById('editorModal').classList.add('hidden');
-    document.getElementById('editorModal').classList.remove('flex');
-  }
-
-  function buildFields(type, data) {
-    const common = `
-      <div><label class="mb-1 block text-sm font-medium">Meta Title (SEO)</label><input id="f_metaTitle" value="${data.metaTitle || ''}" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm" /></div>
-      <div><label class="mb-1 block text-sm font-medium">Meta Description (SEO)</label><textarea id="f_metaDescription" rows="2" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm">${data.metaDescription || ''}</textarea></div>`;
-
-    if (type === 'post') {
-      return `
-        <div class="grid gap-4 sm:grid-cols-2">
-          <div class="sm:col-span-2"><label class="mb-1 block text-sm font-medium">Judul</label><input id="f_title" value="${data.title || ''}" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm" /></div>
-          <div><label class="mb-1 block text-sm font-medium">Slug</label><input id="f_slug" value="${data.slug || ''}" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm" /></div>
-          <div><label class="mb-1 block text-sm font-medium">Kategori</label><input id="f_category" value="${data.category || 'SEO'}" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm" /></div>
-          <div><label class="mb-1 block text-sm font-medium">Tanggal</label><input id="f_date" type="date" value="${data.date || new Date().toISOString().slice(0,10)}" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm" /></div>
-          <div><label class="mb-1 block text-sm font-medium">Image URL</label><input id="f_image" value="${data.image || ''}" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm" /></div>
-          <div class="sm:col-span-2"><label class="mb-1 block text-sm font-medium">Excerpt</label><textarea id="f_excerpt" rows="2" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm">${data.excerpt || ''}</textarea></div>
-          <div class="sm:col-span-2"><label class="mb-1 block text-sm font-medium">Konten (HTML)</label><textarea id="f_content" rows="6" class="w-full rounded-lg border border-slate-200 px-3 py-2 font-mono text-xs">${(data.content || '').replace(/</g,'&lt;')}</textarea></div>
-          <div class="sm:col-span-2"><label class="mb-1 block text-sm font-medium">Tags (koma)</label><input id="f_tags" value="${(data.tags||[]).join(', ')}" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm" /></div>
-          ${common}
-        </div>`;
-    } else {
-      return `
-        <div class="grid gap-4 sm:grid-cols-2">
-          <div><label class="mb-1 block text-sm font-medium">Nama</label><input id="f_name" value="${data.name || ''}" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm" /></div>
-          <div><label class="mb-1 block text-sm font-medium">Icon (emoji)</label><input id="f_icon" value="${data.icon || (type==='tool'?'🛠️':'🎮')}" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm" /></div>
-          <div><label class="mb-1 block text-sm font-medium">Kategori</label><input id="f_category" value="${data.category || (type==='tool'?'SEO':'Game')}" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm" /></div>
-          <div><label class="mb-1 block text-sm font-medium">URL</label><input id="f_url" value="${data.url || ''}" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm" /></div>
-          <div class="sm:col-span-2"><label class="mb-1 block text-sm font-medium">Deskripsi</label><textarea id="f_description" rows="2" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm">${data.description || ''}</textarea></div>
-          ${common}
-        </div>`;
-    }
-  }
-
-  // ===== SAVE =====
-  async function saveItem() {
-    const type = state.type;
-    const val = id => document.getElementById(id)?.value || '';
-
-    let item;
-    if (type === 'post') {
-      item = {
-        id: state.editing?.id || 'post-' + Date.now(),
-        title: val('f_title'), slug: val('f_slug') || val('f_title').toLowerCase().replace(/\s+/g,'-'),
-        excerpt: val('f_excerpt'), content: val('f_content'),
-        category: val('f_category'), tags: val('f_tags').split(',').map(s=>s.trim()).filter(Boolean),
-        author: state.editing?.author || 'WebLynk Team',
-        date: val('f_date'), image: val('f_image'),
-        featured: false,
-        metaTitle: val('f_metaTitle'), metaDescription: val('f_metaDescription')
-      };
-      if (state.editing) state.posts = state.posts.map(p => p.id === item.id ? item : p);
-      else state.posts.push(item);
-    } else {
-      item = {
-        id: state.editing?.id || (type === 'tool' ? 'tool-' : 'game-') + Date.now(),
-        name: val('f_name'), slug: val('f_name').toLowerCase().replace(/\s+/g,'-'),
-        type: type, category: val('f_category'), description: val('f_description'),
-        icon: val('f_icon'), url: val('f_url'),
-        metaTitle: val('f_metaTitle'), metaDescription: val('f_metaDescription')
-      };
-      if (state.editing) state.tools = state.tools.map(t => t.id === item.id ? item : t);
-      else state.tools.push(item);
-    }
-
-    try {
-      if (type === 'post') {
-        await ghPut('content/posts.json', JSON.stringify({ posts: state.posts }, null, 2), `CMS: update post ${item.title}`);
-      } else {
-        await ghPut('content/tools.json', JSON.stringify({ tools: state.tools }, null, 2), `CMS: update ${type} ${item.name}`);
-      }
-      alert('✅ Berhasil disimpan ke GitHub!');
-      closeEditor();
-      renderLists();
-    } catch (e) {
-      alert('❌ ' + e.message);
-    }
-  }
-
-  function editItem(type, id) { openEditor(type, id); }
-
-  async function deleteItem(type, id) {
-    if (!confirm('Yakin hapus item ini?')) return;
-    if (type === 'post') state.posts = state.posts.filter(p => p.id !== id);
-    else state.tools = state.tools.filter(t => t.id !== id);
-    try {
-      if (type === 'post') await ghPut('content/posts.json', JSON.stringify({ posts: state.posts }, null, 2), 'CMS: delete post');
-      else await ghPut('content/tools.json', JSON.stringify({ tools: state.tools }, null, 2), 'CMS: delete item');
-      renderLists();
-    } catch (e) { alert('❌ ' + e.message); }
-  }
-
-  // ===== SEO CONFIG =====
-  function fillSEOForm() {
-    const c = state.config;
-    document.getElementById('cfgSiteName').value = c.siteName || '';
-    document.getElementById('cfgSiteUrl').value = c.siteUrl || '';
-    document.getElementById('cfgDesc').value = c.siteDescription || '';
-    document.getElementById('cfgKeywords').value = c.siteKeywords || '';
-    document.getElementById('cfgOgImage').value = c.ogImage || '';
-    document.getElementById('cfgTwitter').value = c.twitterHandle || '';
-  }
-
-  async function saveSEOConfig() {
-    const cfg = {
-      ...state.config,
-      siteName: document.getElementById('cfgSiteName').value,
-      siteUrl: document.getElementById('cfgSiteUrl').value,
-      siteDescription: document.getElementById('cfgDesc').value,
-      siteKeywords: document.getElementById('cfgKeywords').value,
-      ogImage: document.getElementById('cfgOgImage').value,
-      twitterHandle: document.getElementById('cfgTwitter').value
-    };
-    try {
-      await ghPut('content/config.json', JSON.stringify(cfg, null, 2), 'CMS: update SEO config');
-      state.config = cfg;
-      alert('✅ Konfigurasi SEO tersimpan!');
-    } catch (e) { alert('❌ ' + e.message); }
-  }
-
-  // ===== GITHUB SETTINGS =====
-  document.getElementById('settingsBtn').addEventListener('click', () => {
-    const c = getGH();
-    document.getElementById('ghOwner').value = c.owner || '';
-    document.getElementById('ghRepo').value = c.repo || '';
-    document.getElementById('ghBranch').value = c.branch || 'main';
-    document.getElementById('ghToken').value = c.token || '';
-    document.getElementById('settingsModal').classList.remove('hidden');
-    document.getElementById('settingsModal').classList.add('flex');
-  });
-
-  function saveGitHubSettings() {
-    setGH({
-      owner: document.getElementById('ghOwner').value.trim(),
-      repo: document.getElementById('ghRepo').value.trim(),
-      branch: document.getElementById('ghBranch').value.trim() || 'main',
-      token: document.getElementById('ghToken').value.trim()
-    });
-    document.getElementById('settingsModal').classList.add('hidden');
-    document.getElementById('settingsModal').classList.remove('flex');
-    checkAuth();
-    alert('✅ Pengaturan GitHub tersimpan di browser.');
-  }
-
-  // ===== TABS =====
-  document.querySelectorAll('.tab-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const tab = btn.dataset.tab;
-      document.querySelectorAll('.tab-btn').forEach(b => {
-        b.classList.remove('border-brand-600','text-brand-600');
-        b.classList.add('border-transparent','text-slate-500');
-      });
-      btn.classList.add('border-brand-600','text-brand-600');
-      btn.classList.remove('border-transparent','text-slate-500');
-
-      document.querySelectorAll('[data-panel]').forEach(p => {
-        p.classList.toggle('hidden', p.dataset.panel !== tab);
-      });
-    });
-  });
-
-  loadData();
-  </script>
-  <script src="/assets/js/cms.js" defer></script>
+  <script src="/assets/js/cms.js"></script>
 </body>
 </html>
