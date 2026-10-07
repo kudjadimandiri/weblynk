@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Memuat tool... | WebLynk</title>
+  <meta name="description" id="metaDescription" content="Tool SEO gratis dari WebLynk." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" id="canonicalUrl" href="" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" id="ogTitle" content="" />
+  <meta property="og:description" id="ogDescription" content="" />
+  <meta property="og:url" id="ogUrl" content="" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { theme: { extend: { colors: { brand: {
+      50:'#f0f9ff',100:'#e0f2fe',200:'#bae6fd',300:'#7dd3fc',400:'#38bdf8',
+      500:'#0ea5e9',600:'#0284c7',700:'#0369a1',800:'#075985',900:'#0c4a6e'
+    } } } } };
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/assets/css/custom.css" />
+
+  <script type="application/ld+json" id="toolSchema">{}</script>
+</head>
+<body class="bg-slate-50 font-sans text-slate-800 antialiased">
+
+  <!-- NAVBAR -->
+  <header class="sticky top-0 z-50 border-b border-slate-200/70 bg-white/80 backdrop-blur-md">
+    <div class="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6">
+      <a href="/" class="flex items-center gap-2 text-xl font-bold tracking-tight text-slate-900">
+        <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-brand-600 text-white shadow-sm">W</span>
+        <span>Web<span class="text-brand-600">Lynk</span></span>
+      </a>
+      <nav class="hidden items-center gap-8 text-sm font-medium text-slate-600 md:flex">
+        <a href="/#artikel" class="hover:text-brand-600">Artikel</a>
+        <a href="/#tools" class="hover:text-brand-600">Tools</a>
+        <a href="/#games" class="hover:text-brand-600">Games</a>
+        <a href="/admin/" class="hover:text-brand-600">CMS</a>
+      </nav>
+      <button id="menuBtn" class="rounded-lg p-2 text-slate-600 hover:bg-slate-100 md:hidden" aria-label="Menu">
+        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+    </div>
+    <div id="mobileNav" class="hidden border-t border-slate-200 bg-white px-4 pb-4 pt-2 md:hidden">
+      <a href="/#artikel" class="block py-2 text-sm font-medium text-slate-700 hover:text-brand-600">Artikel</a>
+      <a href="/#tools" class="block py-2 text-sm font-medium text-slate-700 hover:text-brand-600">Tools</a>
+      <a href="/#games" class="block py-2 text-sm font-medium text-slate-700 hover:text-brand-600">Games</a>
+      <a href="/admin/" class="block py-2 text-sm font-medium text-slate-700 hover:text-brand-600">CMS</a>
+    </div>
+  </header>
+
+  <!-- LOADING -->
+  <div id="loading" class="mx-auto max-w-4xl px-4 py-16 sm:px-6">
+    <div class="skeleton mb-4 h-4 w-32 rounded"></div>
+    <div class="skeleton mb-6 h-12 w-2/3 rounded"></div>
+    <div class="skeleton mb-8 h-40 w-full rounded-2xl"></div>
+  </div>
+
+  <!-- ERROR -->
+  <div id="error" class="mx-auto hidden max-w-4xl px-4 py-20 text-center sm:px-6">
+    <div class="text-6xl">🛠️</div>
+    <h1 class="mt-4 text-2xl font-bold text-slate-900">Tool Tidak Ditemukan</h1>
+    <p class="mt-2 text-slate-600">Tool yang Anda cari tidak tersedia.</p>
+    <a href="/#tools" class="mt-6 inline-block rounded-full bg-brand-600 px-6 py-3 text-sm font-bold text-white hover:bg-brand-700">← Kembali ke Tools</a>
+  </div>
+
+  <!-- TOOL CONTENT -->
+  <main id="tool" class="mx-auto hidden max-w-6xl px-4 py-8 sm:px-6 lg:py-12">
+    <div class="grid gap-12 lg:grid-cols-3">
+
+      <article class="lg:col-span-2">
+        <!-- Breadcrumb -->
+        <nav aria-label="Breadcrumb" class="mb-6 flex flex-wrap items-center gap-2 text-xs text-slate-500">
+          <a href="/" class="hover:text-brand-600">Beranda</a>
+          <span>/</span>
+          <a href="/#tools" class="hover:text-brand-600">Tools</a>
+          <span>/</span>
+          <span id="breadcrumbCategory" class="font-medium text-slate-700"></span>
+        </nav>
+
+        <!-- Header -->
+        <div class="mb-6 flex items-start gap-4">
+          <div id="toolIcon" class="flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-2xl bg-brand-50 text-4xl"></div>
+          <div>
+            <span id="toolCategory" class="rounded-full bg-brand-50 px-3 py-1 text-xs font-semibold text-brand-700"></span>
+            <h1 id="toolTitle" class="mt-2 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl"></h1>
+            <p id="toolDesc" class="mt-2 text-slate-600"></p>
+          </div>
+        </div>
+
+        <!-- Interactive Tool Area -->
+        <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+          <h2 class="mb-4 text-lg font-bold text-slate-900">🚀 Coba Sekarang</h2>
+          <div id="toolApp" class="space-y-4">
+            <!-- Default fallback: tool belum punya app embedded -->
+            <div class="rounded-xl border-2 border-dashed border-slate-300 bg-slate-50 p-8 text-center">
+              <p class="text-slate-600">Tool sedang dimuat...</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- How to use -->
+        <section class="mt-8 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+          <h2 class="mb-3 text-lg font-bold text-slate-900">📖 Cara Menggunakan</h2>
+          <ol class="space-y-2 pl-5 text-sm text-slate-700">
+            <li>Masukkan data yang dibutuhkan pada form di atas.</li>
+            <li>Klik tombol "Proses" atau "Analisis" untuk menjalankan tool.</li>
+            <li>Lihat hasilnya secara instan di panel hasil.</li>
+            <li>Salin atau unduh hasilnya jika diperlukan.</li>
+          </ol>
+        </section>
+
+        <!-- CTA -->
+        <section class="mt-8 overflow-hidden rounded-3xl bg-gradient-to-r from-brand-700 to-brand-500 p-8 text-white shadow-xl">
+          <h3 class="text-2xl font-extrabold">🔥 Butuh Backlink High DA/DR?</h3>
+          <p class="mt-2 text-brand-50">Dapatkan 10 backlink berkualitas untuk mendongkrak peringkat website Anda.</p>
+          <a href="https://weblynk.pages.dev" class="mt-5 inline-block rounded-full bg-white px-6 py-3 text-sm font-bold text-brand-700 hover:bg-brand-50">
+            Ambil Penawaran →
+          </a>
+        </section>
+      </article>
+
+      <!-- SIDEBAR -->
+      <aside class="space-y-6 lg:col-span-1">
+        <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm lg:sticky lg:top-24">
+          <h3 class="mb-4 text-sm font-bold uppercase tracking-wider text-slate-500">🛠️ Tool Lainnya</h3>
+          <div id="otherTools" class="space-y-3"></div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="mt-16 border-t border-slate-200 bg-white">
+    <div class="mx-auto max-w-6xl px-4 py-10 sm:px-6">
+      <div class="flex flex-col items-center justify-between gap-4 text-sm text-slate-500 sm:flex-row">
+        <p>© 2026 WebLynk. All rights reserved.</p>
+        <div class="flex gap-4">
+          <a href="/#tools" class="hover:text-brand-600">Tools</a>
+          <a href="/sitemap.xml" class="hover:text-brand-600">Sitemap</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/assets/js/main.js" defer></script>
+  <script>
+  (function () {
+    'use strict';
+    const $ = (s, c = document) => c.querySelector(s);
+
+    function getSlug() {
+      const params = new URLSearchParams(location.search);
+      if (params.get('slug')) return params.get('slug');
+      const parts = location.pathname.split('/').filter(Boolean);
+      return (parts[parts.length - 1] || '').replace(/\.html?$/i, '');
+    }
+
+    function escapeHtml(s) {
+      return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    }
+
+    function setMeta(id, val, attr = 'content') {
+      const el = document.getElementById(id);
+      if (el && val != null) el.setAttribute(attr, val);
+    }
+
+    // ---------- TOOL APPS REGISTRY ----------
+    // Tambahkan logic tool baru di sini sesuai slug
+    const TOOL_APPS = {
+      'backlink-checker': renderBacklinkChecker,
+      'meta-tag-generator': renderMetaTagGenerator,
+      'keyword-density-checker': renderKeywordDensity,
+      'robots-txt-generator': renderRobotsTxt,
+      'xml-sitemap-generator': renderXmlSitemap,
+      'page-speed-analyzer': renderPageSpeed,
+    };
+
+    function renderDefaultApp() {
+      return `
+        <div class="rounded-xl border border-slate-200 bg-slate-50 p-6 text-center">
+          <p class="text-slate-600">Tool ini sedang dalam pengembangan. Silakan hubungi kami untuk info lebih lanjut.</p>
+        </div>`;
+    }
+
+    // --- Example: Meta Tag Generator ---
+    function renderMetaTagGenerator() {
+      const app = document.getElementById('toolApp');
+      app.innerHTML = `
+        <div class="space-y-4">
+          <div>
+            <label class="mb-1 block text-sm font-medium">Judul Halaman</label>
+            <input id="mtTitle" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none" placeholder="Panduan SEO 2026" />
+          </div>
+          <div>
+            <label class="mb-1 block text-sm font-medium">Deskripsi</label>
+            <textarea id="mtDesc" rows="2" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none" placeholder="Deskripsi halaman..."></textarea>
+          </div>
+          <div>
+            <label class="mb-1 block text-sm font-medium">URL</label>
+            <input id="mtUrl" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none" placeholder="https://example.com/page" />
+          </div>
+          <div>
+            <label class="mb-1 block text-sm font-medium">OG Image URL</label>
+            <input id="mtImg" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none" placeholder="https://example.com/image.jpg" />
+          </div>
+          <button id="mtBtn" class="w-full rounded-xl bg-brand-600 px-4 py-3 text-sm font-bold text-white hover:bg-brand-700">⚡ Generate Meta Tags</button>
+          <div>
+            <div class="mb-2 flex items-center justify-between">
+              <label class="text-sm font-medium">Hasil</label>
+              <button id="mtCopy" class="hidden rounded-lg border border-slate-200 px-3 py-1 text-xs font-medium hover:bg-slate-50">📋 Copy</button>
+            </div>
+            <pre id="mtOut" class="hidden max-h-64 overflow-auto rounded-xl bg-slate-900 p-4 text-xs text-slate-100"></pre>
+          </div>
+        </div>`;
+
+      const btn = document.getElementById('mtBtn');
+      const out = document.getElementById('mtOut');
+      const copy = document.getElementById('mtCopy');
+      const title = document.getElementById('mtTitle');
+      const desc = document.getElementById('mtDesc');
+
+      // Live counters
+      const addCount = (el, max) => {
+        const wrap = el.parentElement;
+        const counter = document.createElement('p');
+        counter.className = 'mt-1 text-xs text-slate-400';
+        wrap.appendChild(counter);
+        const update = () => {
+          const len = el.value.length;
+          counter.textContent = `${len}/${max} karakter`;
+          counter.className = 'mt-1 text-xs ' + (len > max ? 'text-red-500 font-medium' : 'text-slate-400');
+        };
+        el.addEventListener('input', update);
+        update();
+      };
+      addCount(title, 60);
+      addCount(desc, 160);
+
+      btn.addEventListener('click', () => {
+        const t = title.value.trim();
+        const d = desc.value.trim();
+        const u = document.getElementById('mtUrl').value.trim();
+        const i = document.getElementById('mtImg').value.trim();
+
+        if (!t) return alert('Judul wajib diisi');
+
+        const html = `<!-- Primary Meta Tags -->
+<title>${escapeHtml(t)}</title>
+<meta name="title" content="${escapeHtml(t)}">
+<meta name="description" content="${escapeHtml(d)}">
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="${escapeHtml(u)}">
+<meta property="og:title" content="${escapeHtml(t)}">
+<meta property="og:description" content="${escapeHtml(d)}">
+<meta property="og:image" content="${escapeHtml(i)}">
+
+<!-- Twitter -->
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="${escapeHtml(u)}">
+<meta property="twitter:title" content="${escapeHtml(t)}">
+<meta property="twitter:description" content="${escapeHtml(d)}">
+<meta property="twitter:image" content="${escapeHtml(i)}">`;
+
+        out.textContent = html;
+        out.classList.remove('hidden');
+        copy.classList.remove('hidden');
+      });
+
+      copy?.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(out.textContent);
+          copy.textContent = '✅ Tersalin';
+          setTimeout(() => copy.textContent = '📋 Copy', 1500);
+        } catch {}
+      });
+    }
+
+    // --- Example: Keyword Density ---
+    function renderKeywordDensity() {
+      const app = document.getElementById('toolApp');
+      app.innerHTML = `
+        <div class="space-y-4">
+          <div>
+            <label class="mb-1 block text-sm font-medium">Masukkan Teks / Konten</label>
+            <textarea id="kdText" rows="8" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none" placeholder="Tempel konten artikel Anda di sini..."></textarea>
+          </div>
+          <button id="kdBtn" class="w-full rounded-xl bg-brand-600 px-4 py-3 text-sm font-bold text-white hover:bg-brand-700">📊 Analisis Keyword</button>
+          <div id="kdOut" class="hidden space-y-3"></div>
+        </div>`;
+
+      document.getElementById('kdBtn').addEventListener('click', () => {
+        const text = document.getElementById('kdText').value.trim();
+        if (!text) return alert('Masukkan teks terlebih dahulu');
+
+        const words = text.toLowerCase().replace(/[^\w\s]/g, '').split(/\s+/).filter(w => w.length > 2);
+        const total = words.length;
+        const freq = {};
+        words.forEach(w => freq[w] = (freq[w] || 0) + 1);
+
+        const sorted = Object.entries(freq).sort((a, b) => b[1] - a[1]).slice(0, 10);
+        const out = document.getElementById('kdOut');
+        out.classList.remove('hidden');
+        out.innerHTML = `
+          <div class="rounded-xl bg-slate-100 p-3 text-sm">
+            <strong>Total kata:</strong> ${total} · <strong>Kata unik:</strong> ${Object.keys(freq).length}
+          </div>
+          <div class="space-y-2">
+            ${sorted.map(([w, c]) => {
+              const pct = ((c / total) * 100).toFixed(2);
+              const color = pct > 5 ? 'bg-red-500' : pct > 3 ? 'bg-amber-500' : 'bg-brand-500';
+              return `
+                <div>
+                  <div class="mb-1 flex justify-between text-xs">
+                    <span class="font-medium">${escapeHtml(w)}</span>
+                    <span class="text-slate-500">${c}x · ${pct}%</span>
+                  </div>
+                  <div class="h-1.5 overflow-hidden rounded-full bg-slate-200">
+                    <div class="${color} h-full rounded-full" style="width:${Math.min(100, pct * 10)}%"></div>
+                  </div>
+                </div>`;
+            }).join('')}
+          </div>
+          <p class="text-xs text-slate-500">💡 Ideal: 1-2% per keyword. Di atas 5% berisiko keyword stuffing.</p>`;
+      });
+    }
+
+    // --- Stub: Backlink Checker ---
+    function renderBacklinkChecker() {
+      document.getElementById('toolApp').innerHTML = `
+        <div class="space-y-4">
+          <div>
+            <label class="mb-1 block text-sm font-medium">URL Website</label>
+            <input id="bcUrl" type="url" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none" placeholder="https://example.com" />
+          </div>
+          <button id="bcBtn" class="w-full rounded-xl bg-brand-600 px-4 py-3 text-sm font-bold text-white hover:bg-brand-700">🔍 Cek Backlink</button>
+          <div id="bcOut" class="hidden rounded-xl bg-slate-100 p-4 text-sm"></div>
+        </div>`;
+      document.getElementById('bcBtn').addEventListener('click', () => {
+        const url = document.getElementById('bcUrl').value.trim();
+        if (!url) return alert('Masukkan URL');
+        const out = document.getElementById('bcOut');
+        out.classList.remove('hidden');
+        out.innerHTML = `<p class="text-slate-600">Demo: Untuk cek backlink real, hubungi <a href="https://weblynk.pages.dev" class="text-brand-600 underline">WebLynk</a> untuk mendapatkan 10 backlink High DA/DR.</p>`;
+      });
+    }
+
+    // --- Stub: Robots.txt ---
+    function renderRobotsTxt() {
+      document.getElementById('toolApp').innerHTML = `
+        <div class="space-y-4">
+          <div>
+            <label class="mb-1 block text-sm font-medium">User-agent</label>
+            <input id="rbUa" value="*" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+          </div>
+          <div>
+            <label class="mb-1 block text-sm font-medium">Disallow (satu per baris)</label>
+            <textarea id="rbDis" rows="4" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm font-mono text-xs">/admin/
+/content/</textarea>
+          </div>
+          <button id="rbBtn" class="w-full rounded-xl bg-brand-600 px-4 py-3 text-sm font-bold text-white hover:bg-brand-700">📝 Generate</button>
+          <pre id="rbOut" class="hidden rounded-xl bg-slate-900 p-4 text-xs text-slate-100"></pre>
+        </div>`;
+      document.getElementById('rbBtn').addEventListener('click', () => {
+        const ua = document.getElementById('rbUa').value.trim() || '*';
+        const dis = document.getElementById('rbDis').value.split('\n').map(s => s.trim()).filter(Boolean);
+        const txt = `User-agent: ${ua}\n${dis.map(d => 'Disallow: ' + d).join('\n')}\n\nSitemap: ${location.origin}/sitemap.xml`;
+        const out = document.getElementById('rbOut');
+        out.textContent = txt;
+        out.classList.remove('hidden');
+      });
+    }
+
+    // --- Stub: XML Sitemap ---
+    function renderXmlSitemap() {
+      document.getElementById('toolApp').innerHTML = `
+        <div class="space-y-4">
+          <div>
+            <label class="mb-1 block text-sm font-medium">URL Website</label>
+            <input id="smUrl" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm" placeholder="https://example.com" />
+          </div>
+          <div>
+            <label class="mb-1 block text-sm font-medium">Daftar Halaman (satu per baris)</label>
+            <textarea id="smPages" rows="4" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm font-mono text-xs" placeholder="/&#10;/about&#10;/contact"></textarea>
+          </div>
+          <button id="smBtn" class="w-full rounded-xl bg-brand-600 px-4 py-3 text-sm font-bold text-white hover:bg-brand-700">🗺️ Generate</button>
+          <pre id="smOut" class="hidden max-h-64 overflow-auto rounded-xl bg-slate-900 p-4 text-xs text-slate-100"></pre>
+        </div>`;
+      document.getElementById('smBtn').addEventListener('click', () => {
+        const base = document.getElementById('smUrl').value.trim().replace(/\/$/, '');
+        const pages = document.getElementById('smPages').value.split('\n').map(s => s.trim()).filter(Boolean);
+        if (!base) return alert('Masukkan URL');
+        const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${pages.map(p => `  <url><loc>${base}${p.startsWith('/') ? p : '/' + p}</loc></url>`).join('\n')}
+</urlset>`;
+        const out = document.getElementById('smOut');
+        out.textContent = xml;
+        out.classList.remove('hidden');
+      });
+    }
+
+    // --- Stub: Page Speed ---
+    function renderPageSpeed() {
+      document.getElementById('toolApp').innerHTML = `
+        <div class="space-y-4">
+          <div>
+            <label class="mb-1 block text-sm font-medium">URL Halaman</label>
+            <input id="psUrl" type="url" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm" placeholder="https://example.com" />
+          </div>
+          <button id="psBtn" class="w-full rounded-xl bg-brand-600 px-4 py-3 text-sm font-bold text-white hover:bg-brand-700">⚡ Analisis Kecepatan</button>
+          <div id="psOut" class="hidden rounded-xl bg-slate-100 p-4 text-sm">
+            <p class="text-slate-600">💡 Gunakan <a href="https://pagespeed.web.dev/" target="_blank" rel="noopener" class="text-brand-600 underline">PageSpeed Insights</a> untuk analisis lengkap.</p>
+          </div>
+        </div>`;
+      document.getElementById('psBtn').addEventListener('click', () => {
+        document.getElementById('psOut').classList.remove('hidden');
+      });
+    }
+
+    // ---------- RENDER ----------
+    function renderTool(tool, all, cfg) {
+      // SEO
+      const base = cfg.siteUrl || location.origin;
+      const url = `${base}/tools/${tool.slug}.html`;
+      const metaTitle = tool.metaTitle || `${tool.name} | ${cfg.siteName}`;
+      const metaDesc = tool.metaDescription || tool.description;
+
+      document.title = metaTitle;
+      setMeta('metaDescription', metaDesc);
+      setMeta('canonicalUrl', url, 'href');
+      setMeta('ogTitle', metaTitle);
+      setMeta('ogDescription', metaDesc);
+      setMeta('ogUrl', url);
+
+      document.getElementById('toolSchema').textContent = JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'SoftwareApplication',
+        name: tool.name,
+        description: metaDesc,
+        applicationCategory: 'SEO Tool',
+        operatingSystem: 'Web',
+        offers: { '@type': 'Offer', price: '0', priceCurrency: 'IDR' },
+      });
+
+      // Content
+      document.getElementById('toolIcon').textContent = tool.icon || '🛠️';
+      document.getElementById('toolCategory').textContent = tool.category || 'Tools';
+      document.getElementById('breadcrumbCategory').textContent = tool.category || 'Tools';
+      document.getElementById('toolTitle').textContent = tool.name;
+      document.getElementById('toolDesc').textContent = tool.description;
+
+      // App
+      const app = TOOL_APPS[tool.slug];
+      if (app) app();
+      else document.getElementById('toolApp').innerHTML = renderDefaultApp();
+
+      // Other tools
+      const others = all.filter(t => t.type === 'tool' && t.id !== tool.id).slice(0, 5);
+      document.getElementById('otherTools').innerHTML = others.length
+        ? others.map(t => `
+            <a href="/tools/${encodeURIComponent(t.slug)}.html" class="group flex items-center gap-3 rounded-xl border border-slate-100 p-3 transition hover:border-brand-300 hover:bg-brand-50/40">
+              <span class="text-2xl">${t.icon || '🛠️'}</span>
+              <div class="min-w-0">
+                <p class="truncate text-sm font-semibold text-slate-800 group-hover:text-brand-700">${escapeHtml(t.name)}</p>
+                <p class="truncate text-xs text-slate-500">${escapeHtml(t.category || '')}</p>
+              </div>
+            </a>`).join('')
+        : '<p class="text-sm text-slate-500">Belum ada tools lain.</p>';
+
+      document.getElementById('loading').classList.add('hidden');
+      document.getElementById('tool').classList.remove('hidden');
+    }
+
+    function showError() {
+      document.getElementById('loading').classList.add('hidden');
+      document.getElementById('error').classList.remove('hidden');
+    }
+
+    async function init() {
+      const slug = getSlug();
+      const [cfgRes, dataRes] = await Promise.all([
+        fetch('/content/config.json?t=' + Date.now()).then(r => r.ok ? r.json() : {}).catch(() => ({})),
+        fetch('/content/tools.json?t=' + Date.now()).then(r => r.ok ? r.json() : { tools: [] }).catch(() => ({ tools: [] })),
+      ]);
+
+      const cfg = cfgRes || {};
+      const all = dataRes.tools || [];
+      const tool = all.find(t => t.slug === slug && t.type === 'tool');
+
+      if (!tool) return showError();
+      renderTool(tool, all, cfg);
+    }
+
+    document.getElementById('menuBtn')?.addEventListener('click', () => document.getElementById('mobileNav').classList.toggle('hidden'));
+
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+    else init();
+  })();
+  </script>
+</body>
+</html>
