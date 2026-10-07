@@ -3,4 +3,19 @@ Allow: /
 Disallow: /admin/
 Disallow: /content/
 
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
 Sitemap: https://weblynk.pages.dev/sitemap.xml

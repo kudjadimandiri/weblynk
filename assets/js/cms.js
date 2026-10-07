@@ -1,5 +1,5 @@
 /* ============================================
-   WebLynk CMS — Complete with AI Schema
+   WebLynk CMS — Complete with AI Schema + Scroll Fix
    ============================================ */
 
 (function () {
@@ -12,7 +12,6 @@
   const $ = (sel, ctx = document) => ctx.querySelector(sel);
   const $$ = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
 
-  // ---------- TOAST ----------
   function toast(msg, type = 'info') {
     const colors = { info: 'bg-brand-600', success: 'bg-green-600', error: 'bg-red-600', warn: 'bg-amber-500' };
     const icons = { info: 'ℹ️', success: '✅', error: '❌', warn: '⚠️' };
@@ -108,7 +107,6 @@
     } catch { return false; }
   }
 
-  // ---------- STATE ----------
   const state = {
     posts: [], tools: [], config: {},
     editing: null, editingType: 'post',
@@ -257,8 +255,6 @@
         .map(name => ({ '@type': 'Thing', name }));
       const mentions = ($('#f_mentions')?.value || '').split(',').map(s => s.trim()).filter(Boolean)
         .map(name => ({ '@type': 'Thing', name }));
-      const takeaways = ($('#f_keyTakeaways')?.value || '').split('\n').map(s => s.trim()).filter(Boolean);
-
       const faqs = this.getFAQs();
       const steps = this.getHowToSteps();
 
@@ -366,22 +362,11 @@
       }
 
       const s = item.aiSchema;
-
-      if (s.about) {
-        $('#f_about').value = s.about.map(a => a.name || a).join(', ');
-      }
-      if (s.mentions) {
-        $('#f_mentions').value = s.mentions.map(m => m.name || m).join(', ');
-      }
-      if (s.keyTakeaways) {
-        $('#f_keyTakeaways').value = s.keyTakeaways.join('\n');
-      }
-      if (s.faq) {
-        s.faq.forEach(f => this.addFAQ(f.q, f.a));
-      }
-      if (s.howTo?.steps) {
-        s.howTo.steps.forEach(step => this.addHowToStep(step.name, step.text));
-      }
+      if (s.about) $('#f_about').value = s.about.map(a => a.name || a).join(', ');
+      if (s.mentions) $('#f_mentions').value = s.mentions.map(m => m.name || m).join(', ');
+      if (s.keyTakeaways) $('#f_keyTakeaways').value = s.keyTakeaways.join('\n');
+      if (s.faq) s.faq.forEach(f => this.addFAQ(f.q, f.a));
+      if (s.howTo?.steps) s.howTo.steps.forEach(step => this.addHowToStep(step.name, step.text));
 
       this.updatePreview();
     },
@@ -402,9 +387,7 @@
       if (mentions.length) data.mentions = mentions.map(name => ({ name }));
       if (takeaways.length) data.keyTakeaways = takeaways;
       if (faqs.length) data.faq = faqs;
-      if (steps.length) {
-        data.howTo = { name: $('#f_title')?.value || '', steps };
-      }
+      if (steps.length) data.howTo = { name: $('#f_title')?.value || '', steps };
       return data;
     },
   };
@@ -599,15 +582,25 @@
       if (wc) wc.textContent = `${words} kata`;
     },
 
+    // ============================================
+    // FIXED: Metadata toggle (works with metaFieldsWrap)
+    // ============================================
     bindMetaToggle() {
       const btn = $('#metaToggle');
-      const fields = $('#metaFields');
+      const wrap = $('#metaFieldsWrap');
       const chevron = $('#metaChevron');
-      if (!btn || !fields) return;
+      const status = $('#metaStatus');
+      if (!btn || !wrap) return;
+
+      // Start collapsed
+      wrap.classList.add('hidden');
+      if (chevron) chevron.style.transform = 'rotate(-90deg)';
+
       btn.addEventListener('click', () => {
-        const collapsed = fields.style.display === 'none';
-        fields.style.display = collapsed ? '' : 'none';
-        chevron.style.transform = collapsed ? '' : 'rotate(-90deg)';
+        const isHidden = wrap.classList.contains('hidden');
+        wrap.classList.toggle('hidden', !isHidden);
+        if (chevron) chevron.style.transform = isHidden ? '' : 'rotate(-90deg)';
+        if (status) status.textContent = isHidden ? '' : '(klik untuk sembunyikan)';
       });
     },
 
@@ -844,8 +837,21 @@ Pelajari lebih lanjut di [WebLynk](https://weblynk.pages.dev).`;
     const titleMap = { post: 'Artikel', tool: 'Tool', game: 'Game' };
     $('#editorTitle').textContent = (state.editing ? 'Edit ' : 'Tulis ') + titleMap[type];
 
+    // Reset metadata toggle
+    const wrap = $('#metaFieldsWrap');
+    const chevron = $('#metaChevron');
+    const status = $('#metaStatus');
+    if (wrap) wrap.classList.add('hidden');
+    if (chevron) chevron.style.transform = 'rotate(-90deg)';
+    if (status) status.textContent = '';
+
+    // Reset AI panel
+    const aiPanel = $('#aiPanel');
+    const aiChevron = $('#aiChevron');
+    if (aiPanel) aiPanel.style.display = 'none';
+    if (aiChevron) aiChevron.style.transform = 'rotate(-90deg)';
+
     if (type === 'post') {
-      $('#metaFields').classList.remove('hidden');
       $('#toolGamePanel').classList.add('hidden');
       $('#editorPanel').classList.remove('hidden');
       $('#previewPanel').classList.remove('hidden');
@@ -867,7 +873,6 @@ Pelajari lebih lanjut di [WebLynk](https://weblynk.pages.dev).`;
       MD.markSaved();
       AI.load(state.editing);
     } else {
-      $('#metaFields').classList.add('hidden');
       $('#toolGamePanel').classList.remove('hidden');
       $('#editorFields').innerHTML = buildToolGameFields(type, state.editing || {});
       $('#editorPanel').classList.add('hidden');
@@ -877,6 +882,10 @@ Pelajari lebih lanjut di [WebLynk](https://weblynk.pages.dev).`;
     $('#editorModal').classList.remove('hidden');
     $('#editorModal').classList.add('flex');
     document.body.style.overflow = 'hidden';
+
+    // Reset scroll position
+    const body = $('#editorBody');
+    if (body) body.scrollTop = 0;
   }
 
   function closeEditor() {
@@ -927,11 +936,8 @@ Pelajari lebih lanjut di [WebLynk](https://weblynk.pages.dev).`;
         aiSchema: AI.getData(),
       };
 
-      if (state.editing) {
-        state.posts = state.posts.map(p => p.id === item.id ? item : p);
-      } else {
-        state.posts.unshift(item);
-      }
+      if (state.editing) state.posts = state.posts.map(p => p.id === item.id ? item : p);
+      else state.posts.unshift(item);
     } else {
       const name = val('#f_name');
       if (!name) return toast('Nama wajib diisi', 'warn');

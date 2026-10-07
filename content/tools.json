@@ -11,7 +11,7 @@
       "url": "/tools/backlink-checker.html",
       "featured": true,
       "metaTitle": "Backlink Checker Gratis 2026 | WebLynk",
-      "metaDescription": "Tool cek backlink gratis untuk analisis SEO. Temukan backlink berkualitas dan toxic."
+      "metaDescription": "Tool cek backlink gratis untuk analisis SEO."
     },
     {
       "id": "tool-002",
@@ -24,7 +24,7 @@
       "url": "/tools/meta-tag-generator.html",
       "featured": true,
       "metaTitle": "Meta Tag Generator SEO | WebLynk",
-      "metaDescription": "Generate meta title, description, dan OG tags yang optimal untuk SEO."
+      "metaDescription": "Generate meta title, description, dan OG tags optimal."
     },
     {
       "id": "tool-003",
@@ -32,25 +32,12 @@
       "slug": "keyword-density-checker",
       "type": "tool",
       "category": "SEO",
-      "description": "Analisis kepadatan keyword dalam konten Anda untuk SEO on-page.",
+      "description": "Analisis kepadatan keyword dalam konten Anda.",
       "icon": "📊",
       "url": "/tools/keyword-density-checker.html",
       "featured": false,
       "metaTitle": "Keyword Density Checker | WebLynk",
-      "metaDescription": "Analisis kepadatan keyword dalam konten untuk optimasi SEO on-page."
-    },
-    {
-      "id": "tool-004",
-      "name": "Robots.txt Generator",
-      "slug": "robots-txt-generator",
-      "type": "tool",
-      "category": "Technical SEO",
-      "description": "Buat file robots.txt yang tepat untuk mengontrol crawling mesin pencari.",
-      "icon": "🤖",
-      "url": "/tools/robots-txt-generator.html",
-      "featured": false,
-      "metaTitle": "Robots.txt Generator Gratis | WebLynk",
-      "metaDescription": "Buat file robots.txt untuk mengontrol crawler mesin pencari di website Anda."
+      "metaDescription": "Analisis kepadatan keyword dalam konten untuk optimasi SEO."
     },
     {
       "id": "game-001",
@@ -63,7 +50,7 @@
       "url": "/games/seo-quiz.html",
       "featured": true,
       "metaTitle": "SEO Quiz Challenge | WebLynk",
-      "metaDescription": "Game quiz SEO interaktif untuk menguji pengetahuan Anda."
+      "metaDescription": "Game quiz SEO interaktif."
     },
     {
       "id": "game-002",
@@ -76,7 +63,7 @@
       "url": "/games/backlink-tycoon.html",
       "featured": true,
       "metaTitle": "Backlink Tycoon Game | WebLynk",
-      "metaDescription": "Game simulasi membangun backlink untuk memahami strategi SEO."
+      "metaDescription": "Game simulasi membangun backlink."
     }
   ]
 }
