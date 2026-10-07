@@ -232,4 +232,8 @@
     bindEvents();
     init();
   }
+
+     // Expose helper ke global untuk dipakai halaman lain
+  window.showToast = toast;
+  window.WebLynkUtils = { escapeHtml, formatDate, readTime };
 })();
