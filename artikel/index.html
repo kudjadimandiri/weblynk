@@ -5,23 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Memuat artikel... | WebLynk</title>
   <meta name="description" id="metaDescription" content="Memuat..." />
-  <meta name="keywords" id="metaKeywords" content="SEO, backlink, tools" />
+  <meta name="keywords" id="metaKeywords" content="" />
   <meta name="author" id="metaAuthor" content="WebLynk Team" />
   <meta name="robots" content="index, follow, max-image-preview:large" />
   <link rel="canonical" id="canonicalUrl" href="" />
 
-  <!-- OG / Twitter -->
   <meta property="og:type" content="article" />
   <meta property="og:title" id="ogTitle" content="" />
   <meta property="og:description" id="ogDescription" content="" />
   <meta property="og:image" id="ogImage" content="" />
   <meta property="og:url" id="ogUrl" content="" />
   <meta property="article:published_time" id="ogPublished" content="" />
-  <meta property="article:author" id="ogAuthor" content="" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" id="twTitle" content="" />
   <meta name="twitter:description" id="twDescription" content="" />
-  <meta name="twitter:image" id="twImage" content="" />
 
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -32,17 +29,11 @@
       } } } }
     };
   </script>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/assets/css/custom.css" />
-
-  <!-- Structured Data (diisi via JS) -->
-  <script type="application/ld+json" id="articleSchema">{}</script>
-  <script type="application/ld+json" id="breadcrumbSchema">{}</script>
 </head>
 <body class="bg-slate-50 font-sans text-slate-800 antialiased">
 
-  <!-- NAVBAR -->
   <header class="sticky top-0 z-50 border-b border-slate-200/70 bg-white/80 backdrop-blur-md">
     <div class="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6">
       <a href="/" class="flex items-center gap-2 text-xl font-bold tracking-tight text-slate-900">
@@ -67,35 +58,27 @@
     </div>
   </header>
 
-  <!-- LOADING STATE -->
   <div id="loading" class="mx-auto max-w-4xl px-4 py-16 sm:px-6">
-    <div class="skeleton mb-4 h-4 w-32 rounded"></div>
-    <div class="skeleton mb-6 h-12 w-full rounded"></div>
-    <div class="skeleton mb-8 h-80 w-full rounded-2xl"></div>
+    <div class="mb-4 h-4 w-32 animate-pulse rounded bg-slate-200"></div>
+    <div class="mb-6 h-12 w-full animate-pulse rounded bg-slate-200"></div>
+    <div class="mb-8 h-80 w-full animate-pulse rounded-2xl bg-slate-200"></div>
     <div class="space-y-3">
-      <div class="skeleton h-4 w-full rounded"></div>
-      <div class="skeleton h-4 w-full rounded"></div>
-      <div class="skeleton h-4 w-3/4 rounded"></div>
+      <div class="h-4 w-full animate-pulse rounded bg-slate-200"></div>
+      <div class="h-4 w-full animate-pulse rounded bg-slate-200"></div>
+      <div class="h-4 w-3/4 animate-pulse rounded bg-slate-200"></div>
     </div>
   </div>
 
-  <!-- ERROR STATE -->
   <div id="error" class="mx-auto hidden max-w-4xl px-4 py-20 text-center sm:px-6">
     <div class="text-6xl">😕</div>
     <h1 class="mt-4 text-2xl font-bold text-slate-900">Artikel Tidak Ditemukan</h1>
-    <p class="mt-2 text-slate-600">Maaf, artikel yang Anda cari tidak tersedia atau sudah dihapus.</p>
-    <a href="/#artikel" class="mt-6 inline-block rounded-full bg-brand-600 px-6 py-3 text-sm font-bold text-white hover:bg-brand-700">
-      ← Kembali ke Artikel
-    </a>
+    <p class="mt-2 text-slate-600">Maaf, artikel yang Anda cari tidak tersedia.</p>
+    <a href="/#artikel" class="mt-6 inline-block rounded-full bg-brand-600 px-6 py-3 text-sm font-bold text-white hover:bg-brand-700">← Kembali ke Artikel</a>
   </div>
 
-  <!-- ARTICLE CONTENT -->
   <main id="article" class="mx-auto hidden max-w-6xl px-4 py-8 sm:px-6 lg:py-12">
     <div class="grid gap-12 lg:grid-cols-3">
-
-      <!-- MAIN -->
       <article class="lg:col-span-2">
-        <!-- Breadcrumb -->
         <nav aria-label="Breadcrumb" class="mb-6 flex flex-wrap items-center gap-2 text-xs text-slate-500">
           <a href="/" class="hover:text-brand-600">Beranda</a>
           <span>/</span>
@@ -104,7 +87,6 @@
           <span id="breadcrumbCategory" class="font-medium text-slate-700"></span>
         </nav>
 
-        <!-- Category + Meta -->
         <div class="mb-4 flex flex-wrap items-center gap-3">
           <span id="postCategory" class="rounded-full bg-brand-50 px-3 py-1 text-xs font-semibold text-brand-700"></span>
           <span id="postDate" class="text-xs text-slate-500"></span>
@@ -112,33 +94,27 @@
           <span id="postReadTime" class="text-xs text-slate-500"></span>
         </div>
 
-        <!-- Title -->
-        <h1 id="postTitle" class="text-3xl font-extrabold leading-tight tracking-tight text-slate-900 sm:text-4xl lg:text-5xl"></h1>
+        <h1 id="postTitle" class="article-title text-3xl font-extrabold leading-tight tracking-tight text-slate-900 sm:text-4xl lg:text-5xl"></h1>
 
-        <!-- Author -->
         <div class="mt-6 flex items-center gap-3 border-b border-slate-200 pb-6">
-          <div class="flex h-10 w-10 items-center justify-center rounded-full bg-brand-600 text-white font-bold">W</div>
+          <div class="flex h-10 w-10 items-center justify-center rounded-full bg-brand-600 font-bold text-white">W</div>
           <div>
             <p id="postAuthor" class="text-sm font-semibold text-slate-900"></p>
             <p class="text-xs text-slate-500">Penulis WebLynk</p>
           </div>
         </div>
 
-        <!-- Featured Image -->
         <figure class="my-8 overflow-hidden rounded-2xl">
           <img id="postImage" src="" alt="" class="h-auto w-full object-cover" loading="eager" />
         </figure>
 
-        <!-- Content -->
         <div id="postContent" class="prose-weblynk"></div>
 
-        <!-- Tags -->
-        <div class="mt-10 border-t border-slate-200 pt-6">
+        <div id="tagsWrap" class="mt-10 border-t border-slate-200 pt-6">
           <p class="mb-3 text-sm font-semibold text-slate-700">🏷️ Tags:</p>
           <div id="postTags" class="flex flex-wrap gap-2"></div>
         </div>
 
-        <!-- Share -->
         <div class="mt-8 rounded-2xl bg-slate-100 p-5">
           <p class="mb-3 text-sm font-semibold text-slate-700">📤 Bagikan artikel ini:</p>
           <div class="flex flex-wrap gap-2">
@@ -150,36 +126,29 @@
           </div>
         </div>
 
-        <!-- CTA Backlink -->
         <section class="mt-12 overflow-hidden rounded-3xl bg-gradient-to-r from-brand-700 to-brand-500 p-8 text-white shadow-xl">
           <h3 class="text-2xl font-extrabold">🔥 Dapatkan 10 Backlink High DA/DR</h3>
-          <p class="mt-2 text-brand-50">Tingkatkan otoritas website Anda dengan backlink berkualitas dari situs otoritas tinggi.</p>
-          <a href="https://weblynk.pages.dev" class="mt-5 inline-block rounded-full bg-white px-6 py-3 text-sm font-bold text-brand-700 hover:bg-brand-50">
-            Mulai Sekarang →
-          </a>
+          <p class="mt-2 text-brand-50">Tingkatkan otoritas website Anda dengan backlink berkualitas.</p>
+          <a href="https://weblynk.pages.dev" class="mt-5 inline-block rounded-full bg-white px-6 py-3 text-sm font-bold text-brand-700 hover:bg-brand-50">Mulai Sekarang →</a>
         </section>
       </article>
 
-      <!-- SIDEBAR -->
       <aside class="space-y-6 lg:col-span-1">
-        <!-- TOC -->
         <div id="tocWrap" class="hidden rounded-2xl border border-slate-200 bg-white p-6 shadow-sm lg:sticky lg:top-24">
           <h3 class="mb-4 text-sm font-bold uppercase tracking-wider text-slate-500">📑 Daftar Isi</h3>
           <nav id="tocNav" class="space-y-1 text-sm"></nav>
         </div>
 
-        <!-- Related -->
         <div id="relatedWrap" class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
           <h3 class="mb-4 text-sm font-bold uppercase tracking-wider text-slate-500">📚 Artikel Terkait</h3>
           <div id="relatedPosts" class="space-y-4"></div>
         </div>
 
-        <!-- Newsletter -->
         <div class="rounded-2xl bg-slate-900 p-6 text-white shadow-sm">
           <h3 class="mb-2 text-lg font-bold">Dapatkan Tips SEO</h3>
-          <p class="mb-4 text-sm text-slate-300">Berlangganan newsletter mingguan untuk strategi backlink terbaru.</p>
-          <form class="space-y-3" onsubmit="event.preventDefault(); this.reset(); window.showToast?.('Terima kasih! (demo)','success') || alert('Terima kasih! (demo)');">
-            <input type="email" placeholder="Email Anda" required class="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-2.5 text-sm text-white placeholder-slate-400 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/50" />
+          <p class="mb-4 text-sm text-slate-300">Berlangganan newsletter mingguan.</p>
+          <form class="space-y-3" onsubmit="event.preventDefault(); alert('Terima kasih!');">
+            <input type="email" placeholder="Email Anda" required class="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-2.5 text-sm text-white placeholder-slate-400 focus:border-brand-500 focus:outline-none" />
             <button type="submit" class="w-full rounded-xl bg-brand-500 px-4 py-2.5 text-sm font-bold text-white hover:bg-brand-400">Berlangganan</button>
           </form>
         </div>
@@ -187,7 +156,6 @@
     </div>
   </main>
 
-  <!-- FOOTER -->
   <footer class="mt-16 border-t border-slate-200 bg-white">
     <div class="mx-auto max-w-6xl px-4 py-10 sm:px-6">
       <div class="flex flex-col items-center justify-between gap-4 text-sm text-slate-500 sm:flex-row">
@@ -201,35 +169,25 @@
     </div>
   </footer>
 
-  <!-- Back to top -->
-  <button id="backToTop" class="fixed bottom-6 right-6 z-40 flex h-12 w-12 items-center justify-center rounded-full bg-brand-600 text-white shadow-lg opacity-0 pointer-events-none transition hover:bg-brand-700" aria-label="Back to top">
+  <button id="backToTop" class="pointer-events-none fixed bottom-6 right-6 z-40 flex h-12 w-12 items-center justify-center rounded-full bg-brand-600 text-white opacity-0 shadow-lg transition hover:bg-brand-700">
     <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/></svg>
   </button>
 
-  <script src="/assets/js/main.js" defer></script>
   <script>
-  // ============================================
-  // ARTICLE PAGE — Dynamic Loader
-  // ============================================
   (function () {
     'use strict';
-
     const $ = (s, c = document) => c.querySelector(s);
     const $$ = (s, c = document) => [...c.querySelectorAll(s)];
 
     function getSlug() {
-      // Ambil dari ?slug=xxx ATAU dari path terakhir
       const params = new URLSearchParams(location.search);
       if (params.get('slug')) return params.get('slug');
       const parts = location.pathname.split('/').filter(Boolean);
-      const last = parts[parts.length - 1] || '';
-      return last.replace(/\.html?$/i, '');
+      return (parts[parts.length - 1] || '').replace(/\.html?$/i, '');
     }
 
     function escapeHtml(s) {
-      return String(s ?? '').replace(/[&<>"']/g, c => ({
-        '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
-      }[c]));
+      return String(s ?? '').replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
     }
 
     function formatDate(d, long = false) {
@@ -250,7 +208,6 @@
       if (el && val != null) el.setAttribute(attr, val);
     }
 
-    // ---------- SEO ----------
     function applyArticleSEO(post, cfg) {
       const base = cfg.siteUrl || location.origin;
       const url = `${base}/artikel/${post.slug}.html`;
@@ -261,56 +218,163 @@
       document.title = metaTitle;
       setMeta('metaDescription', metaDesc);
       setMeta('metaKeywords', (post.tags || []).join(', ') + ', ' + (cfg.siteKeywords || ''));
-      setMeta('metaAuthor', post.author || cfg.author);
+      setMeta('metaAuthor', post.author);
       setMeta('canonicalUrl', url, 'href');
       setMeta('ogTitle', metaTitle);
       setMeta('ogDescription', metaDesc);
       setMeta('ogImage', img);
       setMeta('ogUrl', url);
       setMeta('ogPublished', post.date);
-      setMeta('ogAuthor', post.author || cfg.author);
       setMeta('twTitle', metaTitle);
       setMeta('twDescription', metaDesc);
-      setMeta('twImage', img);
 
-      // Article Schema
-      $('#articleSchema').textContent = JSON.stringify({
+      // === BUILD AI SCHEMAS ===
+      const schemas = [];
+      const wordCount = (post.content || '').replace(/<[^>]+>/g, '').split(/\s+/).length;
+
+      const blogPosting = {
         '@context': 'https://schema.org',
         '@type': 'BlogPosting',
         headline: post.title,
         description: metaDesc,
-        image: img,
+        image: img ? { '@type': 'ImageObject', url: img, width: 1200, height: 630 } : undefined,
         datePublished: post.date,
-        dateModified: post.date,
-        author: { '@type': 'Person', name: post.author || cfg.author },
+        dateModified: post.dateModified || post.date,
+        author: { '@type': 'Organization', name: post.author || cfg.author },
         publisher: {
           '@type': 'Organization',
           name: cfg.siteName,
           logo: { '@type': 'ImageObject', url: `${base}/logo.png` },
         },
-        mainEntityOfPage: url,
+        mainEntityOfPage: { '@type': 'WebPage', '@id': url },
+        articleSection: post.category,
         keywords: (post.tags || []).join(', '),
-      });
+        inLanguage: 'id-ID',
+        isAccessibleForFree: true,
+        wordCount,
+        speakable: {
+          '@type': 'SpeakableSpecification',
+          cssSelector: ['.article-title', '.key-takeaways', '.article-summary'],
+        },
+      };
 
-      // Breadcrumb Schema
-      $('#breadcrumbSchema').textContent = JSON.stringify({
+      if (post.aiSchema) {
+        if (post.aiSchema.about?.length) {
+          blogPosting.about = post.aiSchema.about.map(a => ({ '@type': 'Thing', name: a.name }));
+        }
+        if (post.aiSchema.mentions?.length) {
+          blogPosting.mentions = post.aiSchema.mentions.map(m => ({ '@type': 'Thing', name: m.name }));
+        }
+      }
+
+      schemas.push(blogPosting);
+
+      if (post.aiSchema?.faq?.length) {
+        schemas.push({
+          '@context': 'https://schema.org',
+          '@type': 'FAQPage',
+          mainEntity: post.aiSchema.faq.map(f => ({
+            '@type': 'Question',
+            name: f.q,
+            acceptedAnswer: { '@type': 'Answer', text: f.a },
+          })),
+        });
+      }
+
+      if (post.aiSchema?.howTo?.steps?.length) {
+        schemas.push({
+          '@context': 'https://schema.org',
+          '@type': 'HowTo',
+          name: post.aiSchema.howTo.name || post.title,
+          description: post.excerpt,
+          image: img || undefined,
+          totalTime: 'PT30M',
+          step: post.aiSchema.howTo.steps.map((s, i) => ({
+            '@type': 'HowToStep',
+            position: i + 1,
+            name: s.name,
+            text: s.text,
+          })),
+        });
+      }
+
+      schemas.push({
         '@context': 'https://schema.org',
         '@type': 'BreadcrumbList',
         itemListElement: [
-          { '@type': 'ListItem', position: 1, name: 'Beranda', item: `${base}/` },
+          { '@type': 'ListItem', position: 1, name: 'Beranda', item: base },
           { '@type': 'ListItem', position: 2, name: 'Artikel', item: `${base}/#artikel` },
           { '@type': 'ListItem', position: 3, name: post.category, item: `${base}/#artikel` },
           { '@type': 'ListItem', position: 4, name: post.title, item: url },
         ],
       });
+
+      // Remove old & inject new
+      document.querySelectorAll('script[id^="ai-schema-"]').forEach(el => el.remove());
+      schemas.forEach((schema, i) => {
+        const script = document.createElement('script');
+        script.type = 'application/ld+json';
+        script.id = `ai-schema-${i}`;
+        script.textContent = JSON.stringify(schema, (k, v) => v === undefined ? undefined : v);
+        document.head.appendChild(script);
+      });
+
+      console.log(`🤖 Injected ${schemas.length} AI schemas:`, schemas.map(s => s['@type']).join(', '));
     }
 
-    // ---------- BUILD TOC ----------
+    function renderKeyTakeaways(post) {
+      if (!post.aiSchema?.keyTakeaways?.length) return;
+      const content = $('#postContent');
+      const html = `
+        <div class="key-takeaways my-8 rounded-2xl border-l-4 border-brand-500 bg-gradient-to-br from-brand-50 to-white p-6 shadow-sm">
+          <div class="mb-3 flex items-center gap-2">
+            <span class="text-2xl">🎯</span>
+            <h3 class="text-lg font-bold text-brand-900">Key Takeaways</h3>
+          </div>
+          <ul class="space-y-2.5">
+            ${post.aiSchema.keyTakeaways.map(t => `
+              <li class="flex items-start gap-3 text-sm text-brand-900">
+                <span class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-brand-500 text-xs font-bold text-white">✓</span>
+                <span class="leading-relaxed">${escapeHtml(t)}</span>
+              </li>
+            `).join('')}
+          </ul>
+        </div>`;
+      const firstP = content.querySelector('p');
+      if (firstP) firstP.insertAdjacentHTML('afterend', html);
+      else content.insertAdjacentHTML('afterbegin', html);
+    }
+
+    function renderFAQ(post) {
+      if (!post.aiSchema?.faq?.length) return;
+      const content = $('#postContent');
+      const html = `
+        <div class="faq-section my-10 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+          <div class="mb-4 flex items-center gap-2">
+            <span class="text-2xl">❓</span>
+            <h2 class="text-2xl font-bold text-slate-900">Pertanyaan Umum (FAQ)</h2>
+          </div>
+          <div class="space-y-3">
+            ${post.aiSchema.faq.map((f, i) => `
+              <details class="group rounded-xl border border-slate-200 bg-slate-50 transition hover:border-brand-300" ${i === 0 ? 'open' : ''}>
+                <summary class="flex cursor-pointer items-center justify-between p-4 font-semibold text-slate-900 group-hover:text-brand-700">
+                  <span>${escapeHtml(f.q)}</span>
+                  <svg class="h-5 w-5 flex-shrink-0 text-slate-400 transition group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                  </svg>
+                </summary>
+                <div class="border-t border-slate-200 p-4 text-sm leading-relaxed text-slate-700">${escapeHtml(f.a)}</div>
+              </details>
+            `).join('')}
+          </div>
+        </div>`;
+      content.insertAdjacentHTML('beforeend', html);
+    }
+
     function buildTOC() {
       const content = $('#postContent');
       const headings = $$('h2, h3', content);
       if (!headings.length) return;
-
       const nav = $('#tocNav');
       headings.forEach((h, i) => {
         const id = h.id || `h-${i}`;
@@ -323,11 +387,9 @@
           : 'block rounded-lg px-3 py-1.5 pl-6 text-xs text-slate-500 hover:bg-slate-100 hover:text-brand-700';
         nav.appendChild(link);
       });
-
       $('#tocWrap').classList.remove('hidden');
     }
 
-    // ---------- RELATED ----------
     function renderRelated(current, allPosts) {
       const tags = new Set(current.tags || []);
       const related = allPosts
@@ -341,10 +403,7 @@
         .slice(0, 3);
 
       const wrap = $('#relatedPosts');
-      if (!related.length) {
-        $('#relatedWrap').classList.add('hidden');
-        return;
-      }
+      if (!related.length) { $('#relatedWrap').classList.add('hidden'); return; }
 
       wrap.innerHTML = related.map(p => `
         <a href="/artikel/${encodeURIComponent(p.slug)}.html" class="group block">
@@ -360,7 +419,6 @@
         </a>`).join('');
     }
 
-    // ---------- SHARE ----------
     function bindShare(post, cfg) {
       const url = `${cfg.siteUrl || location.origin}/artikel/${post.slug}.html`;
       const title = encodeURIComponent(post.title);
@@ -378,15 +436,11 @@
           const old = btn.textContent;
           btn.textContent = '✅ Tersalin!';
           setTimeout(() => btn.textContent = old, 1800);
-        } catch {
-          alert('Link: ' + url);
-        }
+        } catch { alert('Link: ' + url); }
       });
     }
 
-    // ---------- RENDER ----------
     function renderArticle(post, cfg, allPosts) {
-      // Meta
       $('#postCategory').textContent = post.category || 'Umum';
       $('#postDate').textContent = '📅 ' + formatDate(post.date, true);
       $('#postReadTime').textContent = '⏱ ' + readTime(post.content) + ' menit baca';
@@ -400,14 +454,16 @@
 
       $('#postContent').innerHTML = post.content || '<p>Konten belum tersedia.</p>';
 
-      // Tags
+      renderKeyTakeaways(post);
+      renderFAQ(post);
+
       const tagWrap = $('#postTags');
       if (post.tags?.length) {
         tagWrap.innerHTML = post.tags.map(t =>
           `<a href="/?tag=${encodeURIComponent(t)}" class="rounded-full bg-brand-50 px-3 py-1 text-xs font-semibold text-brand-700 hover:bg-brand-100">#${escapeHtml(t)}</a>`
         ).join('');
       } else {
-        tagWrap.closest('.mt-10').classList.add('hidden');
+        $('#tagsWrap').classList.add('hidden');
       }
 
       applyArticleSEO(post, cfg);
@@ -415,46 +471,8 @@
       renderRelated(post, allPosts);
       bindShare(post, cfg);
 
-      // Show
       $('#loading').classList.add('hidden');
       $('#article').classList.remove('hidden');
-
-      // Reading progress bar
-      initReadingProgress();
-    }
-
-    // ---------- READING PROGRESS ----------
-    function initReadingProgress() {
-      const bar = document.createElement('div');
-      bar.className = 'fixed top-0 left-0 z-[60] h-1 bg-gradient-to-r from-brand-400 to-brand-600 transition-all duration-100';
-      bar.style.width = '0%';
-      document.body.appendChild(bar);
-
-      window.addEventListener('scroll', () => {
-        const h = document.documentElement.scrollHeight - window.innerHeight;
-        const pct = h > 0 ? (window.scrollY / h) * 100 : 0;
-        bar.style.width = Math.min(100, Math.max(0, pct)) + '%';
-      }, { passive: true });
-    }
-
-    // ---------- INIT ----------
-    async function init() {
-      const slug = getSlug();
-      if (!slug) return showError();
-
-      // Load config & posts
-      const [cfgRes, postsRes] = await Promise.all([
-        fetch('/content/config.json?t=' + Date.now()).then(r => r.ok ? r.json() : {}).catch(() => ({})),
-        fetch('/content/posts.json?t=' + Date.now()).then(r => r.ok ? r.json() : { posts: [] }).catch(() => ({ posts: [] })),
-      ]);
-
-      const cfg = cfgRes || {};
-      const posts = postsRes.posts || [];
-      const post = posts.find(p => p.slug === slug || p.id === slug);
-
-      if (!post) return showError();
-
-      renderArticle(post, cfg, posts);
     }
 
     function showError() {
@@ -463,14 +481,33 @@
       document.title = 'Artikel Tidak Ditemukan | WebLynk';
     }
 
-    // ---------- MOBILE MENU ----------
+    async function init() {
+      const slug = getSlug();
+      if (!slug) return showError();
+
+      const [cfgRes, postsRes] = await Promise.all([
+        fetch('/content/config.json?t=' + Date.now()).then(r => r.ok ? r.json() : {}).catch(() => ({})),
+        fetch('/content/posts.json?t=' + Date.now()).then(r => r.ok ? r.json() : { posts: [] }).catch(() => ({ posts: [] })),
+      ]);
+
+      const cfg = cfgRes || {};
+      const posts = postsRes.posts || [];
+      const post = posts.find(p => p.slug === slug || p.id === slug);
+      if (!post) return showError();
+      renderArticle(post, cfg, posts);
+    }
+
     $('#menuBtn')?.addEventListener('click', () => $('#mobileNav').classList.toggle('hidden'));
 
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', init);
-    } else {
-      init();
-    }
+    const backTop = $('#backToTop');
+    window.addEventListener('scroll', () => {
+      backTop.classList.toggle('opacity-0', window.scrollY < 400);
+      backTop.classList.toggle('pointer-events-none', window.scrollY < 400);
+    }, { passive: true });
+    backTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+    else init();
   })();
   </script>
 </body>

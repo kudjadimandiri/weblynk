@@ -1,27 +1,20 @@
 /* ============================================
-   WebLynk CMS — Complete Admin Logic
-   Includes: GitHub API, List Render, Markdown Editor
+   WebLynk CMS — Complete with AI Schema
    ============================================ */
 
 (function () {
   'use strict';
 
-  // ---------- CONSTANTS ----------
   const GH_KEY = 'weblynk_github';
   const CACHE_KEY = 'weblynk_cache';
   const API = 'https://api.github.com';
 
-  // ---------- UTILS ----------
   const $ = (sel, ctx = document) => ctx.querySelector(sel);
   const $$ = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
 
+  // ---------- TOAST ----------
   function toast(msg, type = 'info') {
-    const colors = {
-      info: 'bg-brand-600',
-      success: 'bg-green-600',
-      error: 'bg-red-600',
-      warn: 'bg-amber-500',
-    };
+    const colors = { info: 'bg-brand-600', success: 'bg-green-600', error: 'bg-red-600', warn: 'bg-amber-500' };
     const icons = { info: 'ℹ️', success: '✅', error: '❌', warn: '⚠️' };
 
     const el = document.createElement('div');
@@ -35,7 +28,6 @@
       el.style.transform = 'translateY(0)';
       el.style.opacity = '1';
     });
-
     setTimeout(() => {
       el.style.transform = 'translateY(80px)';
       el.style.opacity = '0';
@@ -43,18 +35,12 @@
     }, 3000);
   }
 
-  // ============================================
-  // GITHUB API
-  // ============================================
+  // ---------- GITHUB ----------
   function getGH() {
     try { return JSON.parse(localStorage.getItem(GH_KEY) || '{}'); }
     catch { return {}; }
   }
-
-  function setGH(cfg) {
-    localStorage.setItem(GH_KEY, JSON.stringify(cfg));
-  }
-
+  function setGH(cfg) { localStorage.setItem(GH_KEY, JSON.stringify(cfg)); }
   function isConfigured() {
     const c = getGH();
     return Boolean(c.owner && c.repo && c.token);
@@ -78,7 +64,7 @@
     try {
       const existing = await ghGet(path);
       sha = existing.sha;
-    } catch { /* file baru */ }
+    } catch {}
 
     const body = {
       message: message || `Update ${path}`,
@@ -104,20 +90,14 @@
     return await r.json();
   }
 
-  // ============================================
-  // LOCAL CACHE
-  // ============================================
+  // ---------- CACHE ----------
   function saveCache() {
     try {
       localStorage.setItem(CACHE_KEY, JSON.stringify({
-        posts: state.posts,
-        tools: state.tools,
-        config: state.config,
-        ts: Date.now(),
+        posts: state.posts, tools: state.tools, config: state.config, ts: Date.now(),
       }));
     } catch (e) { console.warn('Cache save failed', e); }
   }
-
   function loadCache() {
     try {
       const c = JSON.parse(localStorage.getItem(CACHE_KEY) || '{}');
@@ -128,26 +108,24 @@
     } catch { return false; }
   }
 
-  // ============================================
-  // STATE
-  // ============================================
+  // ---------- STATE ----------
   const state = {
-    posts: [],
-    tools: [],
-    config: {},
-    editing: null,
-    editingType: 'post',
+    posts: [], tools: [], config: {},
+    editing: null, editingType: 'post',
   };
 
-  // ============================================
-  // RENDER LISTS
-  // ============================================
+  // ---------- RENDER LISTS ----------
   function renderLists() {
     const row = (item, type) => {
       const icon = item.icon || (type === 'post' ? '📝' : type === 'tool' ? '🛠️' : '🎮');
       const title = item.title || item.name || '(tanpa judul)';
       const meta = [item.category, item.date].filter(Boolean).join(' · ');
       const hasMd = type === 'post' && item.markdown;
+      const hasAI = type === 'post' && item.aiSchema && (
+        item.aiSchema.faq?.length ||
+        item.aiSchema.keyTakeaways?.length ||
+        item.aiSchema.howTo?.steps?.length
+      );
       return `
         <div class="flex items-center justify-between gap-4 rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition hover:border-brand-300 hover:shadow-md">
           <div class="flex min-w-0 items-center gap-3">
@@ -156,6 +134,7 @@
               <p class="truncate font-semibold text-slate-900">
                 ${title}
                 ${hasMd ? '<span class="ml-2 rounded-full bg-brand-50 px-2 py-0.5 text-xs font-medium text-brand-600">MD</span>' : ''}
+                ${hasAI ? '<span class="ml-2 rounded-full bg-purple-100 px-2 py-0.5 text-xs font-medium text-purple-700">🤖 AI</span>' : ''}
               </p>
               <p class="truncate text-xs text-slate-500">${meta}</p>
             </div>
@@ -175,25 +154,266 @@
 
     $('#postsList').innerHTML = posts.length
       ? posts.map((p) => row(p, 'post')).join('')
-      : '<p class="rounded-xl border border-dashed border-slate-300 bg-white py-8 text-center text-slate-500">Belum ada artikel. Klik "✍️ Tulis Artikel Baru".</p>';
-
+      : '<p class="rounded-xl border border-dashed border-slate-300 bg-white py-8 text-center text-slate-500">Belum ada artikel.</p>';
     $('#toolsList').innerHTML = tools.length
       ? tools.map((t) => row(t, 'tool')).join('')
       : '<p class="rounded-xl border border-dashed border-slate-300 bg-white py-8 text-center text-slate-500">Belum ada tools.</p>';
-
     $('#gamesList').innerHTML = games.length
       ? games.map((g) => row(g, 'game')).join('')
       : '<p class="rounded-xl border border-dashed border-slate-300 bg-white py-8 text-center text-slate-500">Belum ada games.</p>';
   }
 
   // ============================================
+  // AI SCHEMA MODULE
+  // ============================================
+  const AI = {
+    init() {
+      $('#aiPanelToggle')?.addEventListener('click', () => {
+        const panel = $('#aiPanel');
+        const chevron = $('#aiChevron');
+        const collapsed = panel.style.display === 'none';
+        panel.style.display = collapsed ? '' : 'none';
+        chevron.style.transform = collapsed ? '' : 'rotate(-90deg)';
+      });
+
+      ['#f_about', '#f_mentions', '#f_keyTakeaways', '#f_title', '#f_slug', '#f_excerpt', '#f_image', '#f_category', '#f_tags', '#f_date']
+        .forEach(sel => { $(sel)?.addEventListener('input', () => this.updatePreview()); });
+
+      this.updatePreview();
+    },
+
+    addFAQ(q = '', a = '') {
+      const list = $('#faqList');
+      if (!list) return;
+      const id = 'faq-' + Date.now() + Math.random().toString(36).slice(2, 6);
+      const el = document.createElement('div');
+      el.className = 'ai-faq-item rounded-lg border border-slate-100 bg-slate-50 p-3';
+      el.dataset.faqId = id;
+      el.innerHTML = `
+        <div class="mb-2 flex items-center justify-between">
+          <span class="text-xs font-bold text-slate-500">FAQ Item</span>
+          <button type="button" class="text-xs text-red-500 hover:underline" data-remove>Hapus</button>
+        </div>
+        <input placeholder="Pertanyaan..." value="${String(q).replace(/"/g, '&quot;')}"
+          class="faq-q mb-2 w-full rounded-lg border border-slate-200 px-3 py-1.5 text-sm focus:border-brand-500 focus:outline-none" />
+        <textarea placeholder="Jawaban..." rows="2"
+          class="faq-a w-full rounded-lg border border-slate-200 px-3 py-1.5 text-sm focus:border-brand-500 focus:outline-none">${a || ''}</textarea>`;
+      list.appendChild(el);
+      el.querySelector('[data-remove]').addEventListener('click', () => { el.remove(); this.updatePreview(); });
+      el.querySelector('.faq-q').addEventListener('input', () => this.updatePreview());
+      el.querySelector('.faq-a').addEventListener('input', () => this.updatePreview());
+      this.updatePreview();
+    },
+
+    getFAQs() {
+      return $$('#faqList [data-faq-id]').map(el => ({
+        q: el.querySelector('.faq-q')?.value.trim() || '',
+        a: el.querySelector('.faq-a')?.value.trim() || '',
+      })).filter(f => f.q && f.a);
+    },
+
+    addHowToStep(name = '', text = '') {
+      const list = $('#howToList');
+      if (!list) return;
+      const id = 'step-' + Date.now() + Math.random().toString(36).slice(2, 6);
+      const el = document.createElement('div');
+      el.className = 'ai-step-item rounded-lg border border-slate-100 bg-slate-50 p-3';
+      el.dataset.stepId = id;
+      el.innerHTML = `
+        <div class="mb-2 flex items-center justify-between">
+          <span class="text-xs font-bold text-slate-500">Step</span>
+          <button type="button" class="text-xs text-red-500 hover:underline" data-remove>Hapus</button>
+        </div>
+        <input placeholder="Nama step..." value="${String(name).replace(/"/g, '&quot;')}"
+          class="step-name mb-2 w-full rounded-lg border border-slate-200 px-3 py-1.5 text-sm focus:border-brand-500 focus:outline-none" />
+        <textarea placeholder="Penjelasan..." rows="2"
+          class="step-text w-full rounded-lg border border-slate-200 px-3 py-1.5 text-sm focus:border-brand-500 focus:outline-none">${text || ''}</textarea>`;
+      list.appendChild(el);
+      el.querySelector('[data-remove]').addEventListener('click', () => { el.remove(); this.updatePreview(); });
+      el.querySelector('.step-name').addEventListener('input', () => this.updatePreview());
+      el.querySelector('.step-text').addEventListener('input', () => this.updatePreview());
+      this.updatePreview();
+    },
+
+    getHowToSteps() {
+      return $$('#howToList [data-step-id]').map(el => ({
+        name: el.querySelector('.step-name')?.value.trim() || '',
+        text: el.querySelector('.step-text')?.value.trim() || '',
+      })).filter(s => s.name);
+    },
+
+    buildSchemas() {
+      const title = $('#f_title')?.value || '';
+      const slug = $('#f_slug')?.value || title.toLowerCase().replace(/\s+/g, '-');
+      const excerpt = $('#f_excerpt')?.value || '';
+      const image = $('#f_image')?.value || '';
+      const category = $('#f_category')?.value || 'SEO';
+      const tags = $('#f_tags')?.value || '';
+      const date = $('#f_date')?.value || new Date().toISOString().slice(0, 10);
+      const base = state.config.siteUrl || location.origin;
+      const url = `${base}/artikel/${slug}.html`;
+
+      const about = ($('#f_about')?.value || '').split(',').map(s => s.trim()).filter(Boolean)
+        .map(name => ({ '@type': 'Thing', name }));
+      const mentions = ($('#f_mentions')?.value || '').split(',').map(s => s.trim()).filter(Boolean)
+        .map(name => ({ '@type': 'Thing', name }));
+      const takeaways = ($('#f_keyTakeaways')?.value || '').split('\n').map(s => s.trim()).filter(Boolean);
+
+      const faqs = this.getFAQs();
+      const steps = this.getHowToSteps();
+
+      const schemas = [];
+
+      const blogPosting = {
+        '@context': 'https://schema.org',
+        '@type': 'BlogPosting',
+        headline: title || 'Untitled',
+        description: excerpt,
+        image: image ? { '@type': 'ImageObject', url: image, width: 1200, height: 630 } : undefined,
+        datePublished: date,
+        dateModified: date,
+        author: { '@type': 'Organization', name: state.config.author || 'WebLynk Team' },
+        publisher: {
+          '@type': 'Organization',
+          name: state.config.siteName || 'WebLynk',
+          logo: { '@type': 'ImageObject', url: `${base}/logo.png` },
+        },
+        mainEntityOfPage: { '@type': 'WebPage', '@id': url },
+        articleSection: category,
+        keywords: tags,
+        inLanguage: 'id-ID',
+        isAccessibleForFree: true,
+        speakable: {
+          '@type': 'SpeakableSpecification',
+          cssSelector: ['.article-title', '.key-takeaways', '.article-summary'],
+        },
+      };
+      if (about.length) blogPosting.about = about;
+      if (mentions.length) blogPosting.mentions = mentions;
+      schemas.push(blogPosting);
+
+      if (faqs.length) {
+        schemas.push({
+          '@context': 'https://schema.org',
+          '@type': 'FAQPage',
+          mainEntity: faqs.map(f => ({
+            '@type': 'Question',
+            name: f.q,
+            acceptedAnswer: { '@type': 'Answer', text: f.a },
+          })),
+        });
+      }
+
+      if (steps.length) {
+        schemas.push({
+          '@context': 'https://schema.org',
+          '@type': 'HowTo',
+          name: title,
+          description: excerpt,
+          image: image || undefined,
+          totalTime: 'PT30M',
+          step: steps.map((s, i) => ({
+            '@type': 'HowToStep',
+            position: i + 1,
+            name: s.name,
+            text: s.text,
+          })),
+        });
+      }
+
+      schemas.push({
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Beranda', item: base },
+          { '@type': 'ListItem', position: 2, name: category, item: `${base}/#artikel` },
+          { '@type': 'ListItem', position: 3, name: title || 'Artikel', item: url },
+        ],
+      });
+
+      return JSON.parse(JSON.stringify(schemas, (k, v) => v === undefined ? undefined : v));
+    },
+
+    updatePreview() {
+      const schemas = this.buildSchemas();
+      const preview = $('#aiPreview');
+      if (preview) preview.textContent = JSON.stringify(schemas, null, 2);
+
+      const info = $('#aiInfo');
+      if (info) {
+        const faqCount = this.getFAQs().length;
+        const stepCount = this.getHowToSteps().length;
+        const aboutCount = ($('#f_about')?.value || '').split(',').filter(Boolean).length;
+        const mentionCount = ($('#f_mentions')?.value || '').split(',').filter(Boolean).length;
+        info.textContent = `📊 ${schemas.length} schema · ${faqCount} FAQ · ${stepCount} howto · ${aboutCount} about · ${mentionCount} mentions`;
+      }
+    },
+
+    load(item) {
+      const faqList = $('#faqList');
+      const howList = $('#howToList');
+      if (faqList) faqList.innerHTML = '';
+      if (howList) howList.innerHTML = '';
+
+      ['#f_about', '#f_mentions', '#f_keyTakeaways'].forEach(sel => {
+        const el = $(sel);
+        if (el) el.value = '';
+      });
+
+      if (!item?.aiSchema) {
+        this.updatePreview();
+        return;
+      }
+
+      const s = item.aiSchema;
+
+      if (s.about) {
+        $('#f_about').value = s.about.map(a => a.name || a).join(', ');
+      }
+      if (s.mentions) {
+        $('#f_mentions').value = s.mentions.map(m => m.name || m).join(', ');
+      }
+      if (s.keyTakeaways) {
+        $('#f_keyTakeaways').value = s.keyTakeaways.join('\n');
+      }
+      if (s.faq) {
+        s.faq.forEach(f => this.addFAQ(f.q, f.a));
+      }
+      if (s.howTo?.steps) {
+        s.howTo.steps.forEach(step => this.addHowToStep(step.name, step.text));
+      }
+
+      this.updatePreview();
+    },
+
+    getData() {
+      const faqs = this.getFAQs();
+      const steps = this.getHowToSteps();
+      const about = ($('#f_about')?.value || '').split(',').map(s => s.trim()).filter(Boolean);
+      const mentions = ($('#f_mentions')?.value || '').split(',').map(s => s.trim()).filter(Boolean);
+      const takeaways = ($('#f_keyTakeaways')?.value || '').split('\n').map(s => s.trim()).filter(Boolean);
+
+      if (!faqs.length && !steps.length && !about.length && !mentions.length && !takeaways.length) {
+        return null;
+      }
+
+      const data = { speakable: ['.article-title', '.key-takeaways', '.article-summary'] };
+      if (about.length) data.about = about.map(name => ({ name }));
+      if (mentions.length) data.mentions = mentions.map(name => ({ name }));
+      if (takeaways.length) data.keyTakeaways = takeaways;
+      if (faqs.length) data.faq = faqs;
+      if (steps.length) {
+        data.howTo = { name: $('#f_title')?.value || '', steps };
+      }
+      return data;
+    },
+  };
+
+  // ============================================
   // MARKDOWN EDITOR MODULE
   // ============================================
   const MD = {
-    editor: null,
-    preview: null,
-    previewScroll: null,
-    isPreviewMobile: false,
+    editor: null, preview: null, previewScroll: null,
 
     init() {
       this.editor = $('#mdEditor');
@@ -203,10 +423,7 @@
 
       if (window.marked) {
         marked.setOptions({
-          breaks: true,
-          gfm: true,
-          headerIds: true,
-          mangle: false,
+          breaks: true, gfm: true, headerIds: true, mangle: false,
           highlight: (code, lang) => {
             if (window.hljs && lang && hljs.getLanguage(lang)) {
               try { return hljs.highlight(code, { language: lang }).value; }
@@ -257,7 +474,6 @@
         const block = text.slice(lineStart, lineEnd);
         const lines = block.split('\n');
         replacement = lines.map(l => prefix + l).join('\n');
-
         ta.value = text.slice(0, lineStart) + replacement + text.slice(lineEnd);
         ta.focus();
         ta.setSelectionRange(lineStart, lineStart + replacement.length);
@@ -277,9 +493,7 @@
         case 'ul': return linePrefix('- ');
         case 'ol': return linePrefix('1. ');
         case 'quote': return linePrefix('> ');
-        case 'hr':
-          replacement = '\n\n---\n\n';
-          break;
+        case 'hr': replacement = '\n\n---\n\n'; break;
         case 'link':
           replacement = `[${selected || 'teks link'}](https://example.com)`;
           cursorOffset = 1;
@@ -305,17 +519,10 @@
     bindKeyboardShortcuts() {
       this.editor?.addEventListener('keydown', (e) => {
         const ctrl = e.ctrlKey || e.metaKey;
-
-        if (ctrl && e.key === 'b') {
-          e.preventDefault();
-          this.applyFormat('bold');
-        } else if (ctrl && e.key === 'i') {
-          e.preventDefault();
-          this.applyFormat('italic');
-        } else if (ctrl && e.key === 'k') {
-          e.preventDefault();
-          this.applyFormat('link');
-        } else if (e.key === 'Tab') {
+        if (ctrl && e.key === 'b') { e.preventDefault(); this.applyFormat('bold'); }
+        else if (ctrl && e.key === 'i') { e.preventDefault(); this.applyFormat('italic'); }
+        else if (ctrl && e.key === 'k') { e.preventDefault(); this.applyFormat('link'); }
+        else if (e.key === 'Tab') {
           e.preventDefault();
           const s = this.editor.selectionStart;
           this.editor.value = this.editor.value.slice(0, s) + '  ' + this.editor.value.slice(this.editor.selectionEnd);
@@ -347,14 +554,9 @@
 
       try {
         let html = window.marked ? marked.parse(md) : this.fallbackParse(md);
-
         if (window.DOMPurify) {
-          html = DOMPurify.sanitize(html, {
-            ADD_ATTR: ['target', 'rel'],
-            ADD_TAGS: ['iframe'],
-          });
+          html = DOMPurify.sanitize(html, { ADD_ATTR: ['target', 'rel'] });
         }
-
         this.preview.innerHTML = html;
 
         if (window.hljs) {
@@ -368,7 +570,7 @@
           a.setAttribute('rel', 'noopener noreferrer');
         });
       } catch (err) {
-        this.preview.innerHTML = `<p class="text-red-500">Error parsing markdown: ${err.message}</p>`;
+        this.preview.innerHTML = `<p class="text-red-500">Error: ${err.message}</p>`;
       }
     },
 
@@ -391,7 +593,6 @@
       const chars = val.length;
       const lines = val.split('\n').length;
       const words = val.trim() ? val.trim().split(/\s+/).length : 0;
-
       const stats = $('#mdStats');
       const wc = $('#wordCount');
       if (stats) stats.textContent = `${chars.toLocaleString()} karakter · ${lines} baris`;
@@ -403,7 +604,6 @@
       const fields = $('#metaFields');
       const chevron = $('#metaChevron');
       if (!btn || !fields) return;
-
       btn.addEventListener('click', () => {
         const collapsed = fields.style.display === 'none';
         fields.style.display = collapsed ? '' : 'none';
@@ -414,11 +614,8 @@
     bindPreviewToggle() {
       const desktop = $('#previewDesktop');
       const mobile = $('#previewMobile');
-      const panel = $('#previewPanel');
       if (!desktop || !mobile) return;
-
       const setMode = (isMobile) => {
-        this.isPreviewMobile = isMobile;
         desktop.className = !isMobile
           ? 'rounded px-2 py-1 font-medium text-brand-600 bg-brand-50'
           : 'rounded px-2 py-1 font-medium text-slate-500 hover:bg-slate-100';
@@ -427,7 +624,6 @@
           : 'rounded px-2 py-1 font-medium text-slate-500 hover:bg-slate-100';
         this.preview.classList.toggle('preview-mobile', isMobile);
       };
-
       desktop.addEventListener('click', () => setMode(false));
       mobile.addEventListener('click', () => setMode(true));
     },
@@ -435,14 +631,17 @@
     bindSampleAndClear() {
       $('#loadSampleBtn')?.addEventListener('click', () => this.loadSample());
       $('#clearBtn')?.addEventListener('click', () => {
-        if (!confirm('Kosongkan semua field?')) return;
+        if (!confirm('Kosongkan semua field termasuk AI schema?')) return;
         this.editor.value = '';
-        ['#f_title', '#f_slug', '#f_excerpt', '#f_image', '#f_metaTitle', '#f_metaDescription', '#f_tags'].forEach(s => {
+        ['#f_title', '#f_slug', '#f_excerpt', '#f_image', '#f_metaTitle', '#f_metaDescription', '#f_tags', '#f_about', '#f_mentions', '#f_keyTakeaways'].forEach(s => {
           const el = $(s);
           if (el) el.value = '';
         });
+        $('#faqList').innerHTML = '';
+        $('#howToList').innerHTML = '';
         this.updatePreview();
         this.updateStats();
+        AI.updatePreview();
       });
     },
 
@@ -455,30 +654,17 @@
 
 Backlink adalah tautan dari satu website ke website lain. Mereka bertindak sebagai *suara kepercayaan* dari satu situs ke situs lainnya.
 
-> 💡 **Intinya:** Semakin banyak backlink berkualitas dari situs otoritatif, semakin tinggi kepercayaan Google terhadap website Anda.
+> 💡 **Intinya:** Semakin banyak backlink berkualitas dari situs otoritatif, semakin tinggi kepercayaan Google.
 
 ## Mengapa Backlink Penting?
 
 - **Peringkat Lebih Baik:** Google menggunakan backlink sebagai faktor peringkat utama
 - **Lalu Lintas Organik:** Backlink mendatangkan traffic rujukan
 - **Kredibilitas:** Backlink dari situs terpercaya meningkatkan otoritas
-- **Indeks Lebih Cepat:** Bot mesin pencari menemukan halaman lebih cepat
-
-## Jenis-Jenis Backlink
-
-1. **Natural Backlink** — diperoleh organik ketika orang lain menemukan konten Anda berharga
-2. **Manual Backlink** — melalui outreach ke pemilik situs lain
-3. **Self-Created** — dibuat sendiri (hati-hati spam!)
-
-## Contoh Kode
-
-\`\`\`html
-<a href="https://example.com" rel="noopener noreferrer">Backlink</a>
-\`\`\`
 
 ## Kesimpulan
 
-Fokus pada **kualitas** daripada kuantitas. 10 backlink dari situs DA 70+ jauh lebih berharga daripada 100 backlink spam.
+Fokus pada **kualitas** daripada kuantitas.
 
 ---
 
@@ -502,11 +688,9 @@ Pelajari lebih lanjut di [WebLynk](https://weblynk.pages.dev).`;
         'Code Block HTML': '\n```html\n<div class="example">Hello</div>\n```\n',
         'Image': '\n![alt text](https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800)\n',
       };
-
       const keys = Object.keys(snippets);
-      const pick = prompt(`Pilih snippet:\n${keys.map((k, i) => `${i + 1}. ${k}`).join('\n')}\n\nMasukkan nomor:`);
+      const pick = prompt(`Pilih snippet:\n${keys.map((k, i) => `${i + 1}. ${k}`).join('\n')}\n\nNomor:`);
       const idx = parseInt(pick, 10) - 1;
-
       if (keys[idx]) {
         const snippet = snippets[keys[idx]];
         const ta = this.editor;
@@ -527,14 +711,11 @@ Pelajari lebih lanjut di [WebLynk](https://weblynk.pages.dev).`;
         this.updateStats();
         return;
       }
-
-      // Prioritas: field 'markdown' → fallback ke 'content' (HTML → MD)
       let content = item.markdown || '';
       if (!content && item.content) {
         const looksLikeHtml = /<p>|<h[1-6]>|<ul>|<div>/i.test(item.content);
         content = looksLikeHtml ? this.htmlToMarkdown(item.content) : item.content;
       }
-
       this.editor.value = content;
       this.updatePreview();
       this.updateStats();
@@ -567,25 +748,19 @@ Pelajari lebih lanjut di [WebLynk](https://weblynk.pages.dev).`;
         .trim();
     },
 
-    getMarkdown() {
-      return this.editor?.value || '';
-    },
+    getMarkdown() { return this.editor?.value || ''; },
 
     getHTML() {
       const md = this.getMarkdown();
       if (!md.trim()) return '';
-
       let html = window.marked ? marked.parse(md) : this.fallbackParse(md);
-
       if (window.DOMPurify) {
         html = DOMPurify.sanitize(html, { ADD_ATTR: ['target', 'rel'] });
       }
-
       html = html.replace(
         /<a href="(https?:\/\/[^"]+)"/g,
         '<a href="$1" target="_blank" rel="noopener noreferrer"'
       );
-
       return html;
     },
 
@@ -614,9 +789,7 @@ Pelajari lebih lanjut di [WebLynk](https://weblynk.pages.dev).`;
     },
   };
 
-  // ============================================
-  // EDITOR (TOOL/GAME)
-  // ============================================
+  // ---------- TOOL/GAME FIELDS ----------
   function buildToolGameFields(type, data) {
     const common = `
       <div class="border-t border-slate-200 pt-3 sm:col-span-2">
@@ -662,9 +835,7 @@ Pelajari lebih lanjut di [WebLynk](https://weblynk.pages.dev).`;
       ${common}`;
   }
 
-  // ============================================
-  // OPEN EDITOR
-  // ============================================
+  // ---------- OPEN EDITOR ----------
   function openEditor(type, id) {
     state.editingType = type;
     const pool = type === 'post' ? state.posts : state.tools;
@@ -674,15 +845,11 @@ Pelajari lebih lanjut di [WebLynk](https://weblynk.pages.dev).`;
     $('#editorTitle').textContent = (state.editing ? 'Edit ' : 'Tulis ') + titleMap[type];
 
     if (type === 'post') {
-      // POST: Markdown editor
       $('#metaFields').classList.remove('hidden');
-      $('#metaToggle').parentElement.querySelector('span').textContent = '⚙️ Metadata & SEO';
       $('#toolGamePanel').classList.add('hidden');
       $('#editorPanel').classList.remove('hidden');
       $('#previewPanel').classList.remove('hidden');
-      $('#previewToggle').classList.remove('hidden');
 
-      // Fill metadata
       const d = state.editing || {};
       const setVal = (sel, v) => { const el = $(sel); if (el) el.value = v || ''; };
       setVal('#f_title', d.title);
@@ -695,19 +862,16 @@ Pelajari lebih lanjut di [WebLynk](https://weblynk.pages.dev).`;
       setVal('#f_metaTitle', d.metaTitle);
       setVal('#f_metaDescription', d.metaDescription);
 
-      // Init & load MD
       if (!MD.editor) MD.init();
       MD.load(state.editing);
       MD.markSaved();
-
+      AI.load(state.editing);
     } else {
-      // TOOL/GAME: form sederhana
       $('#metaFields').classList.add('hidden');
       $('#toolGamePanel').classList.remove('hidden');
       $('#editorFields').innerHTML = buildToolGameFields(type, state.editing || {});
       $('#editorPanel').classList.add('hidden');
       $('#previewPanel').classList.add('hidden');
-      $('#previewToggle').classList.add('hidden');
     }
 
     $('#editorModal').classList.remove('hidden');
@@ -722,9 +886,7 @@ Pelajari lebih lanjut di [WebLynk](https://weblynk.pages.dev).`;
     state.editing = null;
   }
 
-  // ============================================
-  // SAVE ITEM
-  // ============================================
+  // ---------- SAVE ITEM ----------
   async function saveItem() {
     const val = (id) => $(id)?.value?.trim() ?? '';
     const type = state.editingType;
@@ -742,7 +904,6 @@ Pelajari lebih lanjut di [WebLynk](https://weblynk.pages.dev).`;
 
       const contentHTML = MD.getHTML();
       const mdRaw = MD.getMarkdown();
-
       if (!mdRaw.trim()) return toast('Konten artikel kosong', 'warn');
 
       const plainText = mdRaw.replace(/[#*`>\[\]()!]/g, '').replace(/\s+/g, ' ').trim();
@@ -750,11 +911,7 @@ Pelajari lebih lanjut di [WebLynk](https://weblynk.pages.dev).`;
       item = {
         id: state.editing?.id || 'post-' + Date.now(),
         title,
-        slug: val('#f_slug') || title.toLowerCase()
-          .replace(/[^\w\s-]/g, '')
-          .replace(/\s+/g, '-')
-          .replace(/-+/g, '-')
-          .replace(/^-|-$/g, ''),
+        slug: val('#f_slug') || title.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, ''),
         excerpt: val('#f_excerpt') || plainText.slice(0, 160),
         content: contentHTML,
         markdown: mdRaw,
@@ -762,10 +919,12 @@ Pelajari lebih lanjut di [WebLynk](https://weblynk.pages.dev).`;
         tags: val('#f_tags').split(',').map(s => s.trim()).filter(Boolean),
         author: state.editing?.author || 'WebLynk Team',
         date: val('#f_date') || new Date().toISOString().slice(0, 10),
+        dateModified: new Date().toISOString(),
         image: val('#f_image'),
         featured: state.editing?.featured || false,
         metaTitle: val('#f_metaTitle') || title,
         metaDescription: val('#f_metaDescription') || (val('#f_excerpt') || plainText).slice(0, 160),
+        aiSchema: AI.getData(),
       };
 
       if (state.editing) {
@@ -790,11 +949,8 @@ Pelajari lebih lanjut di [WebLynk](https://weblynk.pages.dev).`;
         metaDescription: val('#f_metaDescription') || val('#f_description').slice(0, 160),
       };
 
-      if (state.editing) {
-        state.tools = state.tools.map(t => t.id === item.id ? item : t);
-      } else {
-        state.tools.unshift(item);
-      }
+      if (state.editing) state.tools = state.tools.map(t => t.id === item.id ? item : t);
+      else state.tools.unshift(item);
     }
 
     try {
@@ -817,18 +973,13 @@ Pelajari lebih lanjut di [WebLynk](https://weblynk.pages.dev).`;
     }
   }
 
-  // ============================================
-  // DELETE ITEM
-  // ============================================
+  // ---------- DELETE ----------
   async function deleteItem(type, id) {
     if (!confirm('Yakin ingin menghapus item ini?')) return;
     if (!isConfigured()) return toast('GitHub belum dikonfigurasi', 'warn');
 
-    if (type === 'post') {
-      state.posts = state.posts.filter((p) => p.id !== id);
-    } else {
-      state.tools = state.tools.filter((t) => t.id !== id);
-    }
+    if (type === 'post') state.posts = state.posts.filter((p) => p.id !== id);
+    else state.tools = state.tools.filter((t) => t.id !== id);
 
     try {
       if (type === 'post') {
@@ -839,14 +990,10 @@ Pelajari lebih lanjut di [WebLynk](https://weblynk.pages.dev).`;
       saveCache();
       renderLists();
       toast('Item dihapus', 'success');
-    } catch (e) {
-      toast(e.message, 'error');
-    }
+    } catch (e) { toast(e.message, 'error'); }
   }
 
-  // ============================================
-  // SEO CONFIG
-  // ============================================
+  // ---------- SEO CONFIG ----------
   function fillSEOForm() {
     const c = state.config;
     $('#cfgSiteName').value = c.siteName || '';
@@ -855,6 +1002,7 @@ Pelajari lebih lanjut di [WebLynk](https://weblynk.pages.dev).`;
     $('#cfgKeywords').value = c.siteKeywords || '';
     $('#cfgOgImage').value = c.ogImage || '';
     $('#cfgTwitter').value = c.twitterHandle || '';
+    $('#cfgKnowsAbout').value = (c.knowsAbout || []).join(', ');
   }
 
   async function saveSEOConfig() {
@@ -868,6 +1016,7 @@ Pelajari lebih lanjut di [WebLynk](https://weblynk.pages.dev).`;
       siteKeywords: $('#cfgKeywords').value.trim(),
       ogImage: $('#cfgOgImage').value.trim(),
       twitterHandle: $('#cfgTwitter').value.trim(),
+      knowsAbout: $('#cfgKnowsAbout').value.split(',').map(s => s.trim()).filter(Boolean),
     };
 
     try {
@@ -876,14 +1025,10 @@ Pelajari lebih lanjut di [WebLynk](https://weblynk.pages.dev).`;
       state.config = cfg;
       saveCache();
       toast('SEO config tersimpan!', 'success');
-    } catch (e) {
-      toast(e.message, 'error');
-    }
+    } catch (e) { toast(e.message, 'error'); }
   }
 
-  // ============================================
-  // GITHUB SETTINGS
-  // ============================================
+  // ---------- SETTINGS ----------
   function openSettings() {
     const c = getGH();
     $('#ghOwner').value = c.owner || '';
@@ -906,7 +1051,6 @@ Pelajari lebih lanjut di [WebLynk](https://weblynk.pages.dev).`;
       branch: $('#ghBranch').value.trim() || 'main',
       token: $('#ghToken').value.trim(),
     };
-
     if (!cfg.owner || !cfg.repo) return toast('Owner & Repo wajib diisi', 'warn');
 
     setGH(cfg);
@@ -920,9 +1064,7 @@ Pelajari lebih lanjut di [WebLynk](https://weblynk.pages.dev).`;
         });
         if (r.ok) toast('Berhasil terhubung ke GitHub!', 'success');
         else toast('Token salah atau repo tidak ditemukan', 'error');
-      } catch {
-        toast('Gagal koneksi ke GitHub', 'error');
-      }
+      } catch { toast('Gagal koneksi ke GitHub', 'error'); }
     } else {
       toast('Pengaturan tersimpan. Token kosong (read-only).', 'warn');
     }
@@ -938,18 +1080,12 @@ Pelajari lebih lanjut di [WebLynk](https://weblynk.pages.dev).`;
     }
   }
 
-  // ============================================
-  // LOAD DATA
-  // ============================================
+  // ---------- LOAD DATA ----------
   async function loadData() {
     loadCache();
-
     try {
       const cfgR = await fetch('/content/config.json?t=' + Date.now());
-      if (cfgR.ok) {
-        state.config = await cfgR.json();
-        fillSEOForm();
-      }
+      if (cfgR.ok) { state.config = await cfgR.json(); fillSEOForm(); }
     } catch (e) { console.warn('Config load failed', e); }
 
     try {
@@ -967,21 +1103,17 @@ Pelajari lebih lanjut di [WebLynk](https://weblynk.pages.dev).`;
     updateAuthBadge();
   }
 
-  // ============================================
-  // TABS
-  // ============================================
+  // ---------- TABS ----------
   function bindTabs() {
     $$('.tab-btn').forEach((btn) => {
       btn.addEventListener('click', () => {
         const tab = btn.dataset.tab;
-
         $$('.tab-btn').forEach((b) => {
           b.classList.remove('border-brand-600', 'text-brand-600');
           b.classList.add('border-transparent', 'text-slate-500');
         });
         btn.classList.add('border-brand-600', 'text-brand-600');
         btn.classList.remove('border-transparent', 'text-slate-500');
-
         $$('[data-panel]').forEach((p) => {
           p.classList.toggle('hidden', p.dataset.panel !== tab);
         });
@@ -989,9 +1121,7 @@ Pelajari lebih lanjut di [WebLynk](https://weblynk.pages.dev).`;
     });
   }
 
-  // ============================================
-  // GLOBAL EVENTS
-  // ============================================
+  // ---------- GLOBAL EVENTS ----------
   function bindGlobalEvents() {
     document.addEventListener('click', (e) => {
       const btn = e.target.closest('[data-action]');
@@ -1015,17 +1145,12 @@ Pelajari lebih lanjut di [WebLynk](https://weblynk.pages.dev).`;
       }
       if ((e.ctrlKey || e.metaKey) && e.key === 's') {
         e.preventDefault();
-        if (!$('#editorModal').classList.contains('hidden')) {
-          if (state.editingType === 'post') saveItem();
-          else saveItem();
-        }
+        if (!$('#editorModal').classList.contains('hidden')) saveItem();
       }
     });
   }
 
-  // ============================================
-  // EXPOSE GLOBAL
-  // ============================================
+  // ---------- EXPOSE GLOBAL ----------
   window.openEditor = openEditor;
   window.closeEditor = closeEditor;
   window.saveItem = saveItem;
@@ -1034,19 +1159,25 @@ Pelajari lebih lanjut di [WebLynk](https://weblynk.pages.dev).`;
   window.saveGitHubSettings = saveGitHubSettings;
   window.openSettings = openSettings;
   window.closeSettings = closeSettings;
+  window.addFAQ = (q, a) => AI.addFAQ(q, a);
+  window.addHowToStep = (n, t) => AI.addHowToStep(n, t);
+  window.copyJSONLD = () => {
+    const preview = $('#aiPreview');
+    if (preview) {
+      navigator.clipboard.writeText(preview.textContent);
+      toast('JSON-LD copied!', 'success');
+    }
+  };
+  window.WebLynkAI = AI;
   window.WebLynkMD = MD;
 
-  // ============================================
-  // BOOT
-  // ============================================
+  // ---------- BOOT ----------
   document.addEventListener('DOMContentLoaded', () => {
     bindTabs();
     bindGlobalEvents();
     $('#settingsBtn')?.addEventListener('click', openSettings);
-
-    // Init MD editor sebelum load data
     MD.init();
-
+    AI.init();
     loadData();
   });
 })();

@@ -53,38 +53,12 @@
       "metaDescription": "Buat file robots.txt untuk mengontrol crawler mesin pencari di website Anda."
     },
     {
-      "id": "tool-005",
-      "name": "XML Sitemap Generator",
-      "slug": "xml-sitemap-generator",
-      "type": "tool",
-      "category": "Technical SEO",
-      "description": "Buat XML sitemap untuk membantu Google mengindeks website Anda.",
-      "icon": "🗺️",
-      "url": "/tools/xml-sitemap-generator.html",
-      "featured": false,
-      "metaTitle": "XML Sitemap Generator | WebLynk",
-      "metaDescription": "Generate XML sitemap untuk mempercepat indeks website di Google."
-    },
-    {
-      "id": "tool-006",
-      "name": "Page Speed Analyzer",
-      "slug": "page-speed-analyzer",
-      "type": "tool",
-      "category": "Technical SEO",
-      "description": "Analisis kecepatan halaman website Anda dan dapatkan rekomendasi.",
-      "icon": "⚡",
-      "url": "/tools/page-speed-analyzer.html",
-      "featured": true,
-      "metaTitle": "Page Speed Analyzer | WebLynk",
-      "metaDescription": "Analisis kecepatan halaman website dan dapatkan rekomendasi optimasi."
-    },
-    {
       "id": "game-001",
       "name": "SEO Quiz Challenge",
-      "slug": "seo-quiz-challenge",
+      "slug": "seo-quiz",
       "type": "game",
       "category": "Game",
-      "description": "Uji pengetahuan SEO Anda dengan 20 pertanyaan interaktif.",
+      "description": "Uji pengetahuan SEO Anda dengan 10 pertanyaan interaktif.",
       "icon": "🎮",
       "url": "/games/seo-quiz.html",
       "featured": true,
@@ -103,32 +77,6 @@
       "featured": true,
       "metaTitle": "Backlink Tycoon Game | WebLynk",
       "metaDescription": "Game simulasi membangun backlink untuk memahami strategi SEO."
-    },
-    {
-      "id": "game-003",
-      "name": "Keyword Hunter",
-      "slug": "keyword-hunter",
-      "type": "game",
-      "category": "Game",
-      "description": "Temukan keyword tersembunyi dan raih skor tertinggi.",
-      "icon": "🔍",
-      "url": "/games/keyword-hunter.html",
-      "featured": false,
-      "metaTitle": "Keyword Hunter Game | WebLynk",
-      "metaDescription": "Game mencari keyword SEO yang seru dan mendidik."
-    },
-    {
-      "id": "game-004",
-      "name": "SERP Master",
-      "slug": "serp-master",
-      "type": "game",
-      "category": "Game",
-      "description": "Naikkan website Anda ke peringkat #1 dengan strategi SEO tepat.",
-      "icon": "📈",
-      "url": "/games/serp-master.html",
-      "featured": false,
-      "metaTitle": "SERP Master Game | WebLynk",
-      "metaDescription": "Game simulasi SEO untuk naik ke peringkat #1 Google."
     }
   ]
 }

@@ -2,17 +2,29 @@
 <html>
 <head>
   <meta charset="UTF-8">
+  <title>Redirecting...</title>
   <script>
-    // Redirect /artikel/slug.html → /artikel/?slug=slug
-    const path = location.pathname;
-    const parts = path.split('/').filter(Boolean);
-    if (parts.length === 2) {
-      const folder = parts[0];
-      const file = parts[1].replace(/\.html?$/, '');
-      if (['artikel', 'tools', 'games'].includes(folder)) {
-        location.replace(`/${folder}/?slug=${encodeURIComponent(file)}`);
+    (function() {
+      const path = location.pathname;
+      const parts = path.split('/').filter(Boolean);
+      if (parts.length === 2) {
+        const folder = parts[0];
+        const file = parts[1].replace(/\.html?$/, '');
+        if (['artikel', 'tools', 'games'].includes(folder)) {
+          location.replace(`/${folder}/?slug=${encodeURIComponent(file)}`);
+          return;
+        }
       }
-    }
+      document.addEventListener('DOMContentLoaded', () => {
+        document.body.innerHTML = `
+          <div style="font-family:system-ui;text-align:center;padding:80px 20px;max-width:600px;margin:0 auto">
+            <h1 style="font-size:72px;margin:0;color:#0284c7">404</h1>
+            <h2 style="color:#0f172a;margin:16px 0">Halaman Tidak Ditemukan</h2>
+            <p style="color:#64748b">Halaman yang Anda cari tidak tersedia.</p>
+            <a href="/" style="display:inline-block;margin-top:24px;padding:12px 28px;background:#0284c7;color:white;text-decoration:none;border-radius:999px;font-weight:bold">← Kembali ke Beranda</a>
+          </div>`;
+      });
+    })();
   </script>
 </head>
 <body></body>
