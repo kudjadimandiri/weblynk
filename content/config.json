@@ -1,15 +1,11 @@
 {
   "siteName": "WebLynk",
   "siteUrl": "https://weblynk.pages.dev",
-  "siteDescription": "Blog SEO 2026, backlink High DA/DR, tools & game gratis.",
-  "siteKeywords": "SEO 2026, backlink, high DA, high DR, tools, game",
+  "siteDescription": "Blog SEO 2026, backlink High DA/DR, tools & game gratis untuk pertumbuhan website Anda.",
+  "siteKeywords": "SEO 2026, backlink, high DA, high DR, otoritas domain, peringkat Google, link building, tools SEO, game SEO",
   "author": "WebLynk Team",
   "ogImage": "https://weblynk.pages.dev/og-image.jpg",
   "twitterHandle": "@weblynk",
-  "github": {
-    "owner": "username-github-anda",
-    "repo": "weblynk",
-    "branch": "main",
-    "token": ""
-  }
+  "language": "id-ID",
+  "themeColor": "#0284c7"
 }
