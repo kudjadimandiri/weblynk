@@ -323,4 +323,287 @@
         category: val('#f_category') || 'SEO',
         tags: val('#f_tags').split(',').map((s) => s.trim()).filter(Boolean),
         author: state.editing?.author || 'WebLynk Team',
-        date: val('#f_date') || new Date().toISOString().slice(0,
+        date: val('#f_date') || new Date().toISOString().slice(0, 10),
+        image: val('#f_image'),
+        featured: state.editing?.featured || false,
+        metaTitle: val('#f_metaTitle') || title,
+        metaDescription: val('#f_metaDescription') || val('#f_excerpt').slice(0, 160),
+      };
+
+      if (state.editing) {
+        state.posts = state.posts.map((p) => (p.id === item.id ? item : p));
+      } else {
+        state.posts.unshift(item);
+      }
+    } else {
+      const name = val('#f_name');
+      if (!name) return toast('Nama wajib diisi', 'warn');
+
+      item = {
+        id: state.editing?.id || (type === 'tool' ? 'tool-' : 'game-') + Date.now(),
+        name,
+        slug: name.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-'),
+        type,
+        category: val('#f_category') || (type === 'tool' ? 'SEO' : 'Game'),
+        description: val('#f_description'),
+        icon: val('#f_icon') || (type === 'tool' ? '🛠️' : '🎮'),
+        url: val('#f_url') || `/${type}s/${name.toLowerCase().replace(/\s+/g, '-')}.html`,
+        metaTitle: val('#f_metaTitle') || name,
+        metaDescription: val('#f_metaDescription') || val('#f_description').slice(0, 160),
+      };
+
+      if (state.editing) {
+        state.tools = state.tools.map((t) => (t.id === item.id ? item : t));
+      } else {
+        state.tools.unshift(item);
+      }
+    }
+
+    try {
+      toast('Menyimpan...', 'info');
+      if (type === 'post') {
+        await ghPut('content/posts.json', JSON.stringify({ posts: state.posts }, null, 2), `CMS: update post "${item.title}"`);
+      } else {
+        await ghPut('content/tools.json', JSON.stringify({ tools: state.tools }, null, 2), `CMS: update ${type} "${item.name}"`);
+      }
+      saveCache();
+      renderLists();
+      closeEditor();
+      toast('Berhasil dipush ke GitHub!', 'success');
+    } catch (e) {
+      console.error(e);
+      toast(e.message, 'error');
+    }
+  }
+
+  // ---------- DELETE ----------
+  async function deleteItem(type, id) {
+    if (!confirm('Yakin ingin menghapus item ini?')) return;
+    if (!isConfigured()) return toast('GitHub belum dikonfigurasi', 'warn');
+
+    if (type === 'post') {
+      state.posts = state.posts.filter((p) => p.id !== id);
+    } else {
+      state.tools = state.tools.filter((t) => t.id !== id);
+    }
+
+    try {
+      if (type === 'post') {
+        await ghPut('content/posts.json', JSON.stringify({ posts: state.posts }, null, 2), 'CMS: delete post');
+      } else {
+        await ghPut('content/tools.json', JSON.stringify({ tools: state.tools }, null, 2), 'CMS: delete item');
+      }
+      saveCache();
+      renderLists();
+      toast('Item dihapus', 'success');
+    } catch (e) {
+      toast(e.message, 'error');
+    }
+  }
+
+  // ---------- SEO CONFIG ----------
+  function fillSEOForm() {
+    const c = state.config;
+    $('#cfgSiteName').value = c.siteName || '';
+    $('#cfgSiteUrl').value = c.siteUrl || '';
+    $('#cfgDesc').value = c.siteDescription || '';
+    $('#cfgKeywords').value = c.siteKeywords || '';
+    $('#cfgOgImage').value = c.ogImage || '';
+    $('#cfgTwitter').value = c.twitterHandle || '';
+  }
+
+  async function saveSEOConfig() {
+    if (!isConfigured()) return toast('GitHub belum dikonfigurasi', 'warn');
+
+    const cfg = {
+      ...state.config,
+      siteName: $('#cfgSiteName').value.trim(),
+      siteUrl: $('#cfgSiteUrl').value.trim().replace(/\/$/, ''),
+      siteDescription: $('#cfgDesc').value.trim(),
+      siteKeywords: $('#cfgKeywords').value.trim(),
+      ogImage: $('#cfgOgImage').value.trim(),
+      twitterHandle: $('#cfgTwitter').value.trim(),
+    };
+
+    try {
+      toast('Menyimpan SEO config...', 'info');
+      await ghPut('content/config.json', JSON.stringify(cfg, null, 2), 'CMS: update SEO config');
+      state.config = cfg;
+      saveCache();
+      toast('SEO config tersimpan!', 'success');
+    } catch (e) {
+      toast(e.message, 'error');
+    }
+  }
+
+  // ---------- GITHUB SETTINGS ----------
+  function openSettings() {
+    const c = getGH();
+    $('#ghOwner').value = c.owner || '';
+    $('#ghRepo').value = c.repo || '';
+    $('#ghBranch').value = c.branch || 'main';
+    $('#ghToken').value = c.token || '';
+    $('#settingsModal').classList.remove('hidden');
+    $('#settingsModal').classList.add('flex');
+  }
+
+  function closeSettings() {
+    $('#settingsModal').classList.add('hidden');
+    $('#settingsModal').classList.remove('flex');
+  }
+
+  async function saveGitHubSettings() {
+    const cfg = {
+      owner: $('#ghOwner').value.trim(),
+      repo: $('#ghRepo').value.trim(),
+      branch: $('#ghBranch').value.trim() || 'main',
+      token: $('#ghToken').value.trim(),
+    };
+
+    if (!cfg.owner || !cfg.repo) {
+      return toast('Owner & Repo wajib diisi', 'warn');
+    }
+
+    setGH(cfg);
+    closeSettings();
+    updateAuthBadge();
+
+    // Test koneksi
+    if (cfg.token) {
+      try {
+        const r = await fetch(`${API}/repos/${cfg.owner}/${cfg.repo}`, {
+          headers: { Authorization: `token ${cfg.token}` },
+        });
+        if (r.ok) {
+          toast('Berhasil terhubung ke GitHub!', 'success');
+        } else {
+          toast('Token salah atau repo tidak ditemukan', 'error');
+        }
+      } catch {
+        toast('Gagal koneksi ke GitHub', 'error');
+      }
+    } else {
+      toast('Pengaturan tersimpan. Token kosong (read-only).', 'warn');
+    }
+  }
+
+  function updateAuthBadge() {
+    const badge = $('#authStatus');
+    if (isConfigured()) {
+      badge.classList.remove('hidden');
+      badge.textContent = '● Terhubung GitHub';
+    } else {
+      badge.classList.add('hidden');
+    }
+  }
+
+  // ---------- LOAD DATA ----------
+  async function loadData() {
+    const hasCache = loadCache();
+
+    // Load config
+    try {
+      const cfgR = await fetch('/content/config.json?t=' + Date.now());
+      if (cfgR.ok) {
+        state.config = await cfgR.json();
+        fillSEOForm();
+      }
+    } catch (e) {
+      console.warn('Config load failed', e);
+    }
+
+    // Load posts
+    try {
+      const r = await fetch('/content/posts.json?t=' + Date.now());
+      if (r.ok) state.posts = (await r.json()).posts || [];
+    } catch (e) {
+      console.warn('Posts load failed', e);
+    }
+
+    // Load tools
+    try {
+      const r = await fetch('/content/tools.json?t=' + Date.now());
+      if (r.ok) state.tools = (await r.json()).tools || [];
+    } catch (e) {
+      console.warn('Tools load failed', e);
+    }
+
+    saveCache();
+    renderLists();
+    updateAuthBadge();
+  }
+
+  // ---------- TABS ----------
+  function bindTabs() {
+    $$('.tab-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const tab = btn.dataset.tab;
+
+        $$('.tab-btn').forEach((b) => {
+          b.classList.remove('border-brand-600', 'text-brand-600');
+          b.classList.add('border-transparent', 'text-slate-500');
+        });
+        btn.classList.add('border-brand-600', 'text-brand-600');
+        btn.classList.remove('border-transparent', 'text-slate-500');
+
+        $$('[data-panel]').forEach((p) => {
+          p.classList.toggle('hidden', p.dataset.panel !== tab);
+        });
+      });
+    });
+  }
+
+  // ---------- GLOBAL EVENT DELEGATION ----------
+  function bindGlobalEvents() {
+    document.addEventListener('click', (e) => {
+      const btn = e.target.closest('[data-action]');
+      if (!btn) return;
+
+      const { action, type, id } = btn.dataset;
+      if (action === 'edit') openEditor(type, id);
+      if (action === 'delete') deleteItem(type, id);
+    });
+
+    // Close modal on overlay click
+    $('#editorModal')?.addEventListener('click', (e) => {
+      if (e.target.id === 'editorModal') closeEditor();
+    });
+    $('#settingsModal')?.addEventListener('click', (e) => {
+      if (e.target.id === 'settingsModal') closeSettings();
+    });
+
+    // ESC closes modal
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        if (!$('#editorModal').classList.contains('hidden')) closeEditor();
+        if (!$('#settingsModal').classList.contains('hidden')) closeSettings();
+      }
+    });
+
+    // Ctrl+S to save
+    document.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+        e.preventDefault();
+        if (!$('#editorModal').classList.contains('hidden')) saveItem();
+      }
+    });
+  }
+
+  // ---------- EXPOSE GLOBAL FUNCTIONS ----------
+  window.openEditor = openEditor;
+  window.closeEditor = closeEditor;
+  window.saveItem = saveItem;
+  window.deleteItem = deleteItem;
+  window.saveSEOConfig = saveSEOConfig;
+  window.saveGitHubSettings = saveGitHubSettings;
+  window.openSettings = openSettings;
+  window.closeSettings = closeSettings;
+
+  // ---------- BOOT ----------
+  document.addEventListener('DOMContentLoaded', () => {
+    bindTabs();
+    bindGlobalEvents();
+    $('#settingsBtn')?.addEventListener('click', openSettings);
+    loadData();
+  });
+})();
