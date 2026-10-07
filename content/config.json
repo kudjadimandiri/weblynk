@@ -1,0 +1,15 @@
+{
+  "siteName": "WebLynk",
+  "siteUrl": "https://weblynk.pages.dev",
+  "siteDescription": "Blog SEO 2026, backlink High DA/DR, tools & game gratis.",
+  "siteKeywords": "SEO 2026, backlink, high DA, high DR, tools, game",
+  "author": "WebLynk Team",
+  "ogImage": "https://weblynk.pages.dev/og-image.jpg",
+  "twitterHandle": "@weblynk",
+  "github": {
+    "owner": "username-github-anda",
+    "repo": "weblynk",
+    "branch": "main",
+    "token": ""
+  }
+}
