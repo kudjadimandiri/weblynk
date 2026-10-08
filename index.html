@@ -9,21 +9,12 @@
   <meta name="robots" content="index, follow" />
   <link rel="canonical" id="canonicalUrl" href="https://weblynk.pages.dev/" />
 
-  <!-- OG / Twitter (diisi via JS dari config.json) -->
   <meta property="og:type" content="website" />
   <meta property="og:title" id="ogTitle" content="WebLynk — Blog SEO 2026" />
   <meta property="og:description" id="ogDescription" content="Blog SEO, backlink, tools & game." />
   <meta property="og:image" id="ogImage" content="https://weblynk.pages.dev/og-image.jpg" />
   <meta property="og:url" id="ogUrl" content="https://weblynk.pages.dev/" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:site" id="twHandle" content="@weblynk" />
-
-  <!-- Custom CSS -->
-  <link rel="stylesheet" href="/assets/css/custom.css" />
-
-  <!-- Preload konten JSON untuk performa -->
-  <link rel="preload" href="/content/posts.json" as="fetch" crossorigin />
-  <link rel="preload" href="/content/tools.json" as="fetch" crossorigin />
 
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -36,53 +27,31 @@
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <script type="application/ld+json" id="structuredData">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "WebLynk",
-    "url": "https://weblynk.pages.dev",
-    "potentialAction": {
-      "@type": "SearchAction",
-      "target": "https://weblynk.pages.dev/search?q={search_term_string}",
-      "query-input": "required name=search_term_string"
-    }
-  }
-  </script>
+  <link rel="stylesheet" href="/assets/css/custom.css" />
 </head>
 <body class="bg-slate-50 font-sans text-slate-800 antialiased">
 
-  <!-- NAVBAR -->
   <header class="sticky top-0 z-50 border-b border-slate-200/70 bg-white/80 backdrop-blur-md">
     <div class="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6">
       <a href="/" class="flex items-center gap-2 text-xl font-bold tracking-tight text-slate-900">
         <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-brand-600 text-white shadow-sm">W</span>
         <span>Web<span class="text-brand-600">Lynk</span></span>
       </a>
-      <nav class="hidden items-center gap-8 text-sm font-medium text-slate-600 md:flex">
-        <a href="#artikel" class="hover:text-brand-600">Artikel</a>
-        <a href="#tools" class="hover:text-brand-600">Tools</a>
-        <a href="#games" class="hover:text-brand-600">Games</a>
-        <a href="/admin/" class="hover:text-brand-600">CMS</a>
-      </nav>
+      <nav class="hidden items-center gap-8 text-sm font-medium text-slate-600 md:flex" id="navLinks"></nav>
       <a href="https://weblynk.pages.dev" class="hidden rounded-full bg-brand-600 px-5 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-700 md:inline-flex">
-        Dapatkan 10 Backlink DA/DR
+        Dapatkan Backlink
       </a>
       <button id="menuBtn" class="rounded-lg p-2 text-slate-600 hover:bg-slate-100 md:hidden" aria-label="Menu">
         <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
       </button>
     </div>
     <div id="mobileNav" class="hidden border-t border-slate-200 bg-white px-4 pb-4 pt-2 md:hidden">
-      <a href="#artikel" class="block py-2 text-sm font-medium text-slate-700 hover:text-brand-600">Artikel</a>
-      <a href="#tools" class="block py-2 text-sm font-medium text-slate-700 hover:text-brand-600">Tools</a>
-      <a href="#games" class="block py-2 text-sm font-medium text-slate-700 hover:text-brand-600">Games</a>
-      <a href="/admin/" class="block py-2 text-sm font-medium text-slate-700 hover:text-brand-600">CMS</a>
+      <div id="mobileNavLinks"></div>
     </div>
   </header>
 
   <main class="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:py-12">
 
-    <!-- HERO -->
     <section class="mb-14 overflow-hidden rounded-3xl bg-gradient-to-br from-brand-700 via-brand-600 to-brand-500 p-8 text-white shadow-xl sm:p-12">
       <div class="max-w-3xl">
         <span class="mb-4 inline-block rounded-full bg-white/20 px-4 py-1 text-xs font-semibold uppercase tracking-wider backdrop-blur-sm">SEO 2026 · High DA/DR</span>
@@ -93,17 +62,16 @@
           Dapatkan 10 backlink berkualitas dari domain otoritas tinggi. Tingkatkan peringkat, kredibilitas, dan lalu lintas organik Anda.
         </p>
         <div class="mt-8 flex flex-wrap gap-4">
-          <a href="https://weblynk.pages.dev" class="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-bold text-brand-700 shadow-md hover:bg-brand-50">
+          <a href="https://weblynk.pages.dev" class="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-bold text-brand-700 shadow-md transition hover:bg-brand-50">
             🔥 Mulai Sekarang
           </a>
-          <a href="#artikel" class="inline-flex items-center gap-2 rounded-full border border-white/40 px-6 py-3 text-sm font-semibold text-white hover:bg-white/10">
+          <a href="#artikel" class="inline-flex items-center gap-2 rounded-full border border-white/40 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/10">
             Jelajahi Artikel
           </a>
         </div>
       </div>
     </section>
 
-    <!-- SEARCH + FILTER -->
     <section class="mb-8">
       <div class="flex flex-col gap-3 sm:flex-row">
         <input id="searchInput" type="search" placeholder="Cari artikel, tools, atau game..."
@@ -118,26 +86,16 @@
       </div>
     </section>
 
-    <!-- ARTIKEL -->
     <section id="artikel" class="mb-16 scroll-mt-24">
       <div class="mb-6 flex items-end justify-between">
         <div>
           <h2 class="text-2xl font-bold text-slate-900 sm:text-3xl">📝 Artikel Terbaru</h2>
           <p class="text-sm text-slate-500">Diupdate otomatis dari CMS</p>
         </div>
-        <a href="/artikel/" class="text-sm font-semibold text-brand-600 hover:text-brand-700">Lihat semua →</a>
       </div>
-      <div id="postsGrid" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        <!-- Post cards dirender via JS -->
-        <div class="animate-pulse rounded-2xl border border-slate-200 bg-white p-5">
-          <div class="mb-3 h-40 rounded-xl bg-slate-200"></div>
-          <div class="mb-2 h-4 w-3/4 rounded bg-slate-200"></div>
-          <div class="h-3 w-1/2 rounded bg-slate-200"></div>
-        </div>
-      </div>
+      <div id="postsGrid" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"></div>
     </section>
 
-    <!-- TOOLS -->
     <section id="tools" class="mb-16 scroll-mt-24">
       <div class="mb-6">
         <h2 class="text-2xl font-bold text-slate-900 sm:text-3xl">🛠️ Tools SEO Gratis</h2>
@@ -146,7 +104,6 @@
       <div id="toolsGrid" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"></div>
     </section>
 
-    <!-- GAMES -->
     <section id="games" class="mb-16 scroll-mt-24">
       <div class="mb-6">
         <h2 class="text-2xl font-bold text-slate-900 sm:text-3xl">🎮 Games Interaktif</h2>
@@ -155,153 +112,178 @@
       <div id="gamesGrid" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"></div>
     </section>
 
-    <!-- CTA -->
     <section class="rounded-3xl bg-gradient-to-r from-brand-700 to-brand-500 px-8 py-12 text-center text-white shadow-xl sm:px-12">
       <h2 class="text-2xl font-extrabold sm:text-4xl">Siap Meningkatkan Peringkat SEO Anda?</h2>
       <p class="mx-auto mt-4 max-w-2xl text-brand-50">Hubungi kami untuk melihat contoh tautan live dan pertanyaan lainnya.</p>
       <div class="mt-8 flex flex-wrap justify-center gap-4">
         <a href="https://weblynk.pages.dev" class="rounded-full bg-white px-8 py-3.5 text-sm font-bold text-brand-700 shadow-md hover:bg-brand-50">Hubungi via WebLynk</a>
-        <a href="/admin/" class="rounded-full border border-white/50 px-8 py-3.5 text-sm font-semibold text-white hover:bg-white/10">Buka CMS</a>
+        <a href="/pages/?slug=kontak" class="rounded-full border border-white/50 px-8 py-3.5 text-sm font-semibold text-white hover:bg-white/10">Kirim Email</a>
       </div>
     </section>
   </main>
 
   <footer class="mt-16 border-t border-slate-200 bg-white">
     <div class="mx-auto max-w-6xl px-4 py-10 sm:px-6">
-      <div class="flex flex-col items-center justify-between gap-4 text-sm text-slate-500 sm:flex-row">
+      <div class="grid gap-8 md:grid-cols-4">
+        <div>
+          <a href="/" class="flex items-center gap-2 text-lg font-bold text-slate-900">
+            <span class="inline-flex h-7 w-7 items-center justify-center rounded-lg bg-brand-600 text-sm text-white">W</span>
+            Web<span class="text-brand-600">Lynk</span>
+          </a>
+          <p class="mt-3 text-sm leading-relaxed text-slate-500">Direktori web & solusi backlink High DA/DR untuk pertumbuhan SEO Anda.</p>
+        </div>
+        <div>
+          <h4 class="mb-3 text-sm font-bold uppercase tracking-wider text-slate-500">Konten</h4>
+          <ul class="space-y-2 text-sm">
+            <li><a href="/#artikel" class="text-slate-600 hover:text-brand-600">Artikel</a></li>
+            <li><a href="/#tools" class="text-slate-600 hover:text-brand-600">Tools</a></li>
+            <li><a href="/#games" class="text-slate-600 hover:text-brand-600">Games</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="mb-3 text-sm font-bold uppercase tracking-wider text-slate-500">Informasi</h4>
+          <ul class="space-y-2 text-sm" id="footerPagesLinks"></ul>
+        </div>
+        <div>
+          <h4 class="mb-3 text-sm font-bold uppercase tracking-wider text-slate-500">Kontak</h4>
+          <ul class="space-y-2 text-sm" id="footerContact"></ul>
+          <ul class="mt-3 space-y-2 text-sm">
+            <li><a href="/sitemap.xml" class="text-slate-600 hover:text-brand-600">Sitemap</a></li>
+            <li><a href="/admin/" class="text-slate-600 hover:text-brand-600">CMS Admin</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="mt-10 flex flex-col items-center justify-between gap-4 border-t border-slate-200 pt-6 text-sm text-slate-500 sm:flex-row">
         <p>© 2026 WebLynk. All rights reserved.</p>
         <div class="flex gap-4">
-          <a href="/sitemap.xml" class="hover:text-brand-600">Sitemap</a>
-          <a href="/admin/" class="hover:text-brand-600">CMS Admin</a>
+          <a href="https://twitter.com/weblynk" class="hover:text-brand-600">Twitter</a>
+          <a href="https://linkedin.com/company/weblynk" class="hover:text-brand-600">LinkedIn</a>
+          <a href="https://github.com/weblynk" class="hover:text-brand-600">GitHub</a>
         </div>
       </div>
     </div>
   </footer>
 
+  <script src="/assets/js/shared.js" defer></script>
   <script>
-  // ===== MOBILE MENU =====
-  const menuBtn = document.getElementById('menuBtn');
-  const mobileNav = document.getElementById('mobileNav');
-  menuBtn?.addEventListener('click', () => mobileNav.classList.toggle('hidden'));
-  mobileNav?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mobileNav.classList.add('hidden')));
+  (function () {
+    'use strict';
+    const $ = (s, c = document) => c.querySelector(s);
 
-  // ===== LOAD DATA FROM JSON (CMS-driven) =====
-  async function loadJSON(path) {
-    try {
-      const r = await fetch(path + '?t=' + Date.now());
-      if (!r.ok) throw new Error('Not found');
-      return await r.json();
-    } catch (e) {
-      console.warn('Gagal load', path, e);
-      return null;
+    async function loadJSON(path) {
+      try {
+        const r = await fetch(path + '?t=' + Date.now());
+        if (!r.ok) throw new Error('Not found');
+        return await r.json();
+      } catch (e) {
+        console.warn('Gagal load', path, e);
+        return null;
+      }
     }
-  }
 
-  function escapeHtml(s) {
-    return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  }
+    function escapeHtml(s) {
+      return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    }
 
-  function renderPostCard(p) {
-    const date = new Date(p.date).toLocaleDateString('id-ID', { day:'numeric', month:'short', year:'numeric' });
-    return `
-      <article class="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
-        <a href="/artikel/${escapeHtml(p.slug)}.html" class="block">
-          <div class="aspect-video overflow-hidden bg-slate-100">
-            <img src="${escapeHtml(p.image || 'https://via.placeholder.com/400x225')}" alt="${escapeHtml(p.title)}" loading="lazy"
-              class="h-full w-full object-cover transition group-hover:scale-105" />
-          </div>
-          <div class="p-5">
-            <span class="inline-block rounded-full bg-brand-50 px-3 py-1 text-xs font-semibold text-brand-700">${escapeHtml(p.category)}</span>
-            <h3 class="mt-3 line-clamp-2 font-bold text-slate-900 group-hover:text-brand-600">${escapeHtml(p.title)}</h3>
-            <p class="mt-2 line-clamp-2 text-sm text-slate-600">${escapeHtml(p.excerpt)}</p>
-            <div class="mt-4 flex items-center justify-between text-xs text-slate-500">
-              <span>📅 ${date}</span>
-              <span>⏱ ${Math.ceil((p.content||'').length/1000)} menit</span>
+    function formatDate(d) {
+      try {
+        return new Date(d).toLocaleDateString('id-ID', { day:'numeric', month:'short', year:'numeric' });
+      } catch { return d; }
+    }
+
+    function renderPostCard(p) {
+      return `
+        <article class="card-hover group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+          <a href="/artikel/?slug=${encodeURIComponent(p.slug)}" class="block">
+            <div class="aspect-video overflow-hidden bg-slate-100">
+              <img src="${escapeHtml(p.image || 'https://via.placeholder.com/400x225')}" alt="${escapeHtml(p.title)}" loading="lazy"
+                class="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
             </div>
-          </div>
-        </a>
-      </article>`;
-  }
-
-  function renderItemCard(item) {
-    return `
-      <a href="${escapeHtml(item.url)}" class="group flex flex-col rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:border-brand-300 hover:shadow-lg">
-        <div class="mb-3 text-4xl">${item.icon || '🛠️'}</div>
-        <h3 class="font-bold text-slate-900 group-hover:text-brand-600">${escapeHtml(item.name)}</h3>
-        <p class="mt-1 text-sm text-slate-600">${escapeHtml(item.description)}</p>
-        <span class="mt-3 inline-block rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600">${escapeHtml(item.category)}</span>
-      </a>`;
-  }
-
-  let allPosts = [], allTools = [], allGames = [];
-
-  function applyFilter() {
-    const q = (document.getElementById('searchInput').value || '').toLowerCase().trim();
-    const cat = document.getElementById('categoryFilter').value;
-
-    const match = (item) => {
-      const hay = (item.title || item.name || '').toLowerCase() + ' ' + (item.excerpt || item.description || '').toLowerCase();
-      const okQ = !q || hay.includes(q);
-      const okC = !cat || (item.category || '') === cat;
-      return okQ && okC;
-    };
-
-    const posts = allPosts.filter(p => match(p));
-    const tools = allTools.filter(t => match(t));
-    const games = allGames.filter(g => match(g));
-
-    document.getElementById('postsGrid').innerHTML = posts.length
-      ? posts.map(renderPostCard).join('')
-      : '<p class="col-span-full text-center text-slate-500">Tidak ada artikel cocok.</p>';
-
-    document.getElementById('toolsGrid').innerHTML = tools.length
-      ? tools.map(renderItemCard).join('')
-      : '<p class="col-span-full text-center text-slate-500">Tidak ada tools cocok.</p>';
-
-    document.getElementById('gamesGrid').innerHTML = games.length
-      ? games.map(renderItemCard).join('')
-      : '<p class="col-span-full text-center text-slate-500">Tidak ada games cocok.</p>';
-  }
-
-  async function init() {
-    // SEO config
-    const cfg = await loadJSON('/content/config.json');
-    if (cfg) {
-      document.title = cfg.siteName + ' — Blog SEO 2026, Backlink High DA/DR, Tools & Game';
-      document.getElementById('metaDescription').setAttribute('content', cfg.siteDescription);
-      document.getElementById('metaKeywords').setAttribute('content', cfg.siteKeywords);
-      document.getElementById('ogTitle').setAttribute('content', cfg.siteName + ' — Blog SEO 2026');
-      document.getElementById('ogDescription').setAttribute('content', cfg.siteDescription);
-      document.getElementById('ogImage').setAttribute('content', cfg.ogImage);
-      document.getElementById('ogUrl').setAttribute('content', cfg.siteUrl + '/');
-      document.getElementById('canonicalUrl').setAttribute('href', cfg.siteUrl + '/');
-      document.getElementById('twHandle').setAttribute('content', cfg.twitterHandle);
+            <div class="p-5">
+              <span class="inline-block rounded-full bg-brand-50 px-3 py-1 text-xs font-semibold text-brand-700">${escapeHtml(p.category)}</span>
+              <h3 class="mt-3 line-clamp-2 font-bold text-slate-900 transition group-hover:text-brand-600">${escapeHtml(p.title)}</h3>
+              <p class="mt-2 line-clamp-2 text-sm text-slate-600">${escapeHtml(p.excerpt)}</p>
+              <div class="mt-4 flex items-center justify-between text-xs text-slate-500">
+                <span>📅 ${formatDate(p.date)}</span>
+                <span>⏱ ${Math.max(1, Math.ceil((p.content||'').replace(/<[^>]+>/g,'').length/1000))} menit</span>
+              </div>
+            </div>
+          </a>
+        </article>`;
     }
 
-    // Posts
-    const postData = await loadJSON('/content/posts.json');
-    allPosts = (postData?.posts || []).sort((a,b) => new Date(b.date) - new Date(a.date));
+    function renderItemCard(item) {
+      const url = item.type === 'tool' ? `/tools/?slug=${encodeURIComponent(item.slug)}` : `/games/?slug=${encodeURIComponent(item.slug)}`;
+      return `
+        <a href="${url}" class="card-hover group flex flex-col rounded-2xl border border-slate-200 bg-white p-5 shadow-sm hover:border-brand-300">
+          <div class="mb-3 text-4xl">${item.icon || '🛠️'}</div>
+          <h3 class="font-bold text-slate-900 transition group-hover:text-brand-600">${escapeHtml(item.name)}</h3>
+          <p class="mt-1 line-clamp-2 text-sm text-slate-600">${escapeHtml(item.description)}</p>
+          <span class="mt-3 inline-block self-start rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600">${escapeHtml(item.category)}</span>
+        </a>`;
+    }
 
-    // Tools & Games
-    const toolData = await loadJSON('/content/tools.json');
-    const all = toolData?.tools || [];
-    allTools = all.filter(t => t.type === 'tool');
-    allGames = all.filter(t => t.type === 'game');
+    const state = { posts: [], tools: [], games: [], filters: { q: '', category: '' } };
 
-    applyFilter();
+    function applyFilters() {
+      const { q, category } = state.filters;
+      const match = (item) => {
+        const hay = ((item.title || item.name || '') + ' ' + (item.excerpt || item.description || '') + ' ' + (item.category || '')).toLowerCase();
+        const okQ = !q || hay.includes(q);
+        const okC = !category || (item.category || '').toLowerCase() === category.toLowerCase();
+        return okQ && okC;
+      };
 
-    // Sitemap dinamis untuk SEO (ditampilkan di console)
-    console.log('Sitemap items:', [...allPosts.map(p => `/artikel/${p.slug}`), ...all.map(t => t.url)]);
-  }
+      const posts = state.posts.filter(match);
+      const tools = state.tools.filter(match);
+      const games = state.games.filter(match);
 
-  document.getElementById('searchInput').addEventListener('input', applyFilter);
-  document.getElementById('categoryFilter').addEventListener('change', applyFilter);
+      $('#postsGrid').innerHTML = posts.length ? posts.map(renderPostCard).join('') : '<p class="col-span-full rounded-2xl border border-dashed border-slate-300 bg-white py-12 text-center text-slate-500">Tidak ada artikel yang cocok.</p>';
+      $('#toolsGrid').innerHTML = tools.length ? tools.map(renderItemCard).join('') : '<p class="col-span-full rounded-2xl border border-dashed border-slate-300 bg-white py-12 text-center text-slate-500">Tidak ada tools yang cocok.</p>';
+      $('#gamesGrid').innerHTML = games.length ? games.map(renderItemCard).join('') : '<p class="col-span-full rounded-2xl border border-dashed border-slate-300 bg-white py-12 text-center text-slate-500">Tidak ada games yang cocok.</p>';
+    }
 
-  init();
+    async function init() {
+      const [cfg, postData, toolData] = await Promise.all([
+        loadJSON('/content/config.json'),
+        loadJSON('/content/posts.json'),
+        loadJSON('/content/tools.json'),
+      ]);
+
+      if (cfg) {
+        document.title = `${cfg.siteName} — Blog SEO 2026, Backlink High DA/DR, Tools & Game`;
+        $('#metaDescription').setAttribute('content', cfg.siteDescription);
+        $('#ogTitle').setAttribute('content', `${cfg.siteName} — Blog SEO 2026`);
+        $('#ogDescription').setAttribute('content', cfg.siteDescription);
+        $('#ogUrl').setAttribute('content', cfg.siteUrl + '/');
+        $('#canonicalUrl').setAttribute('href', cfg.siteUrl + '/');
+      }
+
+      state.posts = (postData?.posts || []).sort((a, b) => new Date(b.date) - new Date(a.date));
+      const all = toolData?.tools || [];
+      state.tools = all.filter(t => t.type === 'tool');
+      state.games = all.filter(t => t.type === 'game');
+
+      applyFilters();
+    }
+
+    let debounce;
+    $('#searchInput')?.addEventListener('input', (e) => {
+      clearTimeout(debounce);
+      debounce = setTimeout(() => {
+        state.filters.q = e.target.value.toLowerCase().trim();
+        applyFilters();
+      }, 200);
+    });
+
+    $('#categoryFilter')?.addEventListener('change', (e) => {
+      state.filters.category = e.target.value;
+      applyFilters();
+    });
+
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+    else init();
+  })();
   </script>
-
-  <!-- Main JS -->
-  <script src="/assets/js/main.js" defer></script>
-  
 </body>
 </html>

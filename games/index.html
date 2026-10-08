@@ -8,59 +8,50 @@
   <meta name="robots" content="index, follow" />
   <link rel="canonical" id="canonicalUrl" href="" />
 
-  <meta property="og:type" content="website" />
-  <meta property="og:title" id="ogTitle" content="" />
-  <meta property="og:description" id="ogDescription" content="" />
-
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
-    tailwind.config = { theme: { extend: { colors: { brand: {
-      50:'#f0f9ff',100:'#e0f2fe',200:'#bae6fd',300:'#7dd3fc',400:'#38bdf8',
-      500:'#0ea5e9',600:'#0284c7',700:'#0369a1',800:'#075985',900:'#0c4a6e'
-    } } } } };
+    tailwind.config = {
+      theme: { extend: { colors: { brand: {
+        50:'#f0f9ff',100:'#e0f2fe',200:'#bae6fd',300:'#7dd3fc',400:'#38bdf8',
+        500:'#0ea5e9',600:'#0284c7',700:'#0369a1',800:'#075985',900:'#0c4a6e'
+      } } } }
+    };
   </script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/assets/css/custom.css" />
-  <script type="application/ld+json" id="gameSchema">{}</script>
 </head>
 <body class="bg-slate-50 font-sans text-slate-800 antialiased">
 
-  <!-- NAVBAR -->
   <header class="sticky top-0 z-50 border-b border-slate-200/70 bg-white/80 backdrop-blur-md">
     <div class="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6">
       <a href="/" class="flex items-center gap-2 text-xl font-bold tracking-tight text-slate-900">
         <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-brand-600 text-white shadow-sm">W</span>
         <span>Web<span class="text-brand-600">Lynk</span></span>
       </a>
-      <nav class="hidden items-center gap-8 text-sm font-medium text-slate-600 md:flex">
-        <a href="/#artikel" class="hover:text-brand-600">Artikel</a>
-        <a href="/#tools" class="hover:text-brand-600">Tools</a>
-        <a href="/#games" class="hover:text-brand-600">Games</a>
-        <a href="/admin/" class="hover:text-brand-600">CMS</a>
-      </nav>
+      <nav class="hidden items-center gap-8 text-sm font-medium text-slate-600 md:flex" id="navLinks"></nav>
+      <a href="https://weblynk.pages.dev" class="hidden rounded-full bg-brand-600 px-5 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-700 md:inline-flex">
+        Dapatkan Backlink
+      </a>
       <button id="menuBtn" class="rounded-lg p-2 text-slate-600 hover:bg-slate-100 md:hidden" aria-label="Menu">
         <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
       </button>
     </div>
     <div id="mobileNav" class="hidden border-t border-slate-200 bg-white px-4 pb-4 pt-2 md:hidden">
-      <a href="/#artikel" class="block py-2 text-sm font-medium text-slate-700 hover:text-brand-600">Artikel</a>
-      <a href="/#tools" class="block py-2 text-sm font-medium text-slate-700 hover:text-brand-600">Tools</a>
-      <a href="/#games" class="block py-2 text-sm font-medium text-slate-700 hover:text-brand-600">Games</a>
-      <a href="/admin/" class="block py-2 text-sm font-medium text-slate-700 hover:text-brand-600">CMS</a>
+      <div id="mobileNavLinks"></div>
     </div>
   </header>
 
   <div id="loading" class="mx-auto max-w-4xl px-4 py-16 sm:px-6">
-    <div class="skeleton mb-4 h-4 w-32 rounded"></div>
-    <div class="skeleton mb-6 h-12 w-2/3 rounded"></div>
-    <div class="skeleton mb-8 h-80 w-full rounded-2xl"></div>
+    <div class="mb-4 h-4 w-32 animate-pulse rounded bg-slate-200"></div>
+    <div class="mb-6 h-12 w-2/3 animate-pulse rounded bg-slate-200"></div>
+    <div class="mb-8 h-80 w-full animate-pulse rounded-2xl bg-slate-200"></div>
   </div>
 
   <div id="error" class="mx-auto hidden max-w-4xl px-4 py-20 text-center sm:px-6">
     <div class="text-6xl">🎮</div>
     <h1 class="mt-4 text-2xl font-bold text-slate-900">Game Tidak Ditemukan</h1>
     <p class="mt-2 text-slate-600">Game yang Anda cari tidak tersedia.</p>
-    <a href="/#games" class="mt-6 inline-block rounded-full bg-brand-600 px-6 py-3 text-sm font-bold text-white hover:bg-brand-700">← Kembali ke Games</a>
+    <a href="/" class="mt-6 inline-block rounded-full bg-brand-600 px-6 py-3 text-sm font-bold text-white hover:bg-brand-700">← Kembali ke Beranda</a>
   </div>
 
   <main id="game" class="mx-auto hidden max-w-4xl px-4 py-8 sm:px-6 lg:py-12">
@@ -88,7 +79,7 @@
     <section class="mt-8 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
       <h2 class="mb-3 text-lg font-bold text-slate-900">🎯 Cara Bermain</h2>
       <ol class="space-y-2 pl-5 text-sm text-slate-700">
-        <li>Baca pertanyaan atau instruksi yang muncul di layar.</li>
+        <li>Baca pertanyaan atau instruksi di layar.</li>
         <li>Pilih jawaban atau lakukan aksi yang diminta.</li>
         <li>Kumpulkan skor sebanyak mungkin!</li>
       </ol>
@@ -103,17 +94,47 @@
 
   <footer class="mt-16 border-t border-slate-200 bg-white">
     <div class="mx-auto max-w-6xl px-4 py-10 sm:px-6">
-      <div class="flex flex-col items-center justify-between gap-4 text-sm text-slate-500 sm:flex-row">
+      <div class="grid gap-8 md:grid-cols-4">
+        <div>
+          <a href="/" class="flex items-center gap-2 text-lg font-bold text-slate-900">
+            <span class="inline-flex h-7 w-7 items-center justify-center rounded-lg bg-brand-600 text-sm text-white">W</span>
+            Web<span class="text-brand-600">Lynk</span>
+          </a>
+          <p class="mt-3 text-sm leading-relaxed text-slate-500">Direktori web & solusi backlink High DA/DR untuk pertumbuhan SEO Anda.</p>
+        </div>
+        <div>
+          <h4 class="mb-3 text-sm font-bold uppercase tracking-wider text-slate-500">Konten</h4>
+          <ul class="space-y-2 text-sm">
+            <li><a href="/#artikel" class="text-slate-600 hover:text-brand-600">Artikel</a></li>
+            <li><a href="/#tools" class="text-slate-600 hover:text-brand-600">Tools</a></li>
+            <li><a href="/#games" class="text-slate-600 hover:text-brand-600">Games</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="mb-3 text-sm font-bold uppercase tracking-wider text-slate-500">Informasi</h4>
+          <ul class="space-y-2 text-sm" id="footerPagesLinks"></ul>
+        </div>
+        <div>
+          <h4 class="mb-3 text-sm font-bold uppercase tracking-wider text-slate-500">Kontak</h4>
+          <ul class="space-y-2 text-sm" id="footerContact"></ul>
+          <ul class="mt-3 space-y-2 text-sm">
+            <li><a href="/sitemap.xml" class="text-slate-600 hover:text-brand-600">Sitemap</a></li>
+            <li><a href="/admin/" class="text-slate-600 hover:text-brand-600">CMS Admin</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="mt-10 flex flex-col items-center justify-between gap-4 border-t border-slate-200 pt-6 text-sm text-slate-500 sm:flex-row">
         <p>© 2026 WebLynk. All rights reserved.</p>
         <div class="flex gap-4">
-          <a href="/#games" class="hover:text-brand-600">Games</a>
-          <a href="/sitemap.xml" class="hover:text-brand-600">Sitemap</a>
+          <a href="https://twitter.com/weblynk" class="hover:text-brand-600">Twitter</a>
+          <a href="https://linkedin.com/company/weblynk" class="hover:text-brand-600">LinkedIn</a>
+          <a href="https://github.com/weblynk" class="hover:text-brand-600">GitHub</a>
         </div>
       </div>
     </div>
   </footer>
 
-  <script src="/assets/js/main.js" defer></script>
+  <script src="/assets/js/shared.js" defer></script>
   <script>
   (function () {
     'use strict';
@@ -135,15 +156,10 @@
       if (el && val != null) el.setAttribute(attr, val);
     }
 
-    // ---------- GAME APPS REGISTRY ----------
     const GAME_APPS = {
       'seo-quiz': renderSeoQuiz,
-      'backlink-tycoon': renderBacklinkTycoon,
-      'keyword-hunter': renderKeywordHunter,
-      'serp-master': renderSerpMaster,
     };
 
-    // --- SEO Quiz Game ---
     function renderSeoQuiz() {
       const questions = [
         { q: 'Apa kepanjangan dari SEO?', a: ['Search Engine Optimization', 'Social Engine Optimization', 'Search Engine Operation'], correct: 0 },
@@ -151,83 +167,53 @@
         { q: 'Berapa idealnya kepadatan keyword?', a: ['1-2%', '10-15%', '50%'], correct: 0 },
         { q: 'Apa itu DA dalam SEO?', a: ['Domain Authority', 'Direct Access', 'Daily Activity'], correct: 0 },
         { q: 'Tools untuk cek backlink?', a: ['Ahrefs', 'Photoshop', 'Excel'], correct: 0 },
-        { q: 'Apa itu SERP?', a: ['Search Engine Results Page', 'Site Engine Ranking Page', 'Social Engine Ranking Platform'], correct: 0 },
-        { q: 'Meta description ideal panjangnya?', a: ['150-160 karakter', '300 karakter', '50 karakter'], correct: 0 },
-        { q: 'Apa itu guest blogging?', a: ['Menulis di blog orang lain', 'Membeli blog', 'Menghapus blog'], correct: 0 },
-        { q: 'Apa fungsi robots.txt?', a: ['Mengatur crawler', 'Menghias website', 'Menyimpan data'], correct: 0 },
-        { q: 'Berapa lama Google mengindeks halaman baru?', a: ['Beberapa hari hingga minggu', '5 menit', '1 tahun'], correct: 0 },
       ];
 
       let current = 0, score = 0, answered = false;
-
       const app = document.getElementById('gameApp');
 
       function render() {
         if (current >= questions.length) return renderResult();
         const q = questions[current];
         answered = false;
-
         app.innerHTML = `
           <div class="mb-4 flex items-center justify-between text-sm">
             <span class="font-semibold text-slate-700">Soal ${current + 1}/${questions.length}</span>
             <span class="rounded-full bg-brand-50 px-3 py-1 font-bold text-brand-700">Skor: ${score}</span>
           </div>
-          <div class="mb-2 h-2 overflow-hidden rounded-full bg-slate-200">
-            <div class="h-full rounded-full bg-brand-500 transition-all" style="width:${((current) / questions.length) * 100}%"></div>
-          </div>
+          <div class="mb-2 h-2 overflow-hidden rounded-full bg-slate-200"><div class="h-full rounded-full bg-brand-500 transition-all" style="width:${(current / questions.length) * 100}%"></div></div>
           <h2 class="my-6 text-xl font-bold text-slate-900">${escapeHtml(q.q)}</h2>
           <div class="space-y-3" id="answers">
-            ${q.a.map((a, i) => `
-              <button data-i="${i}" class="answer-btn w-full rounded-xl border-2 border-slate-200 bg-white px-4 py-3 text-left text-sm font-medium text-slate-700 transition hover:border-brand-400 hover:bg-brand-50">
-                ${escapeHtml(a)}
-              </button>`).join('')}
+            ${q.a.map((a, i) => `<button data-i="${i}" class="answer-btn w-full rounded-xl border-2 border-slate-200 bg-white px-4 py-3 text-left text-sm font-medium text-slate-700 transition hover:border-brand-400 hover:bg-brand-50">${escapeHtml(a)}</button>`).join('')}
           </div>
           <p id="feedback" class="mt-4 hidden text-sm font-semibold"></p>
-          <button id="nextBtn" class="mt-4 hidden w-full rounded-xl bg-brand-600 px-4 py-3 text-sm font-bold text-white hover:bg-brand-700">
-            ${current === questions.length - 1 ? '🏁 Lihat Hasil' : 'Soal Berikutnya →'}
-          </button>`;
-
+          <button id="nextBtn" class="mt-4 hidden w-full rounded-xl bg-brand-600 px-4 py-3 text-sm font-bold text-white hover:bg-brand-700">${current === questions.length - 1 ? '🏁 Lihat Hasil' : 'Soal Berikutnya →'}</button>`;
         document.querySelectorAll('.answer-btn').forEach(btn => {
           btn.addEventListener('click', () => {
             if (answered) return;
             answered = true;
             const i = +btn.dataset.i;
             const correct = i === q.correct;
-
             document.querySelectorAll('.answer-btn').forEach(b => {
               b.disabled = true;
-              if (+b.dataset.i === q.correct) {
-                b.classList.add('border-green-500', 'bg-green-50', 'text-green-800');
-              } else if (+b.dataset.i === i) {
-                b.classList.add('border-red-500', 'bg-red-50', 'text-red-800');
-              } else {
-                b.classList.add('opacity-50');
-              }
+              if (+b.dataset.i === q.correct) b.classList.add('border-green-500', 'bg-green-50', 'text-green-800');
+              else if (+b.dataset.i === i) b.classList.add('border-red-500', 'bg-red-50', 'text-red-800');
+              else b.classList.add('opacity-50');
             });
-
             if (correct) score += 10;
-
             const fb = document.getElementById('feedback');
             fb.classList.remove('hidden');
             fb.textContent = correct ? '✅ Benar! +10 poin' : '❌ Salah!';
             fb.className = 'mt-4 text-sm font-semibold ' + (correct ? 'text-green-600' : 'text-red-600');
-
             document.getElementById('nextBtn').classList.remove('hidden');
           });
         });
-
-        document.getElementById('nextBtn').addEventListener('click', () => {
-          current++;
-          render();
-        });
+        document.getElementById('nextBtn').addEventListener('click', () => { current++; render(); });
       }
 
       function renderResult() {
         const pct = Math.round((score / (questions.length * 10)) * 100);
-        const tier = pct >= 80 ? { emoji: '🏆', msg: 'Luar biasa! Anda SEO Master!' }
-                    : pct >= 60 ? { emoji: '⭐', msg: 'Bagus! Terus belajar SEO.' }
-                    : { emoji: '📚', msg: 'Perlu banyak belajar. Ayo coba lagi!' };
-
+        const tier = pct >= 80 ? { emoji: '🏆', msg: 'Luar biasa!' } : pct >= 60 ? { emoji: '⭐', msg: 'Bagus!' } : { emoji: '📚', msg: 'Ayo coba lagi!' };
         app.innerHTML = `
           <div class="py-6 text-center">
             <div class="text-6xl">${tier.emoji}</div>
@@ -239,67 +225,18 @@
               <p class="mt-1 text-sm">dari ${questions.length * 10} · ${pct}%</p>
             </div>
             <button onclick="location.reload()" class="mt-6 rounded-full bg-brand-600 px-6 py-3 text-sm font-bold text-white hover:bg-brand-700">🔄 Main Lagi</button>
-            <a href="/#games" class="mt-3 ml-2 inline-block rounded-full border border-slate-300 px-6 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50">← Games Lain</a>
           </div>`;
       }
 
       render();
     }
 
-    // --- Stub games ---
-    function renderBacklinkTycoon() {
-      document.getElementById('gameApp').innerHTML = `
-        <div class="rounded-xl border-2 border-dashed border-slate-300 bg-slate-50 p-8 text-center">
-          <div class="text-5xl">🏆</div>
-          <h3 class="mt-4 text-lg font-bold text-slate-800">Backlink Tycoon</h3>
-          <p class="mt-2 text-sm text-slate-600">Game simulasi membangun kerajaan backlink sedang dikembangkan.</p>
-          <p class="mt-4 text-sm text-slate-500">Coming soon di 2026!</p>
-        </div>`;
-    }
-
-    function renderKeywordHunter() {
-      document.getElementById('gameApp').innerHTML = `
-        <div class="rounded-xl border-2 border-dashed border-slate-300 bg-slate-50 p-8 text-center">
-          <div class="text-5xl">🔍</div>
-          <h3 class="mt-4 text-lg font-bold text-slate-800">Keyword Hunter</h3>
-          <p class="mt-2 text-sm text-slate-600">Game mencari keyword sedang dikembangkan.</p>
-          <p class="mt-4 text-sm text-slate-500">Coming soon!</p>
-        </div>`;
-    }
-
-    function renderSerpMaster() {
-      document.getElementById('gameApp').innerHTML = `
-        <div class="rounded-xl border-2 border-dashed border-slate-300 bg-slate-50 p-8 text-center">
-          <div class="text-5xl">📈</div>
-          <h3 class="mt-4 text-lg font-bold text-slate-800">SERP Master</h3>
-          <p class="mt-2 text-sm text-slate-600">Game simulasi ranking sedang dikembangkan.</p>
-          <p class="mt-4 text-sm text-slate-500">Coming soon!</p>
-        </div>`;
-    }
-
-    // ---------- RENDER ----------
     function renderGame(game, cfg) {
       const base = cfg.siteUrl || location.origin;
-      const url = `${base}/games/${game.slug}.html`;
-      const metaTitle = game.metaTitle || `${game.name} | ${cfg.siteName}`;
-      const metaDesc = game.metaDescription || game.description;
-
-      document.title = metaTitle;
-      setMeta('metaDescription', metaDesc);
+      const url = `${base}/games/?slug=${game.slug}`;
+      document.title = game.metaTitle || `${game.name} | ${cfg.siteName}`;
+      setMeta('metaDescription', game.metaDescription || game.description);
       setMeta('canonicalUrl', url, 'href');
-      setMeta('ogTitle', metaTitle);
-      setMeta('ogDescription', metaDesc);
-
-      document.getElementById('gameSchema').textContent = JSON.stringify({
-        '@context': 'https://schema.org',
-        '@type': 'VideoGame',
-        name: game.name,
-        description: metaDesc,
-        genre: 'Educational',
-        gamePlatform: 'Web Browser',
-        applicationCategory: 'Game',
-        offers: { '@type': 'Offer', price: '0', priceCurrency: 'IDR' },
-      });
 
       document.getElementById('gameIcon').textContent = game.icon || '🎮';
       document.getElementById('gameCategory').textContent = game.category || 'Game';
@@ -309,10 +246,7 @@
 
       const app = GAME_APPS[game.slug];
       if (app) app();
-      else document.getElementById('gameApp').innerHTML = `
-        <div class="rounded-xl border-2 border-dashed border-slate-300 bg-slate-50 p-8 text-center">
-          <p class="text-slate-600">Game ini sedang dalam pengembangan.</p>
-        </div>`;
+      else document.getElementById('gameApp').innerHTML = '<div class="rounded-xl border-2 border-dashed border-slate-300 bg-slate-50 p-8 text-center"><p class="text-slate-600">Game sedang dalam pengembangan.</p></div>';
 
       document.getElementById('loading').classList.add('hidden');
       document.getElementById('game').classList.remove('hidden');
@@ -329,16 +263,12 @@
         fetch('/content/config.json?t=' + Date.now()).then(r => r.ok ? r.json() : {}).catch(() => ({})),
         fetch('/content/tools.json?t=' + Date.now()).then(r => r.ok ? r.json() : { tools: [] }).catch(() => ({ tools: [] })),
       ]);
-
       const cfg = cfgRes || {};
       const all = dataRes.tools || [];
       const game = all.find(t => t.slug === slug && t.type === 'game');
-
       if (!game) return showError();
       renderGame(game, cfg);
     }
-
-    document.getElementById('menuBtn')?.addEventListener('click', () => document.getElementById('mobileNav').classList.toggle('hidden'));
 
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
     else init();

@@ -5,8 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Memuat artikel... | WebLynk</title>
   <meta name="description" id="metaDescription" content="Memuat..." />
-  <meta name="keywords" id="metaKeywords" content="" />
-  <meta name="author" id="metaAuthor" content="WebLynk Team" />
   <meta name="robots" content="index, follow, max-image-preview:large" />
   <link rel="canonical" id="canonicalUrl" href="" />
 
@@ -15,10 +13,6 @@
   <meta property="og:description" id="ogDescription" content="" />
   <meta property="og:image" id="ogImage" content="" />
   <meta property="og:url" id="ogUrl" content="" />
-  <meta property="article:published_time" id="ogPublished" content="" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" id="twTitle" content="" />
-  <meta name="twitter:description" id="twDescription" content="" />
 
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -40,25 +34,20 @@
         <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-brand-600 text-white shadow-sm">W</span>
         <span>Web<span class="text-brand-600">Lynk</span></span>
       </a>
-      <nav class="hidden items-center gap-8 text-sm font-medium text-slate-600 md:flex">
-        <a href="/#artikel" class="hover:text-brand-600">Artikel</a>
-        <a href="/#tools" class="hover:text-brand-600">Tools</a>
-        <a href="/#games" class="hover:text-brand-600">Games</a>
-        <a href="/admin/" class="hover:text-brand-600">CMS</a>
-      </nav>
+      <nav class="hidden items-center gap-8 text-sm font-medium text-slate-600 md:flex" id="navLinks"></nav>
+      <a href="https://weblynk.pages.dev" class="hidden rounded-full bg-brand-600 px-5 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-700 md:inline-flex">
+        Dapatkan Backlink
+      </a>
       <button id="menuBtn" class="rounded-lg p-2 text-slate-600 hover:bg-slate-100 md:hidden" aria-label="Menu">
         <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
       </button>
     </div>
     <div id="mobileNav" class="hidden border-t border-slate-200 bg-white px-4 pb-4 pt-2 md:hidden">
-      <a href="/#artikel" class="block py-2 text-sm font-medium text-slate-700 hover:text-brand-600">Artikel</a>
-      <a href="/#tools" class="block py-2 text-sm font-medium text-slate-700 hover:text-brand-600">Tools</a>
-      <a href="/#games" class="block py-2 text-sm font-medium text-slate-700 hover:text-brand-600">Games</a>
-      <a href="/admin/" class="block py-2 text-sm font-medium text-slate-700 hover:text-brand-600">CMS</a>
+      <div id="mobileNavLinks"></div>
     </div>
   </header>
 
-  <div id="loading" class="mx-auto max-w-4xl px-4 py-16 sm:px-6">
+  <div id="loading" class="mx-auto max-w-6xl px-4 py-16 sm:px-6">
     <div class="mb-4 h-4 w-32 animate-pulse rounded bg-slate-200"></div>
     <div class="mb-6 h-12 w-full animate-pulse rounded bg-slate-200"></div>
     <div class="mb-8 h-80 w-full animate-pulse rounded-2xl bg-slate-200"></div>
@@ -69,15 +58,16 @@
     </div>
   </div>
 
-  <div id="error" class="mx-auto hidden max-w-4xl px-4 py-20 text-center sm:px-6">
+  <div id="error" class="mx-auto hidden max-w-6xl px-4 py-20 text-center sm:px-6">
     <div class="text-6xl">😕</div>
     <h1 class="mt-4 text-2xl font-bold text-slate-900">Artikel Tidak Ditemukan</h1>
-    <p class="mt-2 text-slate-600">Maaf, artikel yang Anda cari tidak tersedia.</p>
-    <a href="/#artikel" class="mt-6 inline-block rounded-full bg-brand-600 px-6 py-3 text-sm font-bold text-white hover:bg-brand-700">← Kembali ke Artikel</a>
+    <p class="mt-2 text-slate-600">Maaf, artikel yang Anda cari tidak tersedia atau sudah dihapus.</p>
+    <a href="/" class="mt-6 inline-block rounded-full bg-brand-600 px-6 py-3 text-sm font-bold text-white hover:bg-brand-700">← Kembali ke Beranda</a>
   </div>
 
   <main id="article" class="mx-auto hidden max-w-6xl px-4 py-8 sm:px-6 lg:py-12">
     <div class="grid gap-12 lg:grid-cols-3">
+
       <article class="lg:col-span-2">
         <nav aria-label="Breadcrumb" class="mb-6 flex flex-wrap items-center gap-2 text-xs text-slate-500">
           <a href="/" class="hover:text-brand-600">Beranda</a>
@@ -158,12 +148,41 @@
 
   <footer class="mt-16 border-t border-slate-200 bg-white">
     <div class="mx-auto max-w-6xl px-4 py-10 sm:px-6">
-      <div class="flex flex-col items-center justify-between gap-4 text-sm text-slate-500 sm:flex-row">
+      <div class="grid gap-8 md:grid-cols-4">
+        <div>
+          <a href="/" class="flex items-center gap-2 text-lg font-bold text-slate-900">
+            <span class="inline-flex h-7 w-7 items-center justify-center rounded-lg bg-brand-600 text-sm text-white">W</span>
+            Web<span class="text-brand-600">Lynk</span>
+          </a>
+          <p class="mt-3 text-sm leading-relaxed text-slate-500">Direktori web & solusi backlink High DA/DR untuk pertumbuhan SEO Anda.</p>
+        </div>
+        <div>
+          <h4 class="mb-3 text-sm font-bold uppercase tracking-wider text-slate-500">Konten</h4>
+          <ul class="space-y-2 text-sm">
+            <li><a href="/#artikel" class="text-slate-600 hover:text-brand-600">Artikel</a></li>
+            <li><a href="/#tools" class="text-slate-600 hover:text-brand-600">Tools</a></li>
+            <li><a href="/#games" class="text-slate-600 hover:text-brand-600">Games</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="mb-3 text-sm font-bold uppercase tracking-wider text-slate-500">Informasi</h4>
+          <ul class="space-y-2 text-sm" id="footerPagesLinks"></ul>
+        </div>
+        <div>
+          <h4 class="mb-3 text-sm font-bold uppercase tracking-wider text-slate-500">Kontak</h4>
+          <ul class="space-y-2 text-sm" id="footerContact"></ul>
+          <ul class="mt-3 space-y-2 text-sm">
+            <li><a href="/sitemap.xml" class="text-slate-600 hover:text-brand-600">Sitemap</a></li>
+            <li><a href="/admin/" class="text-slate-600 hover:text-brand-600">CMS Admin</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="mt-10 flex flex-col items-center justify-between gap-4 border-t border-slate-200 pt-6 text-sm text-slate-500 sm:flex-row">
         <p>© 2026 WebLynk. All rights reserved.</p>
         <div class="flex gap-4">
-          <a href="/#artikel" class="hover:text-brand-600">Artikel</a>
-          <a href="/sitemap.xml" class="hover:text-brand-600">Sitemap</a>
-          <a href="/admin/" class="hover:text-brand-600">CMS</a>
+          <a href="https://twitter.com/weblynk" class="hover:text-brand-600">Twitter</a>
+          <a href="https://linkedin.com/company/weblynk" class="hover:text-brand-600">LinkedIn</a>
+          <a href="https://github.com/weblynk" class="hover:text-brand-600">GitHub</a>
         </div>
       </div>
     </div>
@@ -173,6 +192,7 @@
     <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/></svg>
   </button>
 
+  <script src="/assets/js/shared.js" defer></script>
   <script>
   (function () {
     'use strict';
@@ -210,25 +230,19 @@
 
     function applyArticleSEO(post, cfg) {
       const base = cfg.siteUrl || location.origin;
-      const url = `${base}/artikel/${post.slug}.html`;
+      const url = `${base}/artikel/?slug=${post.slug}`;
       const metaTitle = post.metaTitle || `${post.title} | ${cfg.siteName}`;
       const metaDesc = post.metaDescription || post.excerpt || '';
       const img = post.image || cfg.ogImage || '';
 
       document.title = metaTitle;
       setMeta('metaDescription', metaDesc);
-      setMeta('metaKeywords', (post.tags || []).join(', ') + ', ' + (cfg.siteKeywords || ''));
-      setMeta('metaAuthor', post.author);
       setMeta('canonicalUrl', url, 'href');
       setMeta('ogTitle', metaTitle);
       setMeta('ogDescription', metaDesc);
       setMeta('ogImage', img);
       setMeta('ogUrl', url);
-      setMeta('ogPublished', post.date);
-      setMeta('twTitle', metaTitle);
-      setMeta('twDescription', metaDesc);
 
-      // === BUILD AI SCHEMAS ===
       const schemas = [];
       const wordCount = (post.content || '').replace(/<[^>]+>/g, '').split(/\s+/).length;
 
@@ -259,12 +273,8 @@
       };
 
       if (post.aiSchema) {
-        if (post.aiSchema.about?.length) {
-          blogPosting.about = post.aiSchema.about.map(a => ({ '@type': 'Thing', name: a.name }));
-        }
-        if (post.aiSchema.mentions?.length) {
-          blogPosting.mentions = post.aiSchema.mentions.map(m => ({ '@type': 'Thing', name: m.name }));
-        }
+        if (post.aiSchema.about?.length) blogPosting.about = post.aiSchema.about.map(a => ({ '@type': 'Thing', name: a.name }));
+        if (post.aiSchema.mentions?.length) blogPosting.mentions = post.aiSchema.mentions.map(m => ({ '@type': 'Thing', name: m.name }));
       }
 
       schemas.push(blogPosting);
@@ -309,7 +319,6 @@
         ],
       });
 
-      // Remove old & inject new
       document.querySelectorAll('script[id^="ai-schema-"]').forEach(el => el.remove());
       schemas.forEach((schema, i) => {
         const script = document.createElement('script');
@@ -318,8 +327,6 @@
         script.textContent = JSON.stringify(schema, (k, v) => v === undefined ? undefined : v);
         document.head.appendChild(script);
       });
-
-      console.log(`🤖 Injected ${schemas.length} AI schemas:`, schemas.map(s => s['@type']).join(', '));
     }
 
     function renderKeyTakeaways(post) {
@@ -406,7 +413,7 @@
       if (!related.length) { $('#relatedWrap').classList.add('hidden'); return; }
 
       wrap.innerHTML = related.map(p => `
-        <a href="/artikel/${encodeURIComponent(p.slug)}.html" class="group block">
+        <a href="/artikel/?slug=${encodeURIComponent(p.slug)}" class="group block">
           <div class="flex gap-3">
             <div class="h-16 w-16 flex-shrink-0 overflow-hidden rounded-lg bg-slate-100">
               <img src="${escapeHtml(p.image || 'https://via.placeholder.com/100')}" alt="${escapeHtml(p.title)}" class="h-full w-full object-cover" loading="lazy" />
@@ -420,7 +427,7 @@
     }
 
     function bindShare(post, cfg) {
-      const url = `${cfg.siteUrl || location.origin}/artikel/${post.slug}.html`;
+      const url = `${cfg.siteUrl || location.origin}/artikel/?slug=${post.slug}`;
       const title = encodeURIComponent(post.title);
       const u = encodeURIComponent(url);
 
@@ -453,7 +460,6 @@
       img.alt = post.title;
 
       $('#postContent').innerHTML = post.content || '<p>Konten belum tersedia.</p>';
-
       renderKeyTakeaways(post);
       renderFAQ(post);
 
@@ -496,8 +502,6 @@
       if (!post) return showError();
       renderArticle(post, cfg, posts);
     }
-
-    $('#menuBtn')?.addEventListener('click', () => $('#mobileNav').classList.toggle('hidden'));
 
     const backTop = $('#backToTop');
     window.addEventListener('scroll', () => {
