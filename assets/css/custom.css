@@ -29,7 +29,6 @@ body {
 }
 ::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg, #0ea5e9, #0369a1); }
 
-/* Prose */
 .prose-weblynk {
   font-size: 1.0625rem;
   line-height: 1.75;

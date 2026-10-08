@@ -1,5 +1,5 @@
 /* ============================================
-   WebLynk CMS — Complete with AI Schema + Scroll Fix
+   WebLynk CMS — Complete with AI Schema + Pages + Scroll Fix
    ============================================ */
 
 (function () {
@@ -93,7 +93,7 @@
   function saveCache() {
     try {
       localStorage.setItem(CACHE_KEY, JSON.stringify({
-        posts: state.posts, tools: state.tools, config: state.config, ts: Date.now(),
+        posts: state.posts, tools: state.tools, config: state.config, pages: Pages.pages, ts: Date.now(),
       }));
     } catch (e) { console.warn('Cache save failed', e); }
   }
@@ -103,6 +103,7 @@
       if (c.posts) state.posts = c.posts;
       if (c.tools) state.tools = c.tools;
       if (c.config) state.config = c.config;
+      if (c.pages) Pages.pages = c.pages;
       return Boolean(c.posts || c.tools);
     } catch { return false; }
   }
@@ -120,9 +121,7 @@
       const meta = [item.category, item.date].filter(Boolean).join(' · ');
       const hasMd = type === 'post' && item.markdown;
       const hasAI = type === 'post' && item.aiSchema && (
-        item.aiSchema.faq?.length ||
-        item.aiSchema.keyTakeaways?.length ||
-        item.aiSchema.howTo?.steps?.length
+        item.aiSchema.faq?.length || item.aiSchema.keyTakeaways?.length || item.aiSchema.howTo?.steps?.length
       );
       return `
         <div class="flex items-center justify-between gap-4 rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition hover:border-brand-300 hover:shadow-md">
@@ -160,6 +159,94 @@
       ? games.map((g) => row(g, 'game')).join('')
       : '<p class="rounded-xl border border-dashed border-slate-300 bg-white py-8 text-center text-slate-500">Belum ada games.</p>';
   }
+
+  // ============================================
+  // PAGES MODULE
+  // ============================================
+  const Pages = {
+    pages: [],
+
+    renderList() {
+      const list = $('#pagesList');
+      if (!list) return;
+
+      if (!this.pages.length) {
+        list.innerHTML = '<p class="rounded-xl border border-dashed border-slate-300 bg-white py-8 text-center text-slate-500">Belum ada halaman. Klik "+ Halaman Baru".</p>';
+        return;
+      }
+
+      list.innerHTML = this.pages
+        .slice()
+        .sort((a, b) => (a.navOrder || 99) - (b.navOrder || 99))
+        .map(p => `
+          <div class="flex items-center justify-between gap-4 rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition hover:border-brand-300 hover:shadow-md">
+            <div class="flex min-w-0 items-center gap-3">
+              <span class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-slate-100 text-xl">${p.icon || '📄'}</span>
+              <div class="min-w-0">
+                <p class="truncate font-semibold text-slate-900">
+                  ${p.title}
+                  ${p.showInNav ? '<span class="ml-2 rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700">NAV</span>' : ''}
+                </p>
+                <p class="truncate text-xs text-slate-500">/pages/?slug=${p.slug}</p>
+              </div>
+            </div>
+            <div class="flex flex-shrink-0 gap-2">
+              <a href="/pages/?slug=${p.slug}" target="_blank" class="rounded-lg border border-slate-200 px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-50">👁️ Lihat</a>
+              <button data-action="edit-page" data-id="${p.id}" class="rounded-lg border border-slate-200 px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-50">✏️ Edit</button>
+              <button data-action="delete-page" data-id="${p.id}" class="rounded-lg border border-red-200 px-3 py-1.5 text-xs font-medium text-red-600 hover:bg-red-50">🗑️</button>
+            </div>
+          </div>`).join('');
+    },
+
+    async load() {
+      try {
+        const r = await fetch('/content/pages.json?t=' + Date.now());
+        if (r.ok) {
+          const data = await r.json();
+          this.pages = data.pages || [];
+        }
+      } catch (e) {
+        console.warn('Pages load failed', e);
+      }
+      this.renderList();
+    },
+
+    get(id) { return this.pages.find(p => p.id === id); },
+
+    async delete(id) {
+      if (!confirm('Yakin hapus halaman ini?')) return;
+      if (!isConfigured()) return toast('GitHub belum dikonfigurasi', 'warn');
+
+      this.pages = this.pages.filter(p => p.id !== id);
+      try {
+        await ghPut('content/pages.json', JSON.stringify({ pages: this.pages }, null, 2), 'CMS: delete page');
+        this.renderList();
+        toast('Halaman dihapus', 'success');
+      } catch (e) { toast(e.message, 'error'); }
+    },
+
+    async save(item) {
+      if (!isConfigured()) {
+        toast('Konfigurasi GitHub dulu di ⚙️ Pengaturan', 'warn');
+        return false;
+      }
+
+      const idx = this.pages.findIndex(p => p.id === item.id);
+      if (idx >= 0) this.pages[idx] = item;
+      else this.pages.push(item);
+
+      try {
+        toast('Menyimpan halaman...', 'info');
+        await ghPut('content/pages.json', JSON.stringify({ pages: this.pages }, null, 2), `CMS: save page "${item.title}"`);
+        this.renderList();
+        toast('Halaman tersimpan!', 'success');
+        return true;
+      } catch (e) {
+        toast(e.message, 'error');
+        return false;
+      }
+    },
+  };
 
   // ============================================
   // AI SCHEMA MODULE
@@ -393,7 +480,7 @@
   };
 
   // ============================================
-  // MARKDOWN EDITOR MODULE
+  // MARKDOWN EDITOR
   // ============================================
   const MD = {
     editor: null, preview: null, previewScroll: null,
@@ -582,9 +669,6 @@
       if (wc) wc.textContent = `${words} kata`;
     },
 
-    // ============================================
-    // FIXED: Metadata toggle (works with metaFieldsWrap)
-    // ============================================
     bindMetaToggle() {
       const btn = $('#metaToggle');
       const wrap = $('#metaFieldsWrap');
@@ -592,7 +676,6 @@
       const status = $('#metaStatus');
       if (!btn || !wrap) return;
 
-      // Start collapsed
       wrap.classList.add('hidden');
       if (chevron) chevron.style.transform = 'rotate(-90deg)';
 
@@ -624,14 +707,16 @@
     bindSampleAndClear() {
       $('#loadSampleBtn')?.addEventListener('click', () => this.loadSample());
       $('#clearBtn')?.addEventListener('click', () => {
-        if (!confirm('Kosongkan semua field termasuk AI schema?')) return;
+        if (!confirm('Kosongkan semua field?')) return;
         this.editor.value = '';
         ['#f_title', '#f_slug', '#f_excerpt', '#f_image', '#f_metaTitle', '#f_metaDescription', '#f_tags', '#f_about', '#f_mentions', '#f_keyTakeaways'].forEach(s => {
           const el = $(s);
           if (el) el.value = '';
         });
-        $('#faqList').innerHTML = '';
-        $('#howToList').innerHTML = '';
+        const faqList = $('#faqList');
+        const howList = $('#howToList');
+        if (faqList) faqList.innerHTML = '';
+        if (howList) howList.innerHTML = '';
         this.updatePreview();
         this.updateStats();
         AI.updatePreview();
@@ -641,27 +726,23 @@
     loadSample() {
       const sample = `# Panduan Backlink High DA/DR 2026
 
-**Backlink** adalah komponen vital dari strategi SEO yang sukses. Di tahun 2026, Google semakin canggih dalam menilai kualitas backlink.
+**Backlink** adalah komponen vital dari strategi SEO yang sukses.
 
 ## Apa Itu Backlink?
 
-Backlink adalah tautan dari satu website ke website lain. Mereka bertindak sebagai *suara kepercayaan* dari satu situs ke situs lainnya.
+Backlink adalah tautan dari satu website ke website lain.
 
-> 💡 **Intinya:** Semakin banyak backlink berkualitas dari situs otoritatif, semakin tinggi kepercayaan Google.
+> 💡 **Intinya:** Semakin banyak backlink berkualitas, semakin tinggi kepercayaan Google.
 
 ## Mengapa Backlink Penting?
 
-- **Peringkat Lebih Baik:** Google menggunakan backlink sebagai faktor peringkat utama
-- **Lalu Lintas Organik:** Backlink mendatangkan traffic rujukan
-- **Kredibilitas:** Backlink dari situs terpercaya meningkatkan otoritas
+- **Peringkat Lebih Baik:** Faktor peringkat utama
+- **Lalu Lintas Organik:** Traffic rujukan
+- **Kredibilitas:** Meningkatkan otoritas
 
 ## Kesimpulan
 
-Fokus pada **kualitas** daripada kuantitas.
-
----
-
-Pelajari lebih lanjut di [WebLynk](https://weblynk.pages.dev).`;
+Fokus pada **kualitas** daripada kuantitas.`;
 
       if (this.editor) {
         this.editor.value = sample;
@@ -828,7 +909,126 @@ Pelajari lebih lanjut di [WebLynk](https://weblynk.pages.dev).`;
       ${common}`;
   }
 
-  // ---------- OPEN EDITOR ----------
+  // ---------- RESTORE POST META FIELDS ----------
+  function getPostMetaFieldsHTML() {
+    return `
+      <div class="sm:col-span-2">
+        <label class="mb-1 block text-xs font-medium text-slate-600">Judul *</label>
+        <input id="f_title" placeholder="Panduan Backlink High DA/DR 2026"
+          class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/30" />
+      </div>
+      <div>
+        <label class="mb-1 block text-xs font-medium text-slate-600">Slug</label>
+        <input id="f_slug" placeholder="otomatis-dari-judul"
+          class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none" />
+      </div>
+      <div>
+        <label class="mb-1 block text-xs font-medium text-slate-600">Kategori</label>
+        <input id="f_category" value="SEO"
+          class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none" />
+      </div>
+      <div>
+        <label class="mb-1 block text-xs font-medium text-slate-600">Tanggal</label>
+        <input id="f_date" type="date"
+          class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none" />
+      </div>
+      <div>
+        <label class="mb-1 block text-xs font-medium text-slate-600">Cover Image URL</label>
+        <input id="f_image" placeholder="https://..."
+          class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none" />
+      </div>
+      <div class="sm:col-span-2">
+        <label class="mb-1 block text-xs font-medium text-slate-600">Tags (koma)</label>
+        <input id="f_tags" placeholder="backlink, high DA, SEO 2026"
+          class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none" />
+      </div>
+      <div class="sm:col-span-2">
+        <label class="mb-1 block text-xs font-medium text-slate-600">Excerpt</label>
+        <textarea id="f_excerpt" rows="2"
+          class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none"></textarea>
+      </div>
+      <div class="sm:col-span-2 border-t border-slate-200 pt-3">
+        <p class="mb-2 text-xs font-bold uppercase tracking-wider text-slate-500">🔍 SEO Override</p>
+      </div>
+      <div>
+        <label class="mb-1 block text-xs font-medium text-slate-600">Meta Title (max 60)</label>
+        <input id="f_metaTitle" maxlength="60"
+          class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none" />
+      </div>
+      <div>
+        <label class="mb-1 block text-xs font-medium text-slate-600">Meta Description (max 160)</label>
+        <textarea id="f_metaDescription" rows="2" maxlength="160"
+          class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none"></textarea>
+      </div>
+
+      <div id="aiPanelWrap" class="sm:col-span-2 mt-2 rounded-xl border-2 border-dashed border-brand-300 bg-gradient-to-br from-brand-50 to-white p-4">
+        <button id="aiPanelToggle" type="button" class="flex w-full items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="text-xl">🤖</span>
+            <div class="text-left">
+              <p class="text-sm font-bold text-slate-900">AI Schema</p>
+              <p id="aiInfo" class="text-xs text-slate-500">FAQ, HowTo, Key Takeaways</p>
+            </div>
+          </div>
+          <svg id="aiChevron" class="h-5 w-5 text-brand-600 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+          </svg>
+        </button>
+        <div id="aiPanel" class="mt-4 space-y-4" style="display:none">
+          <div class="rounded-lg border border-slate-200 bg-white p-4">
+            <label class="mb-2 flex items-center justify-between text-sm font-medium">
+              <span>🎯 Key Takeaways</span>
+              <span class="text-xs font-normal text-slate-500">AI akan kutip poin ini</span>
+            </label>
+            <textarea id="f_keyTakeaways" rows="4"
+              class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none"></textarea>
+            <p class="mt-1 text-xs text-slate-500">Satu poin per baris (idealnya 3-5 poin)</p>
+          </div>
+          <div class="grid gap-3 sm:grid-cols-2">
+            <div class="rounded-lg border border-slate-200 bg-white p-4">
+              <label class="mb-2 block text-sm font-medium">📚 About</label>
+              <input id="f_about" placeholder="Backlink, SEO, Link Building"
+                class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none" />
+            </div>
+            <div class="rounded-lg border border-slate-200 bg-white p-4">
+              <label class="mb-2 block text-sm font-medium">🔗 Mentions</label>
+              <input id="f_mentions" placeholder="Ahrefs, Moz, SEMrush"
+                class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none" />
+            </div>
+          </div>
+          <div class="rounded-lg border border-slate-200 bg-white p-4">
+            <div class="mb-3 flex items-center justify-between">
+              <div>
+                <label class="text-sm font-medium">❓ FAQ</label>
+                <p class="text-xs text-slate-500">Rekomendasi: 3-5 FAQ</p>
+              </div>
+              <button type="button" onclick="addFAQ()" class="rounded-lg bg-brand-600 px-3 py-1.5 text-xs font-bold text-white hover:bg-brand-700">+ FAQ</button>
+            </div>
+            <div id="faqList" class="space-y-3"></div>
+          </div>
+          <div class="rounded-lg border border-slate-200 bg-white p-4">
+            <div class="mb-3 flex items-center justify-between">
+              <div>
+                <label class="text-sm font-medium">📝 HowTo Steps</label>
+                <p class="text-xs text-slate-500">Untuk artikel tutorial</p>
+              </div>
+              <button type="button" onclick="addHowToStep()" class="rounded-lg bg-brand-600 px-3 py-1.5 text-xs font-bold text-white hover:bg-brand-700">+ Step</button>
+            </div>
+            <div id="howToList" class="space-y-3"></div>
+          </div>
+          <div class="rounded-lg border-2 border-slate-800 bg-slate-900 p-4">
+            <div class="mb-2 flex items-center justify-between">
+              <label class="text-xs font-bold uppercase tracking-wider text-slate-300">🔍 Live JSON-LD Preview</label>
+              <button type="button" onclick="copyJSONLD()" class="rounded-lg bg-slate-700 px-3 py-1 text-xs font-medium text-white hover:bg-slate-600">📋 Copy</button>
+            </div>
+            <pre id="aiPreview" class="max-h-64 overflow-auto rounded-lg bg-black p-3 text-xs text-green-400" style="font-family: ui-monospace, monospace;"></pre>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  // ---------- OPEN EDITOR (POST/TOOL/GAME) ----------
   function openEditor(type, id) {
     state.editingType = type;
     const pool = type === 'post' ? state.posts : state.tools;
@@ -845,11 +1045,14 @@ Pelajari lebih lanjut di [WebLynk](https://weblynk.pages.dev).`;
     if (chevron) chevron.style.transform = 'rotate(-90deg)';
     if (status) status.textContent = '';
 
-    // Reset AI panel
-    const aiPanel = $('#aiPanel');
-    const aiChevron = $('#aiChevron');
-    if (aiPanel) aiPanel.style.display = 'none';
-    if (aiChevron) aiChevron.style.transform = 'rotate(-90deg)';
+    // Restore meta fields untuk post (jika sebelumnya diganti page editor)
+    const metaFields = $('#metaFields');
+    if (type === 'post') {
+      if (metaFields && !metaFields.querySelector('#f_title')) {
+        metaFields.innerHTML = getPostMetaFieldsHTML();
+        AI.init();
+      }
+    }
 
     if (type === 'post') {
       $('#toolGamePanel').classList.add('hidden');
@@ -879,11 +1082,108 @@ Pelajari lebih lanjut di [WebLynk](https://weblynk.pages.dev).`;
       $('#previewPanel').classList.add('hidden');
     }
 
+    window.saveItem = savePostItem;
+
     $('#editorModal').classList.remove('hidden');
     $('#editorModal').classList.add('flex');
     document.body.style.overflow = 'hidden';
 
-    // Reset scroll position
+    const body = $('#editorBody');
+    if (body) body.scrollTop = 0;
+  }
+
+  // ---------- OPEN PAGE EDITOR ----------
+  function openPageEditor(id) {
+    const p = id ? Pages.get(id) : null;
+    state.editingType = 'page';
+    state.editing = p;
+
+    $('#editorTitle').textContent = p ? 'Edit Halaman' : 'Halaman Baru';
+
+    const wrap = $('#metaFieldsWrap');
+    const chevron = $('#metaChevron');
+    const status = $('#metaStatus');
+    if (wrap) wrap.classList.add('hidden');
+    if (chevron) chevron.style.transform = 'rotate(-90deg)';
+    if (status) status.textContent = '';
+
+    // Hide AI panel
+    const aiWrap = $('#aiPanelWrap');
+    if (aiWrap) aiWrap.style.display = 'none';
+
+    // Show tool/game panel
+    $('#toolGamePanel').classList.add('hidden');
+
+    // Show markdown + preview
+    $('#editorPanel').classList.remove('hidden');
+    $('#previewPanel').classList.remove('hidden');
+
+    // Replace meta fields dengan page-specific
+    const metaFields = $('#metaFields');
+    if (metaFields) {
+      metaFields.innerHTML = `
+        <div class="sm:col-span-2">
+          <label class="mb-1 block text-xs font-medium text-slate-600">Judul Halaman *</label>
+          <input id="p_title" value="${p?.title || ''}" placeholder="Tentang Kami"
+            class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none" />
+        </div>
+        <div>
+          <label class="mb-1 block text-xs font-medium text-slate-600">Slug *</label>
+          <input id="p_slug" value="${p?.slug || ''}" placeholder="tentang"
+            class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none" />
+          <p class="mt-1 text-xs text-slate-400">URL: /pages/?slug=<span class="font-mono">${p?.slug || 'slug'}</span></p>
+        </div>
+        <div>
+          <label class="mb-1 block text-xs font-medium text-slate-600">Icon (emoji)</label>
+          <input id="p_icon" value="${p?.icon || '📄'}" maxlength="4"
+            class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none" />
+        </div>
+        <div>
+          <label class="mb-1 block text-xs font-medium text-slate-600">Nav Order</label>
+          <input id="p_navOrder" type="number" value="${p?.navOrder || 1}"
+            class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none" />
+        </div>
+        <div class="sm:col-span-2">
+          <label class="mb-1 block text-xs font-medium text-slate-600">Excerpt</label>
+          <textarea id="p_excerpt" rows="2" placeholder="Deskripsi singkat halaman..."
+            class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none">${p?.excerpt || ''}</textarea>
+        </div>
+        <div class="sm:col-span-2 border-t border-slate-200 pt-3">
+          <p class="mb-2 text-xs font-bold uppercase tracking-wider text-slate-500">🔍 SEO</p>
+        </div>
+        <div class="sm:col-span-2">
+          <label class="mb-1 block text-xs font-medium text-slate-600">Meta Title (max 60)</label>
+          <input id="p_metaTitle" maxlength="60" value="${p?.metaTitle || ''}"
+            class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none" />
+        </div>
+        <div class="sm:col-span-2">
+          <label class="mb-1 block text-xs font-medium text-slate-600">Meta Description (max 160)</label>
+          <textarea id="p_metaDescription" rows="2" maxlength="160"
+            class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none">${p?.metaDescription || ''}</textarea>
+        </div>
+        <div class="sm:col-span-2 border-t border-slate-200 pt-3">
+          <p class="mb-2 text-xs font-bold uppercase tracking-wider text-slate-500">⚙️ Pengaturan Halaman</p>
+        </div>
+        <div class="sm:col-span-2">
+          <label class="flex items-center gap-2 text-sm font-medium">
+            <input id="p_showInNav" type="checkbox" ${p?.showInNav !== false ? 'checked' : ''}
+              class="h-4 w-4 rounded border-slate-300 text-brand-600 focus:ring-brand-500" />
+            <span>Tampilkan di Navigasi & Footer</span>
+          </label>
+        </div>
+      `;
+    }
+
+    if (!MD.editor) MD.init();
+    MD.load(p ? { markdown: p.markdown, content: p.content } : null);
+    MD.markSaved();
+
+    window.saveItem = savePageItem;
+
+    $('#editorModal').classList.remove('hidden');
+    $('#editorModal').classList.add('flex');
+    document.body.style.overflow = 'hidden';
+
     const body = $('#editorBody');
     if (body) body.scrollTop = 0;
   }
@@ -895,8 +1195,8 @@ Pelajari lebih lanjut di [WebLynk](https://weblynk.pages.dev).`;
     state.editing = null;
   }
 
-  // ---------- SAVE ITEM ----------
-  async function saveItem() {
+  // ---------- SAVE POST/TOOL/GAME ----------
+  async function savePostItem() {
     const val = (id) => $(id)?.value?.trim() ?? '';
     const type = state.editingType;
 
@@ -976,6 +1276,43 @@ Pelajari lebih lanjut di [WebLynk](https://weblynk.pages.dev).`;
     } catch (e) {
       console.error(e);
       toast(e.message, 'error');
+    }
+  }
+
+  // ---------- SAVE PAGE ----------
+  async function savePageItem() {
+    const val = (id) => $(id)?.value?.trim() ?? '';
+
+    const title = val('#p_title');
+    const slug = val('#p_slug');
+    if (!title) return toast('Judul wajib diisi', 'warn');
+    if (!slug) return toast('Slug wajib diisi', 'warn');
+
+    const mdRaw = MD.getMarkdown();
+    const contentHTML = MD.getHTML();
+    if (!mdRaw.trim()) return toast('Konten halaman kosong', 'warn');
+
+    const item = {
+      id: state.editing?.id || 'page-' + Date.now(),
+      title,
+      slug: slug.toLowerCase().replace(/[^\w-]/g, '-').replace(/-+/g, '-'),
+      icon: val('#p_icon') || '📄',
+      excerpt: val('#p_excerpt') || mdRaw.replace(/[#*`>\[\]()!]/g, '').slice(0, 160),
+      markdown: mdRaw,
+      content: contentHTML,
+      metaTitle: val('#p_metaTitle') || title,
+      metaDescription: val('#p_metaDescription') || val('#p_excerpt').slice(0, 160),
+      date: state.editing?.date || new Date().toISOString().slice(0, 10),
+      dateModified: new Date().toISOString(),
+      showInNav: $('#p_showInNav')?.checked ?? true,
+      navOrder: parseInt(val('#p_navOrder')) || 1,
+    };
+
+    const ok = await Pages.save(item);
+    if (ok) {
+      MD.markSaved();
+      saveCache();
+      setTimeout(closeEditor, 500);
     }
   }
 
@@ -1104,6 +1441,8 @@ Pelajari lebih lanjut di [WebLynk](https://weblynk.pages.dev).`;
       if (r.ok) state.tools = (await r.json()).tools || [];
     } catch (e) { console.warn('Tools load failed', e); }
 
+    await Pages.load();
+
     saveCache();
     renderLists();
     updateAuthBadge();
@@ -1135,6 +1474,8 @@ Pelajari lebih lanjut di [WebLynk](https://weblynk.pages.dev).`;
       const { action, type, id } = btn.dataset;
       if (action === 'edit') openEditor(type, id);
       if (action === 'delete') deleteItem(type, id);
+      if (action === 'edit-page') openPageEditor(id);
+      if (action === 'delete-page') Pages.delete(id);
     });
 
     $('#editorModal')?.addEventListener('click', (e) => {
@@ -1158,8 +1499,9 @@ Pelajari lebih lanjut di [WebLynk](https://weblynk.pages.dev).`;
 
   // ---------- EXPOSE GLOBAL ----------
   window.openEditor = openEditor;
+  window.openPageEditor = openPageEditor;
   window.closeEditor = closeEditor;
-  window.saveItem = saveItem;
+  window.saveItem = savePostItem;
   window.deleteItem = deleteItem;
   window.saveSEOConfig = saveSEOConfig;
   window.saveGitHubSettings = saveGitHubSettings;
@@ -1176,6 +1518,7 @@ Pelajari lebih lanjut di [WebLynk](https://weblynk.pages.dev).`;
   };
   window.WebLynkAI = AI;
   window.WebLynkMD = MD;
+  window.WebLynkPages = Pages;
 
   // ---------- BOOT ----------
   document.addEventListener('DOMContentLoaded', () => {

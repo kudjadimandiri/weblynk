@@ -10,7 +10,7 @@
       if (parts.length === 2) {
         const folder = parts[0];
         const file = parts[1].replace(/\.html?$/, '');
-        if (['artikel', 'tools', 'games'].includes(folder)) {
+        if (['artikel', 'tools', 'games', 'pages'].includes(folder)) {
           location.replace(`/${folder}/?slug=${encodeURIComponent(file)}`);
           return;
         }
