@@ -112,7 +112,6 @@
     const contactInfo = $('#footerContact');
     if (contactInfo) {
       contactInfo.innerHTML = `
-        <li class="text-slate-500">📧 hello@weblynk.pages.dev</li>
         <li class="text-slate-500">🐦 ${escapeHtml(cfg.twitterHandle || '@weblynk')}</li>
       `;
     }
