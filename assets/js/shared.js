@@ -1,5 +1,5 @@
 /* ============================================
-   WebLynk Shared — Navbar & Footer Universal
+   WebLynk Shared — Navbar (minimal) & Footer (lengkap)
    ============================================ */
 
 (function () {
@@ -61,46 +61,40 @@
     return { type: 'other' };
   }
 
+  // ============================================
+  // NAVBAR — HANYA Artikel, Tools, Games
+  // ============================================
   function renderNavbar(pages, active) {
     const desktopNav = $('#navLinks');
     const mobileNav = $('#mobileNavLinks');
 
+    // Hanya 3 link ini yang muncul di navbar
     const mainLinks = [
-      { label: 'Artikel', href: '/#artikel', type: 'artikel', emoji: '📝' },
-      { label: 'Tools', href: '/#tools', type: 'tools', emoji: '🛠️' },
-      { label: 'Games', href: '/#games', type: 'games', emoji: '🎮' },
+      { label: 'Artikel', href: '/#artikel', type: 'artikel' },
+      { label: 'Tools', href: '/#tools', type: 'tools' },
+      { label: 'Games', href: '/#games', type: 'games' },
     ];
 
+    // Desktop navbar
     if (desktopNav) {
-      const mainHTML = mainLinks.map(l => {
+      desktopNav.innerHTML = mainLinks.map(l => {
         const isActive = active.type === l.type;
         return `<a href="${l.href}" class="transition ${isActive ? 'text-brand-600 font-semibold' : 'hover:text-brand-600'}">${l.label}</a>`;
       }).join('');
-
-      const separator = pages.length ? '<span class="h-5 w-px bg-slate-200"></span>' : '';
-      const pagesHTML = pages.map(p => {
-        const isActive = active.type === 'page' && active.slug === p.slug;
-        return `<a href="/pages/?slug=${encodeURIComponent(p.slug)}" class="transition ${isActive ? 'text-brand-600 font-semibold' : 'hover:text-brand-600'}">${escapeHtml(p.title)}</a>`;
-      }).join('');
-
-      desktopNav.innerHTML = mainHTML + separator + pagesHTML;
     }
 
+    // Mobile navbar (sama, hanya 3 link)
     if (mobileNav) {
-      const mainHTML = mainLinks.map(l => {
+      mobileNav.innerHTML = mainLinks.map(l => {
         const isActive = active.type === l.type;
-        return `<a href="${l.href}" class="block py-2 text-sm font-medium ${isActive ? 'text-brand-600' : 'text-slate-700 hover:text-brand-600'}">${l.emoji} ${l.label}</a>`;
+        return `<a href="${l.href}" class="block py-2 text-sm font-medium ${isActive ? 'text-brand-600' : 'text-slate-700 hover:text-brand-600'}">${l.label}</a>`;
       }).join('');
-
-      const pagesHTML = pages.map(p => {
-        const isActive = active.type === 'page' && active.slug === p.slug;
-        return `<a href="/pages/?slug=${encodeURIComponent(p.slug)}" class="block py-2 text-sm font-medium ${isActive ? 'text-brand-600' : 'text-slate-700 hover:text-brand-600'}">${p.icon || '📄'} ${escapeHtml(p.title)}</a>`;
-      }).join('');
-
-      mobileNav.innerHTML = mainHTML + '<div class="mt-2 border-t border-slate-200 pt-2"></div>' + pagesHTML;
     }
   }
 
+  // ============================================
+  // FOOTER — Tetap Lengkap (Konten + Informasi + Kontak)
+  // ============================================
   function renderFooter(pages, cfg) {
     const pagesCol = $('#footerPagesLinks');
     if (pagesCol) {
@@ -112,6 +106,7 @@
     const contactInfo = $('#footerContact');
     if (contactInfo) {
       contactInfo.innerHTML = `
+        <li class="text-slate-500">📧 hello@weblynk.pages.dev</li>
         <li class="text-slate-500">🐦 ${escapeHtml(cfg.twitterHandle || '@weblynk')}</li>
       `;
     }
