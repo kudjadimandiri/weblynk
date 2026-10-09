@@ -8,5 +8,24 @@
   "twitterHandle": "@weblynk",
   "language": "id-ID",
   "themeColor": "#0284c7",
-  "knowsAbout": ["SEO", "Backlink", "Link Building", "Digital Marketing", "High DA/DR"]
+  "knowsAbout": ["SEO", "Backlink", "Link Building", "Digital Marketing", "High DA/DR"],
+  "adsense": {
+    "enabled": false,
+    "clientId": "ca-pub-7116287441723529",
+    "autoReload": true,
+    "reloadInterval": 30000,
+    "slots": {
+      "header": "",
+      "sidebar": "",
+      "inArticle": "",
+      "footer": ""
+    },
+    "position": {
+      "headerOn": true,
+      "sidebarOn": true,
+      "inArticleOn": true,
+      "footerOn": true
+    },
+    "inArticleParagraph": 3
+  }
 }
