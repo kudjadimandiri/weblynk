@@ -479,6 +479,13 @@
 
       $('#loading').classList.add('hidden');
       $('#article').classList.remove('hidden');
+
+      // Trigger render iklan in-article setelah konten siap
+      setTimeout(() => {
+        if (window.WebLynkAds) {
+          window.WebLynkAds.render();
+        }
+      }, 300);
     }
 
     function showError() {

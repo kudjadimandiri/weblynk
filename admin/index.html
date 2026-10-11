@@ -9,16 +9,10 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            brand: {
-              50:'#f0f9ff',100:'#e0f2fe',200:'#bae6fd',300:'#7dd3fc',400:'#38bdf8',
-              500:'#0ea5e9',600:'#0284c7',700:'#0369a1',800:'#075985',900:'#0c4a6e'
-            }
-          }
-        }
-      }
+      theme: { extend: { colors: { brand: {
+        50:'#f0f9ff',100:'#e0f2fe',200:'#bae6fd',300:'#7dd3fc',400:'#38bdf8',
+        500:'#0ea5e9',600:'#0284c7',700:'#0369a1',800:'#075985',900:'#0c4a6e'
+      } } } }
     };
   </script>
 
@@ -32,38 +26,18 @@
   <link rel="stylesheet" href="/assets/css/custom.css" />
 
   <style>
-    .md-btn {
-      padding: 4px 8px;
-      border-radius: 6px;
-      font-size: 12px;
-      font-weight: 500;
-      color: #475569;
-      transition: all 0.15s;
-      background: white;
-      border: 1px solid transparent;
-      cursor: pointer;
-    }
+    .md-btn { padding: 4px 8px; border-radius: 6px; font-size: 12px; font-weight: 500; color: #475569; transition: all 0.15s; background: white; border: 1px solid transparent; cursor: pointer; }
     .md-btn:hover { background: #e0f2fe; color: #0284c7; border-color: #bae6fd; }
     .md-btn.active { background: #0284c7; color: white; }
-
-    .preview-mobile {
-      max-width: 375px !important;
-      margin: 0 auto;
-      border: 2px solid #e2e8f0;
-      border-radius: 12px;
-      padding: 1rem;
-    }
-
+    .preview-mobile { max-width: 375px !important; margin: 0 auto; border: 2px solid #e2e8f0; border-radius: 12px; padding: 1rem; }
     .prose-weblynk { color: #334155; font-size: 0.95rem; line-height: 1.7; }
     .prose-weblynk h1 { font-size: 1.875rem; font-weight: 800; margin: 1rem 0 0.75rem; color: #0f172a; line-height: 1.2; }
     .prose-weblynk h2 { font-size: 1.5rem; font-weight: 700; margin: 1.5rem 0 0.75rem; color: #0f172a; padding-bottom: 0.5rem; border-bottom: 1px solid #e2e8f0; }
     .prose-weblynk h3 { font-size: 1.25rem; font-weight: 600; margin: 1.25rem 0 0.5rem; color: #0f172a; }
     .prose-weblynk p { margin: 0.75rem 0; }
     .prose-weblynk a { color: #0284c7; text-decoration: underline; text-underline-offset: 2px; }
-    .prose-weblynk a:hover { color: #0369a1; }
     .prose-weblynk ul { list-style: disc; padding-left: 1.5rem; margin: 1rem 0; }
     .prose-weblynk ol { list-style: decimal; padding-left: 1.5rem; margin: 1rem 0; }
-    .prose-weblynk li { margin: 0.35rem 0; }
     .prose-weblynk blockquote { border-left: 4px solid #0ea5e9; background: #f0f9ff; padding: 0.75rem 1rem; margin: 1rem 0; border-radius: 0.5rem; color: #075985; }
     .prose-weblynk code { background: #f1f5f9; padding: 2px 6px; border-radius: 4px; font-size: 0.875em; color: #0369a1; font-family: ui-monospace, monospace; }
     .prose-weblynk pre { background: #0f172a; color: #e2e8f0; padding: 1rem; border-radius: 8px; overflow-x: auto; margin: 1rem 0; font-size: 0.875rem; }
@@ -73,50 +47,16 @@
     .prose-weblynk th, .prose-weblynk td { border: 1px solid #e2e8f0; padding: 8px 12px; text-align: left; }
     .prose-weblynk th { background: #f8fafc; font-weight: 600; }
     .prose-weblynk img { max-width: 100%; height: auto; border-radius: 8px; margin: 1rem 0; }
-
-    #mdEditor {
-      min-height: 200px;
-      font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', monospace;
-      font-size: 13px;
-      line-height: 1.7;
-      tab-size: 2;
-    }
+    #mdEditor { min-height: 200px; font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', monospace; font-size: 13px; line-height: 1.7; tab-size: 2; }
     #mdEditor::placeholder { color: #94a3b8; }
     #mdEditor:focus { outline: none; }
-
-    /* SCROLL FIXES */
     #editorModal > div { max-height: 95vh; }
-
     #editorBody { scrollbar-width: thin; scrollbar-color: #cbd5e1 transparent; }
-
-    #editorBody::-webkit-scrollbar,
-    #metaFieldsWrap::-webkit-scrollbar,
-    #previewScroll::-webkit-scrollbar,
-    #mdEditor::-webkit-scrollbar,
-    #toolGamePanel::-webkit-scrollbar {
-      width: 8px;
-      height: 8px;
-    }
-
-    #editorBody::-webkit-scrollbar-thumb,
-    #metaFieldsWrap::-webkit-scrollbar-thumb,
-    #previewScroll::-webkit-scrollbar-thumb,
-    #mdEditor::-webkit-scrollbar-thumb,
-    #toolGamePanel::-webkit-scrollbar-thumb {
-      background: #cbd5e1;
-      border-radius: 4px;
-    }
-
-    @media (max-width: 1023px) {
-      #metaFieldsWrap { max-height: none !important; }
-      #editorBody { overflow-y: auto !important; }
-    }
-
+    #editorBody::-webkit-scrollbar, #metaFieldsWrap::-webkit-scrollbar, #previewScroll::-webkit-scrollbar, #mdEditor::-webkit-scrollbar, #toolGamePanel::-webkit-scrollbar { width: 8px; height: 8px; }
+    #editorBody::-webkit-scrollbar-thumb, #metaFieldsWrap::-webkit-scrollbar-thumb, #previewScroll::-webkit-scrollbar-thumb, #mdEditor::-webkit-scrollbar-thumb, #toolGamePanel::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+    @media (max-width: 1023px) { #metaFieldsWrap { max-height: none !important; } #editorBody { overflow-y: auto !important; } }
     .ai-faq-item, .ai-step-item { animation: slideIn 0.2s ease-out; }
-    @keyframes slideIn {
-      from { opacity: 0; transform: translateY(-4px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+    @keyframes slideIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
   </style>
 </head>
 <body class="bg-slate-100 font-sans text-slate-800 antialiased">
@@ -141,6 +81,7 @@
       <button data-tab="tools" class="tab-btn border-b-2 border-transparent px-4 py-2 text-sm font-medium text-slate-500 hover:text-slate-700">🛠️ Tools</button>
       <button data-tab="games" class="tab-btn border-b-2 border-transparent px-4 py-2 text-sm font-medium text-slate-500 hover:text-slate-700">🎮 Games</button>
       <button data-tab="pages" class="tab-btn border-b-2 border-transparent px-4 py-2 text-sm font-medium text-slate-500 hover:text-slate-700">📄 Halaman</button>
+      <button data-tab="adsense" class="tab-btn border-b-2 border-transparent px-4 py-2 text-sm font-medium text-slate-500 hover:text-slate-700">💰 AdSense</button>
       <button data-tab="seo" class="tab-btn border-b-2 border-transparent px-4 py-2 text-sm font-medium text-slate-500 hover:text-slate-700">🔍 SEO</button>
     </div>
 
@@ -182,45 +123,152 @@
       <div id="pagesList" class="space-y-3"></div>
     </section>
 
+    <!-- ============ TAB ADSENSE ============ -->
+    <section data-panel="adsense" class="hidden">
+      <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <h2 class="text-xl font-bold text-slate-900">💰 Google AdSense</h2>
+          <p class="text-sm text-slate-500">Kelola iklan + auto-reload otomatis</p>
+        </div>
+        <span id="adsenseStatusBadge" class="hidden rounded-full px-3 py-1 text-xs font-semibold"></span>
+      </div>
+
+      <div class="rounded-2xl border border-slate-200 bg-white p-6">
+        <div class="mb-6 flex items-center justify-between rounded-xl bg-gradient-to-r from-brand-50 to-white p-4">
+          <div>
+            <p class="font-bold text-slate-900">Master Switch</p>
+            <p class="text-xs text-slate-500">Aktifkan / nonaktifkan semua iklan di seluruh situs</p>
+          </div>
+          <label class="relative inline-flex cursor-pointer items-center">
+            <input id="adsEnabled" type="checkbox" class="peer sr-only" />
+            <div class="peer h-7 w-12 rounded-full bg-slate-300 after:absolute after:top-0.5 after:left-0.5 after:h-6 after:w-6 after:rounded-full after:bg-white after:transition-all peer-checked:bg-brand-600 peer-checked:after:translate-x-5"></div>
+          </label>
+        </div>
+
+        <div class="mb-6">
+          <label class="mb-1 block text-sm font-medium">AdSense Client ID *</label>
+          <input id="adsClientId" placeholder="ca-pub-XXXXXXXXXXXXXXXX"
+            class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm font-mono focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/30" />
+          <p class="mt-1 text-xs text-slate-500">Dapatkan dari adsense.google.com → Account → Account information</p>
+        </div>
+
+        <div class="mb-6 rounded-xl border border-amber-200 bg-amber-50 p-4">
+          <div class="mb-3 flex items-center justify-between">
+            <div>
+              <p class="font-bold text-amber-900">🔄 Auto-Reload Iklan</p>
+              <p class="text-xs text-amber-700">Refresh iklan secara berkala untuk meningkatkan impresi</p>
+            </div>
+            <label class="relative inline-flex cursor-pointer items-center">
+              <input id="adsAutoReload" type="checkbox" class="peer sr-only" />
+              <div class="peer h-7 w-12 rounded-full bg-slate-300 after:absolute after:top-0.5 after:left-0.5 after:h-6 after:w-6 after:rounded-full after:bg-white after:transition-all peer-checked:bg-brand-600 peer-checked:after:translate-x-5"></div>
+            </label>
+          </div>
+          <div>
+            <label class="mb-1 block text-xs font-medium text-amber-900">Interval (detik)</label>
+            <input id="adsReloadInterval" type="number" min="10" max="300" value="30"
+              class="w-full rounded-lg border border-amber-200 bg-white px-3 py-2 text-sm" />
+            <p class="mt-1 text-xs text-amber-700">Rekomendasi: 30-60 detik. Minimal 10 detik.</p>
+          </div>
+        </div>
+
+        <div class="mb-6">
+          <h3 class="mb-3 text-sm font-bold uppercase tracking-wider text-slate-500">📍 Posisi & Slot ID</h3>
+
+          <div class="space-y-3">
+            <div class="grid gap-3 rounded-lg border border-slate-200 bg-slate-50 p-3 sm:grid-cols-12">
+              <div class="flex items-center gap-2 sm:col-span-4">
+                <input id="posHeaderOn" type="checkbox" class="h-4 w-4 rounded border-slate-300 text-brand-600 focus:ring-brand-500" />
+                <label class="text-sm font-medium">Header (bawah navbar)</label>
+              </div>
+              <div class="sm:col-span-8">
+                <input id="slotHeader" placeholder="data-ad-slot (contoh: 1234567890)"
+                  class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm font-mono" />
+              </div>
+            </div>
+
+            <div class="grid gap-3 rounded-lg border border-slate-200 bg-slate-50 p-3 sm:grid-cols-12">
+              <div class="flex items-center gap-2 sm:col-span-4">
+                <input id="posSidebarOn" type="checkbox" class="h-4 w-4 rounded border-slate-300 text-brand-600 focus:ring-brand-500" />
+                <label class="text-sm font-medium">Sidebar (kanan)</label>
+              </div>
+              <div class="sm:col-span-8">
+                <input id="slotSidebar" placeholder="data-ad-slot"
+                  class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm font-mono" />
+              </div>
+            </div>
+
+            <div class="grid gap-3 rounded-lg border border-slate-200 bg-slate-50 p-3 sm:grid-cols-12">
+              <div class="flex items-center gap-2 sm:col-span-4">
+                <input id="posInArticleOn" type="checkbox" class="h-4 w-4 rounded border-slate-300 text-brand-600 focus:ring-brand-500" />
+                <label class="text-sm font-medium">In-Article (dalam artikel)</label>
+              </div>
+              <div class="sm:col-span-5">
+                <input id="slotInArticle" placeholder="data-ad-slot"
+                  class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm font-mono" />
+              </div>
+              <div class="sm:col-span-3">
+                <input id="inArticleParagraph" type="number" min="1" max="20" value="3"
+                  class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                <p class="mt-1 text-xs text-slate-500">Setelah paragraf ke-</p>
+              </div>
+            </div>
+
+            <div class="grid gap-3 rounded-lg border border-slate-200 bg-slate-50 p-3 sm:grid-cols-12">
+              <div class="flex items-center gap-2 sm:col-span-4">
+                <input id="posFooterOn" type="checkbox" class="h-4 w-4 rounded border-slate-300 text-brand-600 focus:ring-brand-500" />
+                <label class="text-sm font-medium">Footer (atas footer)</label>
+              </div>
+              <div class="sm:col-span-8">
+                <input id="slotFooter" placeholder="data-ad-slot"
+                  class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm font-mono" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-6 rounded-xl bg-blue-50 p-4 text-xs text-blue-900">
+          <p class="mb-2 font-bold">💡 Cara Mendapatkan Slot ID:</p>
+          <ol class="space-y-1 pl-4">
+            <li>1. Buka <a href="https://adsense.google.com" target="_blank" class="underline">adsense.google.com</a></li>
+            <li>2. Menu <strong>Ads</strong> → <strong>By ad unit</strong></li>
+            <li>3. Klik <strong>Create new ad unit</strong> → pilih <strong>Display ads</strong></li>
+            <li>4. Copy <code class="rounded bg-white px-1">data-ad-slot="XXXXXXXXXX"</code></li>
+            <li>5. Paste angka tersebut ke kolom di atas</li>
+          </ol>
+        </div>
+
+        <div class="flex flex-wrap gap-3">
+          <button onclick="saveAdsenseConfig()" class="rounded-xl bg-brand-600 px-6 py-2 text-sm font-bold text-white hover:bg-brand-700">
+            💾 Simpan & Push ke GitHub
+          </button>
+          <button onclick="testAdsenseConfig()" class="rounded-xl border border-slate-200 px-6 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">
+            🧪 Test Konfigurasi
+          </button>
+          <button onclick="previewAdsense()" class="rounded-xl border border-slate-200 px-6 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">
+            👁️ Preview Halaman
+          </button>
+        </div>
+      </div>
+    </section>
+
     <section data-panel="seo" class="hidden">
       <h2 class="mb-4 text-xl font-bold text-slate-900">Pengaturan SEO Global</h2>
       <div class="rounded-2xl border border-slate-200 bg-white p-6">
         <div class="grid gap-4 sm:grid-cols-2">
-          <div>
-            <label class="mb-1 block text-sm font-medium">Site Name</label>
-            <input id="cfgSiteName" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm" />
-          </div>
-          <div>
-            <label class="mb-1 block text-sm font-medium">Site URL</label>
-            <input id="cfgSiteUrl" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm" />
-          </div>
-          <div class="sm:col-span-2">
-            <label class="mb-1 block text-sm font-medium">Description</label>
-            <textarea id="cfgDesc" rows="2" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm"></textarea>
-          </div>
-          <div class="sm:col-span-2">
-            <label class="mb-1 block text-sm font-medium">Keywords</label>
-            <input id="cfgKeywords" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm" />
-          </div>
-          <div>
-            <label class="mb-1 block text-sm font-medium">OG Image URL</label>
-            <input id="cfgOgImage" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm" />
-          </div>
-          <div>
-            <label class="mb-1 block text-sm font-medium">Twitter Handle</label>
-            <input id="cfgTwitter" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm" />
-          </div>
-          <div class="sm:col-span-2">
-            <label class="mb-1 block text-sm font-medium">Organization knowsAbout (koma)</label>
-            <input id="cfgKnowsAbout" placeholder="SEO, Backlink, Link Building" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm" />
-          </div>
+          <div><label class="mb-1 block text-sm font-medium">Site Name</label><input id="cfgSiteName" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm" /></div>
+          <div><label class="mb-1 block text-sm font-medium">Site URL</label><input id="cfgSiteUrl" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm" /></div>
+          <div class="sm:col-span-2"><label class="mb-1 block text-sm font-medium">Description</label><textarea id="cfgDesc" rows="2" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm"></textarea></div>
+          <div class="sm:col-span-2"><label class="mb-1 block text-sm font-medium">Keywords</label><input id="cfgKeywords" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm" /></div>
+          <div><label class="mb-1 block text-sm font-medium">OG Image URL</label><input id="cfgOgImage" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm" /></div>
+          <div><label class="mb-1 block text-sm font-medium">Twitter Handle</label><input id="cfgTwitter" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm" /></div>
+          <div class="sm:col-span-2"><label class="mb-1 block text-sm font-medium">Organization knowsAbout (koma)</label><input id="cfgKnowsAbout" placeholder="SEO, Backlink, Link Building" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm" /></div>
         </div>
         <button onclick="saveSEOConfig()" class="mt-6 rounded-xl bg-brand-600 px-6 py-2 text-sm font-bold text-white hover:bg-brand-700">💾 Simpan & Push ke GitHub</button>
       </div>
     </section>
   </div>
 
-  <!-- MODAL EDITOR (FIXED SCROLL) -->
+  <!-- MODAL EDITOR -->
   <div id="editorModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/70 p-2 backdrop-blur-sm sm:p-4">
     <div class="flex h-[95vh] max-h-[95vh] w-full max-w-7xl flex-col overflow-hidden rounded-2xl bg-white shadow-2xl">
 
@@ -235,140 +283,16 @@
       <div id="editorBody" class="flex min-h-0 flex-1 flex-col overflow-y-auto lg:flex-row lg:overflow-hidden">
 
         <div class="flex min-h-0 w-full flex-col lg:w-1/2 lg:border-r lg:border-slate-200">
-
           <div class="flex-shrink-0 border-b border-slate-200 bg-slate-50">
             <button id="metaToggle" type="button" class="flex w-full items-center justify-between px-6 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-100">
               <div class="flex items-center gap-2">
                 <span>⚙️ Metadata & SEO</span>
                 <span id="metaStatus" class="text-xs font-normal text-slate-500"></span>
               </div>
-              <svg id="metaChevron" class="h-4 w-4 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-              </svg>
+              <svg id="metaChevron" class="h-4 w-4 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
             </button>
-
             <div id="metaFieldsWrap" class="hidden max-h-[60vh] overflow-y-auto border-t border-slate-200 bg-slate-50 px-6 py-4">
-              <div id="metaFields" class="grid gap-3 sm:grid-cols-2">
-                <div class="sm:col-span-2">
-                  <label class="mb-1 block text-xs font-medium text-slate-600">Judul *</label>
-                  <input id="f_title" placeholder="Panduan Backlink High DA/DR 2026"
-                    class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/30" />
-                </div>
-                <div>
-                  <label class="mb-1 block text-xs font-medium text-slate-600">Slug</label>
-                  <input id="f_slug" placeholder="otomatis-dari-judul"
-                    class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none" />
-                </div>
-                <div>
-                  <label class="mb-1 block text-xs font-medium text-slate-600">Kategori</label>
-                  <input id="f_category" value="SEO"
-                    class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none" />
-                </div>
-                <div>
-                  <label class="mb-1 block text-xs font-medium text-slate-600">Tanggal</label>
-                  <input id="f_date" type="date"
-                    class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none" />
-                </div>
-                <div>
-                  <label class="mb-1 block text-xs font-medium text-slate-600">Cover Image URL</label>
-                  <input id="f_image" placeholder="https://..."
-                    class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none" />
-                </div>
-                <div class="sm:col-span-2">
-                  <label class="mb-1 block text-xs font-medium text-slate-600">Tags (koma)</label>
-                  <input id="f_tags" placeholder="backlink, high DA, SEO 2026"
-                    class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none" />
-                </div>
-                <div class="sm:col-span-2">
-                  <label class="mb-1 block text-xs font-medium text-slate-600">Excerpt</label>
-                  <textarea id="f_excerpt" rows="2"
-                    class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none"></textarea>
-                </div>
-                <div class="sm:col-span-2 border-t border-slate-200 pt-3">
-                  <p class="mb-2 text-xs font-bold uppercase tracking-wider text-slate-500">🔍 SEO Override</p>
-                </div>
-                <div>
-                  <label class="mb-1 block text-xs font-medium text-slate-600">Meta Title (max 60)</label>
-                  <input id="f_metaTitle" maxlength="60"
-                    class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none" />
-                </div>
-                <div>
-                  <label class="mb-1 block text-xs font-medium text-slate-600">Meta Description (max 160)</label>
-                  <textarea id="f_metaDescription" rows="2" maxlength="160"
-                    class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none"></textarea>
-                </div>
-
-                <!-- AI SCHEMA PANEL -->
-                <div id="aiPanelWrap" class="sm:col-span-2 mt-2 rounded-xl border-2 border-dashed border-brand-300 bg-gradient-to-br from-brand-50 to-white p-4">
-                  <button id="aiPanelToggle" type="button" class="flex w-full items-center justify-between">
-                    <div class="flex items-center gap-2">
-                      <span class="text-xl">🤖</span>
-                      <div class="text-left">
-                        <p class="text-sm font-bold text-slate-900">AI Schema</p>
-                        <p id="aiInfo" class="text-xs text-slate-500">FAQ, HowTo, Key Takeaways</p>
-                      </div>
-                    </div>
-                    <svg id="aiChevron" class="h-5 w-5 text-brand-600 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                    </svg>
-                  </button>
-
-                  <div id="aiPanel" class="mt-4 space-y-4" style="display:none">
-                    <div class="rounded-lg border border-slate-200 bg-white p-4">
-                      <label class="mb-2 flex items-center justify-between text-sm font-medium">
-                        <span>🎯 Key Takeaways</span>
-                        <span class="text-xs font-normal text-slate-500">AI akan kutip poin ini</span>
-                      </label>
-                      <textarea id="f_keyTakeaways" rows="4"
-                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none"></textarea>
-                      <p class="mt-1 text-xs text-slate-500">Satu poin per baris (idealnya 3-5 poin)</p>
-                    </div>
-
-                    <div class="grid gap-3 sm:grid-cols-2">
-                      <div class="rounded-lg border border-slate-200 bg-white p-4">
-                        <label class="mb-2 block text-sm font-medium">📚 About</label>
-                        <input id="f_about" placeholder="Backlink, SEO, Link Building"
-                          class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none" />
-                      </div>
-                      <div class="rounded-lg border border-slate-200 bg-white p-4">
-                        <label class="mb-2 block text-sm font-medium">🔗 Mentions</label>
-                        <input id="f_mentions" placeholder="Ahrefs, Moz, SEMrush"
-                          class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none" />
-                      </div>
-                    </div>
-
-                    <div class="rounded-lg border border-slate-200 bg-white p-4">
-                      <div class="mb-3 flex items-center justify-between">
-                        <div>
-                          <label class="text-sm font-medium">❓ FAQ</label>
-                          <p class="text-xs text-slate-500">Rekomendasi: 3-5 FAQ</p>
-                        </div>
-                        <button type="button" onclick="addFAQ()" class="rounded-lg bg-brand-600 px-3 py-1.5 text-xs font-bold text-white hover:bg-brand-700">+ FAQ</button>
-                      </div>
-                      <div id="faqList" class="space-y-3"></div>
-                    </div>
-
-                    <div class="rounded-lg border border-slate-200 bg-white p-4">
-                      <div class="mb-3 flex items-center justify-between">
-                        <div>
-                          <label class="text-sm font-medium">📝 HowTo Steps</label>
-                          <p class="text-xs text-slate-500">Untuk artikel tutorial (opsional)</p>
-                        </div>
-                        <button type="button" onclick="addHowToStep()" class="rounded-lg bg-brand-600 px-3 py-1.5 text-xs font-bold text-white hover:bg-brand-700">+ Step</button>
-                      </div>
-                      <div id="howToList" class="space-y-3"></div>
-                    </div>
-
-                    <div class="rounded-lg border-2 border-slate-800 bg-slate-900 p-4">
-                      <div class="mb-2 flex items-center justify-between">
-                        <label class="text-xs font-bold uppercase tracking-wider text-slate-300">🔍 Live JSON-LD Preview</label>
-                        <button type="button" onclick="copyJSONLD()" class="rounded-lg bg-slate-700 px-3 py-1 text-xs font-medium text-white hover:bg-slate-600">📋 Copy</button>
-                      </div>
-                      <pre id="aiPreview" class="max-h-64 overflow-auto rounded-lg bg-black p-3 text-xs text-green-400" style="font-family: ui-monospace, monospace;"></pre>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <div id="metaFields" class="grid gap-3 sm:grid-cols-2"></div>
             </div>
           </div>
 
@@ -378,34 +302,28 @@
 
           <div id="editorPanel" class="flex min-h-0 flex-1 flex-col">
             <div id="mdToolbar" class="flex flex-shrink-0 flex-wrap items-center gap-1 border-b border-slate-200 bg-slate-50 px-3 py-2">
-              <button type="button" data-md="bold" class="md-btn" title="Bold (Ctrl+B)"><b>B</b></button>
-              <button type="button" data-md="italic" class="md-btn" title="Italic (Ctrl+I)"><i>I</i></button>
-              <button type="button" data-md="strike" class="md-btn" title="Strikethrough"><s>S</s></button>
+              <button type="button" data-md="bold" class="md-btn" title="Bold"><b>B</b></button>
+              <button type="button" data-md="italic" class="md-btn" title="Italic"><i>I</i></button>
+              <button type="button" data-md="strike" class="md-btn" title="Strike"><s>S</s></button>
               <div class="mx-1 h-5 w-px bg-slate-300"></div>
-              <button type="button" data-md="h2" class="md-btn" title="Heading 2">H2</button>
-              <button type="button" data-md="h3" class="md-btn" title="Heading 3">H3</button>
+              <button type="button" data-md="h2" class="md-btn">H2</button>
+              <button type="button" data-md="h3" class="md-btn">H3</button>
               <div class="mx-1 h-5 w-px bg-slate-300"></div>
-              <button type="button" data-md="ul" class="md-btn" title="Bullet List">• List</button>
-              <button type="button" data-md="ol" class="md-btn" title="Numbered List">1. List</button>
-              <button type="button" data-md="quote" class="md-btn" title="Quote">❝ Quote</button>
+              <button type="button" data-md="ul" class="md-btn">• List</button>
+              <button type="button" data-md="ol" class="md-btn">1. List</button>
+              <button type="button" data-md="quote" class="md-btn">❝ Quote</button>
               <div class="mx-1 h-5 w-px bg-slate-300"></div>
-              <button type="button" data-md="link" class="md-btn" title="Link (Ctrl+K)">🔗</button>
-              <button type="button" data-md="image" class="md-btn" title="Image">🖼️</button>
-              <button type="button" data-md="code" class="md-btn" title="Inline code">&lt;/&gt;</button>
-              <button type="button" data-md="codeblock" class="md-btn" title="Code block">{ }</button>
-              <button type="button" data-md="hr" class="md-btn" title="Horizontal rule">—</button>
+              <button type="button" data-md="link" class="md-btn">🔗</button>
+              <button type="button" data-md="image" class="md-btn">🖼️</button>
+              <button type="button" data-md="code" class="md-btn">&lt;/&gt;</button>
+              <button type="button" data-md="codeblock" class="md-btn">{ }</button>
+              <button type="button" data-md="hr" class="md-btn">—</button>
               <div class="ml-auto flex items-center gap-1">
                 <button type="button" id="insertSnippet" class="md-btn text-xs">⚡ Snippet</button>
                 <span id="wordCount" class="ml-2 hidden text-xs text-slate-500 sm:inline">0 kata</span>
               </div>
             </div>
-
-            <textarea id="mdEditor" spellcheck="true"
-              class="min-h-[200px] flex-1 resize-none border-0 bg-white p-4 focus:outline-none"
-              placeholder="# Judul Artikel
-
-Tulis konten Anda di sini dengan **Markdown**..."></textarea>
-
+            <textarea id="mdEditor" spellcheck="true" class="min-h-[200px] flex-1 resize-none border-0 bg-white p-4 focus:outline-none" placeholder="# Judul Artikel"></textarea>
             <div class="flex flex-shrink-0 items-center justify-between border-t border-slate-200 bg-slate-50 px-4 py-2 text-xs text-slate-500">
               <span id="mdStats">0 karakter · 0 baris</span>
               <span class="hidden sm:inline">💡 Ctrl+S simpan · Ctrl+B bold · Ctrl+K link</span>
@@ -443,28 +361,15 @@ Tulis konten Anda di sini dengan **Markdown**..."></textarea>
     </div>
   </div>
 
-  <!-- MODAL SETTINGS -->
   <div id="settingsModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/70 p-4 backdrop-blur-sm">
     <div class="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl">
       <h3 class="mb-2 text-lg font-bold">🔑 Koneksi GitHub</h3>
-      <p class="mb-4 text-sm text-slate-600">Masukkan Personal Access Token dengan scope <code class="rounded bg-slate-100 px-1">repo</code>.</p>
+      <p class="mb-4 text-sm text-slate-600">Masukkan Personal Access Token dengan scope <code class="rounded bg-slate-100 px-1">Contents: Read and write</code>.</p>
       <div class="space-y-3">
-        <div>
-          <label class="mb-1 block text-sm font-medium">GitHub Owner</label>
-          <input id="ghOwner" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm" placeholder="username" />
-        </div>
-        <div>
-          <label class="mb-1 block text-sm font-medium">Repository</label>
-          <input id="ghRepo" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm" placeholder="weblynk" />
-        </div>
-        <div>
-          <label class="mb-1 block text-sm font-medium">Branch</label>
-          <input id="ghBranch" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm" value="main" />
-        </div>
-        <div>
-          <label class="mb-1 block text-sm font-medium">Personal Access Token</label>
-          <input id="ghToken" type="password" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm" placeholder="ghp_..." />
-        </div>
+        <div><label class="mb-1 block text-sm font-medium">GitHub Owner</label><input id="ghOwner" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm" placeholder="username" /></div>
+        <div><label class="mb-1 block text-sm font-medium">Repository</label><input id="ghRepo" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm" placeholder="weblynk" /></div>
+        <div><label class="mb-1 block text-sm font-medium">Branch</label><input id="ghBranch" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm" value="main" /></div>
+        <div><label class="mb-1 block text-sm font-medium">Personal Access Token</label><input id="ghToken" type="password" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm" placeholder="github_pat_..." /></div>
         <p class="rounded-lg bg-amber-50 p-2 text-xs text-amber-800">⚠️ Token disimpan di <code>localStorage</code> browser Anda.</p>
       </div>
       <div class="mt-6 flex justify-end gap-3">
