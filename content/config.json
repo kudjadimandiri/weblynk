@@ -21,10 +21,10 @@
     "autoReload": true,
     "reloadInterval": 30000,
     "slots": {
-      "header": "",
-      "sidebar": "",
-      "inArticle": "",
-      "footer": ""
+      "header": "ca-pub-7116287441723529",
+      "sidebar": "ca-pub-7116287441723529",
+      "inArticle": "ca-pub-7116287441723529",
+      "footer": "ca-pub-7116287441723529"
     },
     "position": {
       "headerOn": true,
