@@ -18,10 +18,10 @@
   "adsense": {
     "enabled": true,
     "clientId": "ca-pub-7116287441723529",
-    "autoReload": true,
+    "autoReload": false,
     "reloadInterval": 30000,
     "slots": {
-      "header": "ca-pub-7116287441723529",
+      "header": "aksdakjdgsajhdgajhsgdajgdjagdjhagdjhasgdjshagdjahgdjahsgdjhadgajshgsajh",
       "sidebar": "ca-pub-7116287441723529",
       "inArticle": "ca-pub-7116287441723529",
       "footer": "ca-pub-7116287441723529"
